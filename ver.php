@@ -1,6 +1,6 @@
 {
   "code": 0,
-  "is_server_open": false,
+  "is_server_open": true,
   "is_firewall_open": false,
   "cdn_url": "https://dl.cdn.freefiremobile.com/live/ABHotUpdates/",
   "backup_cdn_url": "https://dl.cdn.freefiremobile.com/live/ABHotUpdates/",
@@ -24,7 +24,7 @@
   "client_ip": "160.164.250.102",
   "gdpr_version": 0,
   "billboard_cdn_url": "",
-  "billboard_msg": "Maintenance Break! The server will be back soon.",
+  "billboard_msg": "",
   "web_url": "",
   "billboard_bg_url": "https://dl.cdn.freefiremobile.com/common/OB23/version/Patch_Bg.png",
   "max_store": "",
