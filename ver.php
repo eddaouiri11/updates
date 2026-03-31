@@ -14,7 +14,7 @@
   "space_required_in_GB": 0,
   "should_check_ab_load": false,
   "force_refresh_restype": "",
-  "remote_version": "1.109.5",
+  "remote_version": "1.109.1",
   "server_url": "https://loginbp.ggpolarbear.com/",
   "is_review_server": false,
   "use_login_optional_download": true,
