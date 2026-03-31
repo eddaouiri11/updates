@@ -24,7 +24,7 @@
   "client_ip": "160.164.250.102",
   "gdpr_version": 0,
   "billboard_cdn_url": "",
-  "billboard_msg": "السيرفر في صيانة حالياً، يرجى العودة لاحقاً.",
+  "billboard_msg": "Maintenance Break! The server will be back soon.",
   "web_url": "",
   "billboard_bg_url": "https://dl.cdn.freefiremobile.com/common/OB23/version/Patch_Bg.png",
   "max_store": "",
