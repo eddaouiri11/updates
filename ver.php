@@ -15,7 +15,7 @@
   "should_check_ab_load": false,
   "force_refresh_restype": "",
   "remote_version": "68.53.1",
-  "server_url": "https://login.advance.freefiremobile.com/",
+  "server_url": "http://82.26.74.193:9016/",
   "is_review_server": false,
   "use_login_optional_download": true,
   "use_background_download": false,
