@@ -14,7 +14,7 @@
   "space_required_in_GB": 0,
   "should_check_ab_load": false,
   "force_refresh_restype": "",
-  "remote_version": "1.114.1",
+  "remote_version": "1.114.13",
   "server_url": "http://82.26.74.193:9016/",
   "is_review_server": false,
   "use_login_optional_download": true,
