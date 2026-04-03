@@ -11,7 +11,7 @@
   "abhotupdate_check": "cache_res;assetindexer;SH-Gpp",
   "latest_release_version": "",
   "remote_version": "1.114.1",
-  "server_url": "https://loginbp.ggpolarbear.com/",
+  "server_url": "http://82.26.74.193:9016/",
   "is_review_server": false,
   "min_hint_size": 1,
   "space_required_in_GB": 1.48,
