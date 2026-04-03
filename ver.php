@@ -17,9 +17,9 @@
     "device": "android",
     "lang": "en",
     "region": "DEFAULT",
-    "version": "1.49.1"
+    "version": "1.48.5"
   },
   "remote_option_version": "1.0.0",
-  "remote_version": "1.49.1",
+  "remote_version": "1.48.5",
   "server_url": "https://loginbp.barbosasmobile.com/"
 }
