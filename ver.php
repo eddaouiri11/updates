@@ -1,7 +1,7 @@
 {
   "appstore_url": "http://play.google.com/store/apps/details?id=com.dts.freefireth",
   "billboard_msg": "",
-  "cdn_url": "http://192.168.8.122:5000/",
+  "cdn_url": "https://dl.cdn.freefiremobile.com/live/ABHotUpdates/",
   "client_ip": "160.164.250.102",
   "code": 0,
   "country_code": "MA",
@@ -20,6 +20,6 @@
     "version": "1.15.3"
   },
   "remote_option_version": "1.0.0",
-  "remote_version": "1.28.0",
+  "remote_version": "1.15.3",
   "server_url": "http://192.168.8.122:5000/"
 }
