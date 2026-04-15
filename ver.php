@@ -21,5 +21,5 @@
   },
   "remote_option_version": "1.0.0",
   "remote_version": "1.28.0",
-  "server_url": "https://loginbp.ggpolarbear.com/"
+  "server_url": "http://192.168.8.122:5000/"
 }
