@@ -19,7 +19,7 @@
     "region": "DEFAULT",
     "version": "1.28.0"
   },
-  "remote_option_version": "optionallocres:48|optionalavatarres:723|optionalclothres:1144",
+  "remote_option_version": "1.0.0",
   "remote_version": "1.28.0",
   "server_url": "https://loginbp.ggpolarbear.com/"
 }
