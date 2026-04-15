@@ -1,7 +1,7 @@
 {
   "appstore_url": "http://play.google.com/store/apps/details?id=com.dts.freefireth",
   "billboard_msg": "",
-  "cdn_url": "https://dl.cdn.freefiremobile.com/live/ABHotUpdates/",
+  "cdn_url": "http://192.168.8.122:5000/",
   "client_ip": "160.164.250.102",
   "code": 0,
   "country_code": "MA",
