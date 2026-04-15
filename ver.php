@@ -17,7 +17,7 @@
     "device": "android",
     "lang": "en",
     "region": "DEFAULT",
-    "version": "1.28.0"
+    "version": "1.15.3"
   },
   "remote_option_version": "1.0.0",
   "remote_version": "1.28.0",
