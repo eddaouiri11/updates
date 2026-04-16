@@ -16,7 +16,7 @@
     "lang": "ar",
     "version": "1.23.2"
   },
-  "remote_option_version": "1.23.2",
+  "remote_option_version": "1.0.0",
   "remote_version": "1.23.2",
   "server_url": "http://192.168.8.122:5000/"
 }
