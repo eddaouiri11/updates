@@ -18,5 +18,5 @@
   },
   "remote_option_version": "1.0.0",
   "remote_version": "1.15.3",
-  "server_url": "http://192.168.8.122:5000/"
+  "server_url": "https://v0-server-edit-with-constants.vercel.app/api/game"
 }
