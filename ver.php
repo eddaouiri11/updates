@@ -14,9 +14,9 @@
     "appstore": "official",
     "device": "android",
     "lang": "ar",
-    "version": "1.23.2"
+    "version": "1.15.3"
   },
   "remote_option_version": "1.0.0",
-  "remote_version": "1.23.2",
+  "remote_version": "1.15.3",
   "server_url": "http://192.168.8.122:5000/"
 }
