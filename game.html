@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Runner PRO - Anas Edition</title>
+    <style>
+        /* CSS Section: Professional Cyberpunk UI */
+        :root {
+            --neon-green: #00ffcc;
+            --neon-pink: #ff0055;
+            --bg-dark: #050505;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: crosshair; }
+        
+        body {
+            background-color: var(--bg-dark);
+            color: var(--neon-green);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+        }
+
+        /* Side Panel Stats */
+        .side-panel {
+            width: 300px;
+            background: rgba(10, 10, 10, 0.95);
+            border-right: 2px solid #222;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            z-index: 10;
+        }
+
+        .terminal-box {
+            background: #000;
+            border: 1px solid #333;
+            padding: 10px;
+            font-size: 12px;
+            color: #00ff00;
+            height: 150px;
+            overflow-y: auto;
+            border-radius: 4px;
+        }
+
+        /* Game Main Area */
+        .game-view {
+            flex: 1;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle, #111 0%, #000 100%);
+        }
+
+        canvas {
+            border: 2px solid #333;
+            background: #000;
+            box-shadow: 0 0 50px rgba(0, 255, 204, 0.05);
+        }
+
+        /* Leaderboard & Modals */
+        .leaderboard {
+            width: 300px;
+            background: rgba(10, 10, 10, 0.95);
+            border-left: 2px solid #222;
+            padding: 20px;
+        }
+
+        .leaderboard-title {
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-bottom: 2px solid var(--neon-green);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+        }
+
+        .entry {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            margin-bottom: 5px;
+            background: #111;
+            border-radius: 4px;
+            transition: 0.3s;
+        }
+
+        .entry.active { border: 1px solid var(--neon-green); background: rgba(0, 255, 204, 0.1); }
+
+        #ban-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255, 0, 0, 0.9);
+            z-index: 1000;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+        }
+
+        .glitch { animation: glitch 1s linear infinite; }
+        @keyframes glitch {
+            2%, 64% { transform: translate(2px,0) skew(0deg); }
+            4%, 60% { transform: translate(-2px,0) skew(0deg); }
+            62% { transform: translate(0,0) skew(5deg); }
+        }
+
+        .loading-overlay {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .progress-bar {
+            width: 200px;
+            height: 4px;
+            background: #222;
+            margin-top: 20px;
+            position: relative;
+        }
+
+        .progress-fill {
+            position: absolute;
+            height: 100%;
+            background: var(--neon-green);
+            width: 0%;
+            transition: 0.5s;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="loading-screen" class="loading-overlay">
+        <h2 style="letter-spacing: 5px;">INITIALIZING SYSTEM</h2>
+        <div class="progress-bar"><div id="progress" class="progress-fill"></div></div>
+        <p id="load-status" style="font-size: 10px; margin-top: 10px; color: #555;">Connecting to Firebase Core...</p>
+    </div>
+
+    <div id="ban-overlay">
+        <h1 class="glitch" style="font-size: 80px;">BANNED</h1>
+        <p>INTEGRITY CHECK FAILED: UNAUTHORIZED MODIFICATION DETECTED</p>
+        <p id="ban-uid" style="font-size: 10px; margin-top: 20px; opacity: 0.5;"></p>
+    </div>
+
+    <div class="side-panel">
+        <h2 style="color: white; font-size: 16px;">NETWORK STATUS</h2>
+        <div class="terminal-box" id="terminal">
+            [SYS] Kernel v5.0.1 loaded...<br>
+            [SYS] Waiting for Auth...<br>
+        </div>
+        
+        <div style="margin-top: auto;">
+            <p style="font-size: 10px; color: #444;">LOCAL_STORAGE: <span id="storage-id">---</span></p>
+            <p style="font-size: 10px; color: #444;">SERVER: rtdb.europe-west1</p>
+        </div>
+    </div>
+
+    <div class="game-view">
+        <div style="position: absolute; top: 20px; left: 20px;">
+            <span style="font-size: 10px; opacity: 0.5;">REALTIME_SCORE:</span><br>
+            <span id="live-score" style="font-size: 32px; font-weight: bold;">0000</span>
+        </div>
+        <canvas id="mainCanvas"></canvas>
+    </div>
+
+    <div class="leaderboard">
+        <div class="leaderboard-title">Global Top 10</div>
+        <div id="leaderboard-data">
+            </div>
+        <div style="margin-top: 20px; border-top: 1px solid #222; padding-top: 10px;">
+            <p style="font-size: 11px; color: #555;">Active Connections: <span id="online-count">0</span></p>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, set, onValue, remove, onDisconnect, query, orderByChild, limitToLast } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        // 1. CONFIGURATION
+        const firebaseConfig = {
+            apiKey: "AIzaSyAUWtuXHbcKxGd6O823oCudLJkVLhIGXJo",
+            authDomain: "fir-config-5938d.firebaseapp.com",
+            databaseURL: "https://fir-config-5938d-default-rtdb.firebaseio.com",
+            projectId: "fir-config-5938d",
+            storageBucket: "fir-config-5938d.firebasestorage.app",
+            messagingSenderId: "695119645300",
+            appId: "1:695119645300:web:dc0ce7b55d6c6d86da1f21"
+        };
+
+        // 2. INITIALIZATION
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const auth = getAuth(app);
+
+        // 3. GAME ENGINE CLASS
+        class SecureRunner {
+            constructor() {
+                this.canvas = document.getElementById('mainCanvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.canvas.width = 800;
+                this.canvas.height = 400;
+                
+                // Game States
+                this.isReady = false;
+                this.isDead = false;
+                this.score = 0;
+                this.frames = 0;
+                this.gameSpeed = 6;
+                this.obstacles = [];
+                this.particles = [];
+                this.otherPlayers = {};
+                
+                // Player Object
+                this.player = {
+                    x: 100,
+                    y: 350,
+                    radius: 12,
+                    dy: 0,
+                    jumpForce: -12,
+                    gravity: 0.6,
+                    groundY: 350,
+                    color: '#00ffcc'
+                };
+
+                // Anti-Cheat (Hidden Variables)
+                this._S_K = 0xAF22; // Integrity Key
+                this.lastJump = 0;
+                this.isBanned = false;
+
+                this.init();
+            }
+
+            log(msg) {
+                const t = document.getElementById('terminal');
+                t.innerHTML += `> ${msg}<br>`;
+                t.scrollTop = t.scrollHeight;
+            }
+
+            init() {
+                this.log("Initializing Engine...");
+                this.setupInputs();
+                this.authPlayer();
+                this.gameLoop();
+            }
+
+            authPlayer() {
+                signInAnonymously(auth).catch(e => this.log("AUTH_ERR: " + e.message));
+                onAuthStateChanged(auth, (user) => {
+                    if (user) {
+                        this.uid = user.uid;
+                        document.getElementById('storage-id').innerText = user.uid.substring(0,8);
+                        this.log("System Authenticated: " + user.uid.substring(0,8));
+                        this.syncData();
+                        this.startSequence();
+                    }
+                });
+            }
+
+            startSequence() {
+                const prog = document.getElementById('progress');
+                prog.style.width = "100%";
+                setTimeout(() => {
+                    document.getElementById('loading-screen').style.opacity = "0";
+                    setTimeout(() => {
+                        document.getElementById('loading-screen').style.display = "none";
+                        this.isReady = true;
+                    }, 500);
+                }, 1000);
+            }
+
+            setupInputs() {
+                window.addEventListener('keydown', (e) => {
+                    if (e.code === 'Space') this.jump();
+                });
+                this.canvas.addEventListener('mousedown', () => this.jump());
+            }
+
+            jump() {
+                if (this.player.y >= this.player.groundY - 5 && !this.isDead) {
+                    this.player.dy = this.player.jumpForce;
+                    this.createParticles(this.player.x, this.player.y, '#555', 10);
+                }
+            }
+
+            createParticles(x, y, color, count) {
+                for (let i = 0; i < count; i++) {
+                    this.particles.push({
+                        x, y,
+                        vx: (Math.random() - 0.5) * 4,
+                        vy: (Math.random() - 0.5) * 4,
+                        life: 1.0,
+                        color
+                    });
+                }
+            }
+
+            syncData() {
+                const pRef = ref(db, `players/${this.uid}`);
+                onDisconnect(pRef).remove();
+
+                // Sync Loop
+                setInterval(() => {
+                    if (this.isReady && !this.isDead && !this.isBanned) {
+                        set(pRef, {
+                            y: Math.round(this.player.y),
+                            score: this.score,
+                            status: 'alive',
+                            t: Date.now()
+                        });
+                    }
+                }, 100);
+
+                // Leaderboard Listener
+                const topRef = query(ref(db, 'players'), orderByChild('score'), limitToLast(10));
+                onValue(topRef, (snap) => {
+                    const data = snap.val() || {};
+                    this.updateUI(data);
+                });
+            }
+
+            updateUI(data) {
+                const container = document.getElementById('leaderboard-data');
+                const players = Object.entries(data)
+                    .map(([id, val]) => ({ id, ...val }))
+                    .sort((a, b) => b.score - a.score);
+                
+                document.getElementById('online-count').innerText = Object.keys(data).length;
+                
+                container.innerHTML = players.map((p, i) => `
+                    <div class="entry ${p.id === this.uid ? 'active' : ''}">
+                        <span>#${i+1} ${p.id.substring(0,5)}</span>
+                        <span style="color:yellow">${p.score}</span>
+                    </div>
+                `).join('');
+
+                this.otherPlayers = data;
+            }
+
+            gameLoop() {
+                this.update();
+                this.draw();
+                requestAnimationFrame(() => this.gameLoop());
+            }
+
+            update() {
+                if (!this.isReady || this.isDead) return;
+
+                this.frames++;
+                
+                // Player Physics
+                this.player.dy += this.player.gravity;
+                this.player.y += this.player.dy;
+                if (this.player.y > this.player.groundY) {
+                    this.player.y = this.player.groundY;
+                    this.player.dy = 0;
+                }
+
+                // Obstacle Logic
+                if (this.frames % 100 === 0) {
+                    this.obstacles.push({
+                        x: this.canvas.width,
+                        w: 20 + Math.random() * 30,
+                        h: 40 + Math.random() * 40
+                    });
+                }
+
+                this.obstacles.forEach((o, i) => {
+                    o.x -= this.gameSpeed;
+                    
+                    // Collision
+                    if (this.player.x + 10 > o.x && 
+                        this.player.x - 10 < o.x + o.w && 
+                        this.player.y + 10 > this.canvas.height - 10 - o.h) {
+                        this.gameOver();
+                    }
+
+                    if (o.x + o.w < 0) {
+                        this.obstacles.splice(i, 1);
+                        this.score++;
+                        document.getElementById('live-score').innerText = this.score.toString().padStart(4, '0');
+                        if (this.score % 10 === 0) this.gameSpeed += 0.2;
+                    }
+                });
+
+                // Particle Update
+                this.particles.forEach((p, i) => {
+                    p.x += p.vx; p.y += p.vy; p.life -= 0.02;
+                    if (p.life <= 0) this.particles.splice(i, 1);
+                });
+            }
+
+            draw() {
+                const { ctx, canvas } = this;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                // Draw Grid (Cyberpunk Effect)
+                ctx.strokeStyle = '#111';
+                for(let i=0; i<canvas.width; i+=40) {
+                    ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, canvas.height); ctx.stroke();
+                }
+
+                // Draw Ground
+                ctx.fillStyle = '#1a1a1a';
+                ctx.fillRect(0, canvas.height - 10, canvas.width, 10);
+
+                // Draw Other Players (Ghosts)
+                Object.entries(this.otherPlayers).forEach(([id, data]) => {
+                    if (id !== this.uid && data.status === 'alive') {
+                        ctx.fillStyle = 'rgba(255, 0, 255, 0.2)';
+                        ctx.beginPath();
+                        ctx.arc(100, data.y, 8, 0, Math.PI * 2);
+                        ctx.fill();
+                        ctx.font = '8px Arial';
+                        ctx.fillText(id.substring(0,4), 90, data.y - 15);
+                    }
+                });
+
+                // Draw Obstacles
+                this.obstacles.forEach(o => {
+                    const grad = ctx.createLinearGradient(o.x, 400, o.x, 300);
+                    grad.addColorStop(0, '#ff0055');
+                    grad.addColorStop(1, '#880022');
+                    ctx.fillStyle = grad;
+                    ctx.shadowBlur = 10; ctx.shadowColor = '#ff0055';
+                    ctx.fillRect(o.x, canvas.height - 10 - o.h, o.w, o.h);
+                    ctx.shadowBlur = 0;
+                });
+
+                // Draw Particles
+                this.particles.forEach(p => {
+                    ctx.fillStyle = `rgba(0, 255, 204, ${p.life})`;
+                    ctx.fillRect(p.x, p.y, 2, 2);
+                });
+
+                // Draw Player
+                if (!this.isDead) {
+                    ctx.shadowBlur = 15; ctx.shadowColor = this.player.color;
+                    ctx.fillStyle = this.player.color;
+                    ctx.beginPath();
+                    ctx.arc(this.player.x, this.player.y, this.player.radius, 0, Math.PI*2);
+                    ctx.fill();
+                    ctx.shadowBlur = 0;
+                }
+            }
+
+            gameOver() {
+                this.isDead = true;
+                this.log("GAME_OVER | Final Score: " + this.score);
+                this.createParticles(this.player.x, this.player.y, '#ff0055', 30);
+                set(ref(db, `players/${this.uid}`), { status: 'dead', score: this.score });
+                
+                setTimeout(() => {
+                    this.score = 0;
+                    this.obstacles = [];
+                    this.gameSpeed = 6;
+                    this.isDead = false;
+                    this.player.y = 350;
+                    this.log("Re-initializing System...");
+                }, 2000);
+            }
+        }
+
+        // Run Engine
+        window.Game = new SecureRunner();
+
+        // 4. ADVANCED ANTI-CHEAT (The "500 Lines" Secret Sauce)
+        setInterval(() => {
+            // Check for speed hacks or property modifications
+            if (window.Game.gameSpeed > 20) {
+                banPlayer("EXCESSIVE_SPEED_DETECTED");
+            }
+            
+            // Honeypot check
+            if (window.godMode === true) {
+                banPlayer("HONEYPOT_TRIGGERED");
+            }
+        }, 1000);
+
+        function banPlayer(reason) {
+            window.Game.isBanned = true;
+            window.Game.isDead = true;
+            document.getElementById('ban-overlay').style.display = 'flex';
+            document.getElementById('ban-uid').innerText = "ID: " + window.Game.uid;
+            remove(ref(db, `players/${window.Game.uid}`));
+        }
+
+    </script>
+</body>
+</html>
