@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JRK DEEEV - Official Gaming Platform</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Orbitron', sans-serif;
             background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%);
             background-size: 400% 400%;
             animation: gradientShift 10s ease infinite;
@@ -20,8 +20,19 @@
         }
         .glassmorphism {
             background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 215, 0, 0.2);
+            backdrop-filter: blur(15px);
+            border: 2px solid transparent;
+            background-clip: padding-box;
+            position: relative;
+        }
+        .glassmorphism::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(45deg, rgba(255, 215, 0, 0.5), rgba(255, 215, 0, 0.1), rgba(255, 215, 0, 0.5));
+            border-radius: inherit;
+            margin: -2px;
+            z-index: -1;
         }
         .glow:hover {
             box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
@@ -59,9 +70,76 @@
             0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
             50% { transform: translateY(50vh) rotate(180deg); opacity: 1; }
         }
+        .click-effect:active {
+            transform: scale(0.98);
+            transition: transform 0.1s ease;
+        }
+        #intro {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 1;
+            transition: opacity 1s ease;
+        }
+        #intro.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+        #main-content {
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+        #main-content.show {
+            opacity: 1;
+        }
+        .loading-bar {
+            width: 300px;
+            height: 4px;
+            background: rgba(255, 215, 0, 0.3);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+        .loading-fill {
+            height: 100%;
+            background: #FFD700;
+            width: 0%;
+            transition: width 3s ease;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 215, 0, 0.3);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+        .progress-fill {
+            height: 100%;
+            background: #FFD700;
+            width: 0%;
+            transition: width 0.1s ease;
+        }
     </style>
 </head>
 <body class="text-white min-h-screen relative overflow-hidden">
+    <!-- Intro Sequence -->
+    <div id="intro">
+        <h1 class="text-6xl font-bold text-yellow-500 mb-4">JRK DEEEV</h1>
+        <div class="loading-bar">
+            <div class="loading-fill" id="loading-fill"></div>
+        </div>
+    </div>
+
+    <!-- Floating Particles -->
     <div class="floating-particles">
         <div class="particle"></div>
         <div class="particle"></div>
@@ -74,57 +152,123 @@
         <div class="particle"></div>
     </div>
 
-    <!-- Navbar -->
-    <nav class="bg-black/50 backdrop-blur-md border-b border-yellow-500/20 py-4 px-6 fixed top-0 w-full z-10">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <h1 class="text-2xl font-bold text-yellow-500">JRK DEEEV</h1>
-            <div class="text-sm text-gray-400">Official Gaming Platform</div>
-        </div>
-    </nav>
-
     <!-- Main Content -->
-    <main class="flex items-center justify-center min-h-screen pt-20 pb-20">
-        <div class="text-center">
-            <div class="mb-8">
-                <div class="inline-flex items-center bg-green-500/20 text-green-400 px-4 py-2 rounded-full text-sm font-medium border border-green-500/30">
-                    <div class="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></div>
-                    Status: Online
-                </div>
+    <div id="main-content">
+        <!-- Navbar -->
+        <nav class="bg-black/50 backdrop-blur-md border-b border-yellow-500/20 py-4 px-6 fixed top-0 w-full z-10 click-effect">
+            <div class="max-w-7xl mx-auto flex justify-between items-center">
+                <h1 class="text-2xl font-bold text-yellow-500">JRK DEEEV</h1>
+                <div class="text-sm text-gray-400">Official Gaming Platform</div>
             </div>
+        </nav>
 
-            <div class="glassmorphism p-8 rounded-2xl shadow-2xl w-96 text-center transform hover:scale-105 transition duration-500">
-                <div class="mb-6">
-                    <div class="bg-yellow-500 w-20 h-20 rounded-full flex items-center justify-center mx-auto shadow-lg shadow-yellow-500/50">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                        </svg>
+        <!-- Main Section -->
+        <main class="flex items-center justify-center min-h-screen pt-20 pb-20">
+            <div class="text-center">
+                <div class="mb-8">
+                    <div class="inline-flex items-center bg-green-500/20 text-green-400 px-4 py-2 rounded-full text-sm font-medium border border-green-500/30 click-effect">
+                        <div class="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></div>
+                        Status: Online
                     </div>
                 </div>
 
-                <h2 class="text-3xl font-bold mb-4 text-yellow-500">Download Config</h2>
-                <p class="text-gray-300 text-base mb-6">Get the latest configuration file for enhanced gaming experience.</p>
+                <div class="glassmorphism p-8 rounded-2xl shadow-2xl w-96 text-center transform hover:scale-105 transition duration-500 click-effect">
+                    <div class="mb-6">
+                        <div class="bg-yellow-500 w-20 h-20 rounded-full flex items-center justify-center mx-auto shadow-lg shadow-yellow-500/50">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                            </svg>
+                        </div>
+                    </div>
 
-                <a href="localconfig.json" download="localconfig.json" 
-                   class="inline-block w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-4 rounded-lg transition duration-300 shadow-lg glow">
-                    Download Now
-                </a>
+                    <h2 class="text-3xl font-bold mb-4 text-yellow-500">Download Config</h2>
+                    <p class="text-gray-300 text-base mb-6">Get the latest configuration file for enhanced gaming experience.</p>
 
-                <div class="mt-6 text-xs text-gray-500 uppercase tracking-widest">
-                    v1.0.2 - Security Bypass Enabled
-                </div>
-                <div class="mt-2 text-xs text-gray-400">
-                    Last Updated: April 18, 2026
+                    <a href="localconfig.json" download="localconfig.json" id="download-btn"
+                       class="inline-block w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-4 rounded-lg transition duration-300 shadow-lg glow click-effect">
+                        Download Now
+                    </a>
+
+                    <div id="progress-container" class="mt-4 hidden">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progress-fill"></div>
+                        </div>
+                        <div class="mt-2 text-sm text-gray-400" id="progress-text">Downloading... 0%</div>
+                    </div>
+
+                    <div class="mt-6 text-xs text-gray-500 uppercase tracking-widest">
+                        v1.0.2 - Security Bypass Enabled
+                    </div>
+                    <div class="mt-2 text-xs text-gray-400">
+                        Last Updated: April 18, 2026
+                    </div>
                 </div>
             </div>
-        </div>
-    </main>
+        </main>
 
-    <!-- Footer -->
-    <footer class="bg-black/50 backdrop-blur-md border-t border-yellow-500/20 py-4 px-6 fixed bottom-0 w-full z-10">
-        <div class="max-w-7xl mx-auto text-center text-sm text-gray-400">
-            Developed by JRK DEEEV
-        </div>
-    </footer>
+        <!-- Footer -->
+        <footer class="bg-black/50 backdrop-blur-md border-t border-yellow-500/20 py-4 px-6 fixed bottom-0 w-full z-10 click-effect">
+            <div class="max-w-7xl mx-auto text-center text-sm text-gray-400">
+                Developed by JRK DEEEV
+            </div>
+        </footer>
+    </div>
 
+    <script>
+        // Intro Sequence
+        window.addEventListener('load', () => {
+            const intro = document.getElementById('intro');
+            const loadingFill = document.getElementById('loading-fill');
+            const mainContent = document.getElementById('main-content');
+
+            // Start loading animation
+            setTimeout(() => {
+                loadingFill.style.width = '100%';
+            }, 100);
+
+            // After 3 seconds, fade out intro and show main content
+            setTimeout(() => {
+                intro.classList.add('fade-out');
+                mainContent.classList.add('show');
+            }, 3000);
+        });
+
+        // Download Progress
+        const downloadBtn = document.getElementById('download-btn');
+        const progressContainer = document.getElementById('progress-container');
+        const progressFill = document.getElementById('progress-fill');
+        const progressText = document.getElementById('progress-text');
+
+        downloadBtn.addEventListener('click', (e) => {
+            if (downloadBtn.disabled) return;
+
+            e.preventDefault();
+            downloadBtn.disabled = true;
+            downloadBtn.textContent = 'Preparing...';
+            progressContainer.classList.remove('hidden');
+
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 1;
+                progressFill.style.width = progress + '%';
+                progressText.textContent = `Downloading... ${progress}%`;
+
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    progressText.textContent = 'Downloaded!';
+                    downloadBtn.textContent = 'Downloaded!';
+                    setTimeout(() => {
+                        // Trigger download
+                        const link = document.createElement('a');
+                        link.href = 'localconfig.json';
+                        link.download = 'localconfig.json';
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    }, 500);
+                }
+            }, 300); // 30 seconds total (300ms * 100)
+        });
+    </script>
 </body>
 </html>
