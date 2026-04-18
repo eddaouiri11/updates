@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Runner Dashboard</title>
+    <style>
+        :root {
+            --bg: #050505;
+            --panel: rgba(10, 10, 10, 0.95);
+            --border: #00ffcc;
+            --text: #00ffcc;
+            --muted: #777;
+            --danger: #ff0055;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            min-height: 100vh;
+            background: radial-gradient(circle at top, rgba(0,255,204,0.08), transparent 40%), #000;
+            color: var(--text);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 25px;
+        }
+
+        header h1 {
+            font-size: 28px;
+            letter-spacing: 1px;
+        }
+
+        header .status {
+            text-align: right;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .panel {
+            background: var(--panel);
+            border: 1px solid rgba(0,255,204,0.15);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 0 40px rgba(0,255,204,0.08);
+        }
+
+        .panel h2 {
+            margin-bottom: 15px;
+            font-size: 20px;
+            letter-spacing: 1px;
+            color: #fff;
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        button {
+            cursor: pointer;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text);
+            padding: 10px 18px;
+            border-radius: 8px;
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+
+        button:hover {
+            background: rgba(0,255,204,0.1);
+            transform: translateY(-1px);
+        }
+
+        button.danger {
+            border-color: var(--danger);
+            color: #fff;
+            background: rgba(255,0,85,0.08);
+        }
+
+        .players-table {
+            width: 100%;
+            border-collapse: collapse;
+            overflow: hidden;
+        }
+
+        .players-table th,
+        .players-table td {
+            padding: 14px 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            font-size: 14px;
+        }
+
+        .players-table th {
+            color: #ccc;
+            font-size: 13px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .players-table tr:hover {
+            background: rgba(0,255,204,0.08);
+        }
+
+        .status-tag {
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 999px;
+            display: inline-block;
+        }
+
+        .status-alive { background: rgba(0,255,204,0.18); color: #9bffeb; }
+        .status-dead { background: rgba(255,0,85,0.18); color: #ff8cc8; }
+
+        .note {
+            margin-top: 15px;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div>
+                <h1>Secure Runner Admin Dashboard</h1>
+                <p style="color: var(--muted); margin-top: 6px;">Realtime view of authenticated players in Firebase Realtime Database.</p>
+            </div>
+            <div class="status">
+                <div>Connected as <span id="admin-id">anonymous</span></div>
+                <div style="margin-top: 8px;">Active players: <strong id="player-count">0</strong></div>
+            </div>
+        </header>
+
+        <div class="panel">
+            <div class="toolbar">
+                <button id="refresh-btn">Refresh List</button>
+                <button id="clear-btn" class="danger">Global Kill Switch</button>
+            </div>
+            <h2>Live Players</h2>
+            <table class="players-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Player ID</th>
+                        <th>Score</th>
+                        <th>Status</th>
+                        <th>Last Update</th>
+                    </tr>
+                </thead>
+                <tbody id="player-list">
+                </tbody>
+            </table>
+            <p class="note">Players are shown when they have an active entry under <code>/players</code>. Press the reset button to clear all entries for admin recovery or cleanup.</p>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, onValue, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAUWtuXHbcKxGd6O823oCudLJkVLhIGXJo",
+            authDomain: "fir-config-5938d.firebaseapp.com",
+            databaseURL: "https://fir-config-5938d-default-rtdb.firebaseio.com",
+            projectId: "fir-config-5938d",
+            storageBucket: "fir-config-5938d.firebasestorage.app",
+            messagingSenderId: "695119645300",
+            appId: "1:695119645300:web:dc0ce7b55d6c6d86da1f21"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const auth = getAuth(app);
+
+        const adminIdEl = document.getElementById('admin-id');
+        const playerCountEl = document.getElementById('player-count');
+        const playerListEl = document.getElementById('player-list');
+        const refreshBtn = document.getElementById('refresh-btn');
+        const clearBtn = document.getElementById('clear-btn');
+
+        function timestampToString(ts) {
+            const date = new Date(ts || Date.now());
+            return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        }
+
+        function renderPlayers(data) {
+            const players = Object.entries(data || {}).map(([id, payload]) => ({ id, ...payload }));
+            players.sort((a, b) => (b.score || 0) - (a.score || 0));
+            playerCountEl.textContent = players.length;
+            playerListEl.innerHTML = players.map((p, idx) => {
+                const statusClass = p.status === 'alive' ? 'status-alive' : 'status-dead';
+                return `
+                    <tr>
+                        <td>${idx + 1}</td>
+                        <td>${p.id.substring(0, 12)}</td>
+                        <td>${p.score ?? 0}</td>
+                        <td><span class="status-tag ${statusClass}">${(p.status || 'unknown').toUpperCase()}</span></td>
+                        <td>${timestampToString(p.t)}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function setupRealtimeListeners() {
+            const playersRef = ref(db, 'players');
+            onValue(playersRef, (snapshot) => {
+                renderPlayers(snapshot.val());
+            });
+        }
+
+        function clearPlayers() {
+            if (!confirm('Clear all /players entries? This will remove all active player records from Firebase.')) {
+                return;
+            }
+            remove(ref(db, 'players')).catch((error) => {
+                alert('Reset failed: ' + error.message);
+            });
+        }
+
+        refreshBtn.addEventListener('click', () => {
+            setupRealtimeListeners();
+        });
+
+        clearBtn.addEventListener('click', clearPlayers);
+
+        signInAnonymously(auth).catch((error) => {
+            adminIdEl.textContent = 'auth_error';
+            console.error(error);
+        });
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                adminIdEl.textContent = user.uid.substring(0, 12);
+                setupRealtimeListeners();
+            }
+        });
+    </script>
+</body>
+</html>
