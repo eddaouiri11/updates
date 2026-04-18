@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Config</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: radial-gradient(circle, #1a202c 0%, #000000 100%);
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen text-white">
+
+    <div class="bg-gray-900 p-8 rounded-2xl shadow-2xl border border-yellow-500 w-80 text-center transform hover:scale-105 transition duration-300">
+        <div class="mb-4">
+            <div class="bg-yellow-500 w-16 h-16 rounded-full flex items-center justify-center mx-auto shadow-lg shadow-yellow-500/50">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+            </div>
+        </div>
+
+        <h1 class="text-2xl font-bold mb-2 tracking-wide">Config File</h1>
+        <p class="text-gray-400 text-sm mb-6">اضغط على الزر أسفله لتحميل ملف التكوين مباشرة.</p>
+
+        <a href="localconfig.json" download="localconfig.json" 
+           class="inline-block w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-3 rounded-lg transition duration-200 shadow-lg shadow-yellow-500/20">
+            تحميل الملف الآن
+        </a>
+
+        <div class="mt-4 text-[10px] text-gray-500 uppercase tracking-widest">
+            v1.0.2 - Security Bypass Enabled
+        </div>
+    </div>
+
+</body>
+</html>
