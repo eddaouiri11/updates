@@ -9,7 +9,7 @@
   "login_download_optionalpack": "optionalclothres:shaders|optionalpetres:optionalpetres_commonab_shader|optionallobbyres:",
   "need_track_hotupdate": true,
   "abhotupdate_check": "cache_res;assetindexer;SH-Gpp",
-  "latest_release_version": "",
+  "latest_release_version": "OB51",
   "min_hint_size": 1,
   "space_required_in_GB": 1.48,
   "should_check_ab_load": false,
