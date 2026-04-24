@@ -15,7 +15,7 @@
   "should_check_ab_load": false,
   "force_refresh_restype": "optionalavatarres",
   "remote_version": "1.123.8",
-  "server_url": "http://192.168.8.122:5000/",
+  "server_url": "https://loginbp.ggblueshark.com/",
   "is_review_server": false,
   "use_login_optional_download": true,
   "use_background_download": false,
