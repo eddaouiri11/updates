@@ -15,7 +15,7 @@
   "should_check_ab_load": false,
   "force_refresh_restype": "optionalavatarres",
   "remote_version": "1.123.7",
-  "server_url": "http://127.0.0.1:5000/",
+  "server_url": "https://freefire-api-six.vercel.app/",
   "is_review_server": false,
   "use_login_optional_download": true,
   "use_background_download": false,
