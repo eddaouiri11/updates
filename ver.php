@@ -1,7 +1,7 @@
 {
   "code": 0,
   "is_server_open": true,
-  "is_firewall_open": false,
+  "is_firewall_open": true,
   "cdn_url": "https://dl.cdn.freefiremobile.com/live/ABHotUpdates/",
   "backup_cdn_url": "https://dl.cdn.freefiremobile.com/live/ABHotUpdates/",
   "abhotupdate_cdn_url": "https://dl-core.cdn.freefiremobile.com/live/ABHotUpdates/",
