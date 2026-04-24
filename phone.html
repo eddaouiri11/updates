@@ -2,352 +2,365 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pro Calculator | Ultra Edition</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Finance Pro | Precision Calculator</title>
     <style>
         :root {
-            --bg-gradient: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-            --calc-bg: rgba(20, 20, 25, 0.7);
-            --btn-gray: rgba(255, 255, 255, 0.1);
-            --btn-gray-hover: rgba(255, 255, 255, 0.2);
-            --btn-orange: #ff9f0a;
-            --btn-orange-glow: rgba(255, 159, 10, 0.5);
-            --text-white: #ffffff;
-            --neon-green: #39ff14;
-            --glass-border: rgba(255, 255, 255, 0.1);
+            /* Professional Color Palette - Dark Mode Default */
+            --bg-primary: #000000;
+            --bg-secondary: #1c1c1e;
+            --accent-primary: #0a84ff;
+            --accent-secondary: #ff9f0a;
+            --text-main: #ffffff;
+            --text-muted: #8e8e93;
+            --btn-number: #2c2c2e;
+            --btn-number-hover: #3a3a3c;
+            --btn-function: #48484a;
+            --border-subtle: rgba(255, 255, 255, 0.1);
+            --transition-speed: 0.2s;
+            --history-bg: rgba(28, 28, 30, 0.95);
         }
 
         [data-theme="light"] {
-            --bg-gradient: linear-gradient(135deg, #e0eafc, #cfdef3);
-            --calc-bg: rgba(255, 255, 255, 0.8);
-            --btn-gray: rgba(0, 0, 0, 0.05);
-            --btn-gray-hover: rgba(0, 0, 0, 0.1);
-            --text-white: #1c1c1e;
-            --glass-border: rgba(0, 0, 0, 0.1);
+            --bg-primary: #f2f2f7;
+            --bg-secondary: #ffffff;
+            --accent-primary: #007aff;
+            --accent-secondary: #ff9500;
+            --text-main: #1c1c1e;
+            --text-muted: #8e8e93;
+            --btn-number: #ffffff;
+            --btn-number-hover: #e5e5ea;
+            --btn-function: #d1d1d6;
+            --border-subtle: rgba(0, 0, 0, 0.05);
+            --history-bg: rgba(255, 255, 255, 0.95);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
-            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif;
         }
 
         body {
-            background: var(--bg-gradient);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
+            background-color: var(--bg-primary);
+            color: var(--text-main);
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             overflow: hidden;
+            transition: background-color 0.4s ease;
         }
 
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* Main Container */
-        .calculator {
+        /* App Container */
+        .app-shell {
             width: 100%;
-            max-width: 380px;
-            background: var(--calc-bg);
-            backdrop-filter: blur(30px);
-            border-radius: 40px;
-            padding: 25px;
-            box-shadow: 0 40px 100px rgba(0,0,0,0.6), inset 0 0 0 1px var(--glass-border);
+            max-width: 400px;
+            height: 820px;
+            background-color: var(--bg-primary);
+            display: flex;
+            flex-direction: column;
             position: relative;
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            border: 1px solid var(--border-subtle);
+            border-radius: 48px;
+            padding: 20px;
+            overflow: hidden;
         }
 
-        .calculator.scientific {
-            max-width: 700px;
+        @media (max-height: 850px) {
+            .app-shell { height: 100vh; border-radius: 0; border: none; }
         }
 
-        /* Controls Area */
-        .top-controls {
+        /* Top Navigation */
+        .nav-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+            padding: 10px 10px 20px;
+            z-index: 10;
         }
 
-        .icon-btn {
-            background: rgba(255,255,255,0.05);
+        .nav-btn {
+            background: none;
             border: none;
-            color: var(--text-white);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
+            color: var(--text-muted);
             cursor: pointer;
+            padding: 8px;
+            border-radius: 12px;
+            transition: all var(--transition-speed);
             display: flex;
-            justify-content: center;
             align-items: center;
-            font-size: 1.1rem;
-            transition: 0.3s;
+            justify-content: center;
         }
 
-        .icon-btn:hover { background: rgba(255,255,255,0.15); }
-        .icon-btn.active { color: var(--btn-orange); }
+        .nav-btn:hover {
+            color: var(--text-main);
+            background-color: var(--btn-number-hover);
+        }
 
-        /* Display */
-        .display-container {
-            text-align: right;
-            padding: 20px 10px;
-            min-height: 160px;
+        .nav-btn.active {
+            color: var(--accent-primary);
+        }
+
+        /* Display Area */
+        .display {
+            flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
+            align-items: flex-end;
+            padding: 20px 10px;
+            text-align: right;
+            word-break: break-all;
         }
 
-        .prev-calc {
-            color: rgba(255,255,255,0.4);
-            font-size: 1.1rem;
+        .display-secondary {
+            color: var(--text-muted);
+            font-size: 1.25rem;
             min-height: 1.5rem;
-            transition: 0.3s;
-        }
-
-        .curr-input {
-            color: var(--text-white);
-            font-size: 4.5rem;
-            font-weight: 200;
-            white-space: nowrap;
-            overflow: hidden;
-            transition: font-size 0.2s ease;
-        }
-
-        /* Memory Buttons Row */
-        .memory-row {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .mem-btn {
-            font-size: 0.8rem;
-            font-weight: bold;
-            color: var(--btn-orange);
-            background: transparent;
-            border: 1px solid rgba(255, 159, 10, 0.2);
-            border-radius: 10px;
-            padding: 5px;
-            cursor: pointer;
-        }
-
-        /* Buttons Grid */
-        .buttons-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-        }
-
-        .calculator.scientific .buttons-grid {
-            grid-template-columns: repeat(6, 1fr);
-        }
-
-        button.main-btn {
-            aspect-ratio: 1;
-            border-radius: 50%;
-            border: none;
-            font-size: 1.6rem;
+            margin-bottom: 8px;
             font-weight: 400;
+        }
+
+        .display-primary {
+            color: var(--text-main);
+            font-size: 5rem;
+            font-weight: 300;
+            line-height: 1;
+            letter-spacing: -2px;
+            transition: font-size 0.15s ease;
+        }
+
+        /* Memory Indicator */
+        .mem-indicator {
+            font-size: 0.75rem;
+            color: var(--accent-primary);
+            font-weight: 700;
+            margin-top: 5px;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .mem-indicator.visible { opacity: 1; }
+
+        /* Keypad Grid */
+        .keypad {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            padding-bottom: 20px;
+        }
+
+        .scientific-rows {
+            display: none;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin-bottom: 14px;
+        }
+
+        .app-shell.scientific .scientific-rows {
+            display: grid;
+        }
+
+        /* Professional Buttons */
+        .btn {
+            aspect-ratio: 1;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            font-weight: 500;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: filter 0.1s, transform 0.1s, background-color 0.2s;
             position: relative;
-            overflow: hidden;
-            background: var(--btn-gray);
-            color: var(--text-white);
-            transition: transform 0.1s, background 0.3s, box-shadow 0.3s;
         }
 
-        button.main-btn:active {
-            transform: scale(0.9);
+        .btn:active {
+            transform: scale(0.92);
+            filter: brightness(1.2);
         }
 
-        .btn-light { background: rgba(255,255,255,0.7); color: #000; }
-        .btn-orange { 
-            background: var(--btn-orange); 
-            color: white;
-            box-shadow: 0 0 15px var(--btn-orange-glow);
-        }
-
-        .btn-orange.active-op {
-            background: white;
-            color: var(--btn-orange);
-        }
-
-        .btn-equal {
-            background: var(--btn-orange);
-            box-shadow: 0 0 25px var(--btn-orange-glow);
-            font-weight: bold;
-        }
+        .btn-num { background-color: var(--btn-number); color: var(--text-main); }
+        .btn-func { background-color: var(--btn-function); color: var(--text-main); font-size: 1.2rem; }
+        .btn-op { background-color: var(--accent-secondary); color: white; }
+        .btn-op.active { background-color: white; color: var(--accent-secondary); }
 
         .btn-zero {
             grid-column: span 2;
-            aspect-ratio: auto;
-            border-radius: 50px;
-            padding-left: 30px;
+            aspect-ratio: unset;
+            border-radius: 100px;
             justify-content: flex-start;
+            padding-left: 32px;
         }
 
-        .sci-btn {
-            display: none;
-            font-size: 1rem;
-            background: rgba(255,255,255,0.05);
-            border-radius: 20px;
-        }
+        .btn-text { font-size: 1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
 
-        .calculator.scientific .sci-btn { display: flex; justify-content: center; align-items: center; }
-
-        /* History Panel */
+        /* History Side Panel */
         .history-panel {
             position: absolute;
             top: 0;
-            left: 0;
+            right: 0;
             width: 100%;
             height: 100%;
-            background: var(--calc-bg);
-            backdrop-filter: blur(40px);
-            border-radius: 40px;
-            padding: 30px;
-            transform: translateX(100%);
-            opacity: 0;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background-color: var(--history-bg);
+            backdrop-filter: blur(20px);
             z-index: 100;
+            padding: 40px 24px;
+            transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             display: flex;
             flex-direction: column;
         }
 
-        .history-panel.active {
-            transform: translateX(0);
-            opacity: 1;
+        .history-panel.open { transform: translateX(0); }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
         }
 
         .history-list {
-            flex-grow: 1;
+            flex: 1;
             overflow-y: auto;
-            margin-top: 20px;
         }
 
-        .history-item {
+        .history-entry {
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border-subtle);
             text-align: right;
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
             cursor: pointer;
         }
 
-        .history-item .expr { color: rgba(255,255,255,0.5); font-size: 0.9rem; }
-        .history-item .res { color: var(--text-white); font-size: 1.2rem; font-weight: bold; }
+        .history-entry:hover { opacity: 0.7; }
+        .history-entry-expr { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 4px; }
+        .history-entry-res { color: var(--text-main); font-size: 1.4rem; font-weight: 600; }
 
-        /* Vibrate Visual feedback */
-        .vibrate { animation: shake 0.15s ease-in-out; }
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-2px); }
-            75% { transform: translateX(2px); }
-        }
-
-        @media (max-width: 450px) {
-            .calculator { max-width: 90vw; }
-            .curr-input { font-size: 3.5rem; }
+        /* SVG Icons Styling */
+        svg {
+            width: 20px;
+            height: 20px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
         }
     </style>
 </head>
 <body>
 
-    <div class="calculator" id="calculator">
-        <div class="top-controls">
-            <button class="icon-btn" id="theme-toggle" title="Toggle Theme">🌓</button>
-            <button class="icon-btn" id="sci-toggle" title="Scientific Mode">⚛️</button>
-            <button class="icon-btn" id="sound-toggle" title="Toggle Sound">🔊</button>
-            <button class="icon-btn" id="history-open" title="History">🕒</button>
-        </div>
+    <div class="app-shell" id="app">
+        <!-- Navigation -->
+        <nav class="nav-bar">
+            <button class="nav-btn" id="theme-btn" title="Toggle Theme">
+                <svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+            </button>
+            <div style="display: flex; gap: 8px;">
+                <button class="nav-btn" id="sci-btn" title="Scientific Mode">
+                    <svg viewBox="0 0 24 24"><path d="M2 20h20M7 20v-4m5 4V10m5 10V4"></path></svg>
+                </button>
+                <button class="nav-btn" id="history-btn" title="View History">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                </button>
+            </div>
+        </nav>
 
-        <div class="display-container" id="swipe-area">
-            <div class="prev-calc" id="prev-display"></div>
-            <div class="curr-input" id="curr-display">0</div>
-        </div>
+        <!-- Display Area -->
+        <main class="display">
+            <div class="display-secondary" id="secondary-display"></div>
+            <div class="display-primary" id="primary-display">0</div>
+            <div class="mem-indicator" id="mem-label">MEMORY ACTIVE</div>
+        </main>
 
-        <div class="memory-row">
-            <button class="mem-btn" data-action="mc">MC</button>
-            <button class="mem-btn" data-action="mr">MR</button>
-            <button class="mem-btn" data-action="m-plus">M+</button>
-            <button class="mem-btn" data-action="m-minus">M-</button>
-        </div>
+        <!-- Keypad -->
+        <section class="keypad">
+            <!-- Scientific Row (Toggleable) -->
+            <div class="scientific-rows">
+                <button class="btn btn-func btn-text" data-type="sci" data-value="mc">mc</button>
+                <button class="btn btn-func btn-text" data-type="sci" data-value="mr">mr</button>
+                <button class="btn btn-func btn-text" data-type="sci" data-value="m-plus">m+</button>
+                <button class="btn btn-func btn-text" data-type="sci" data-value="m-minus">m-</button>
+            </div>
 
-        <div class="buttons-grid">
-            <!-- Row 1: Sci + Basic -->
-            <button class="main-btn sci-btn" data-action="sin">sin</button>
-            <button class="main-btn sci-btn" data-action="cos">cos</button>
-            <button class="main-btn btn-light" data-action="clear" id="btn-ac">AC</button>
-            <button class="main-btn btn-light" data-action="negate">+/-</button>
-            <button class="main-btn btn-light" data-action="percent">%</button>
-            <button class="main-btn btn-orange" data-action="operator" data-val="/">÷</button>
+            <!-- Standard Rows -->
+            <button class="btn btn-func" data-type="clear" id="ac-btn">AC</button>
+            <button class="btn btn-func" data-type="negate">
+                <svg viewBox="0 0 24 24"><path d="M5 12h14m-7-7v14"></path><path d="M5 12h14" style="transform: translateY(4px); opacity: 0.5;"></path></svg>
+            </button>
+            <button class="btn btn-func" data-type="percent">
+                <svg viewBox="0 0 24 24"><line x1="19" y1="5" x2="5" y2="19"></line><circle cx="6.5" cy="6.5" r="2.5"></circle><circle cx="17.5" cy="17.5" r="2.5"></circle></svg>
+            </button>
+            <button class="btn btn-op" data-type="operator" data-value="/">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="1"></circle><line x1="5" y1="12" x2="19" y2="12"></line><circle cx="12" cy="17" r="1"></circle></svg>
+            </button>
 
-            <!-- Row 2 -->
-            <button class="main-btn sci-btn" data-action="tan">tan</button>
-            <button class="main-btn sci-btn" data-action="sqrt">√</button>
-            <button class="main-btn" data-action="number">7</button>
-            <button class="main-btn" data-action="number">8</button>
-            <button class="main-btn" data-action="number">9</button>
-            <button class="main-btn btn-orange" data-action="operator" data-val="*">×</button>
+            <button class="btn btn-num" data-type="number" data-value="7">7</button>
+            <button class="btn btn-num" data-type="number" data-value="8">8</button>
+            <button class="btn btn-num" data-type="number" data-value="9">9</button>
+            <button class="btn btn-op" data-type="operator" data-value="*">
+                <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
 
-            <!-- Row 3 -->
-            <button class="main-btn sci-btn" data-action="pi">π</button>
-            <button class="main-btn sci-btn" data-action="pow">x²</button>
-            <button class="main-btn" data-action="number">4</button>
-            <button class="main-btn" data-action="number">5</button>
-            <button class="main-btn" data-action="number">6</button>
-            <button class="main-btn btn-orange" data-action="operator" data-val="-">−</button>
+            <button class="btn btn-num" data-type="number" data-value="4">4</button>
+            <button class="btn btn-num" data-type="number" data-value="5">5</button>
+            <button class="btn btn-num" data-type="number" data-value="6">6</button>
+            <button class="btn btn-op" data-type="operator" data-value="-">
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            </button>
 
-            <!-- Row 4 -->
-            <button class="main-btn sci-btn" data-action="log">log</button>
-            <button class="main-btn sci-btn" data-action="fact">x!</button>
-            <button class="main-btn" data-action="number">1</button>
-            <button class="main-btn" data-action="number">2</button>
-            <button class="main-btn" data-action="number">3</button>
-            <button class="main-btn btn-orange" data-action="operator" data-val="+">+</button>
+            <button class="btn btn-num" data-type="number" data-value="1">1</button>
+            <button class="btn btn-num" data-type="number" data-value="2">2</button>
+            <button class="btn btn-num" data-type="number" data-value="3">3</button>
+            <button class="btn btn-op" data-type="operator" data-value="+">
+                <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            </button>
 
-            <!-- Row 5 -->
-            <button class="main-btn sci-btn" data-action="rand">rand</button>
-            <button class="main-btn sci-btn" data-action="e">e</button>
-            <button class="main-btn btn-zero" data-action="number">0</button>
-            <button class="main-btn" data-action="decimal">.</button>
-            <button class="main-btn btn-equal" data-action="calculate">=</button>
-        </div>
+            <button class="btn btn-num btn-zero" data-type="number" data-value="0">0</button>
+            <button class="btn btn-num" data-type="decimal">.</button>
+            <button class="btn btn-op" data-type="equals">
+                <svg viewBox="0 0 24 24"><line x1="5" y1="9" x2="19" y2="9"></line><line x1="5" y1="15" x2="19" y2="15"></line></svg>
+            </button>
+        </section>
 
         <!-- History Overlay -->
-        <div class="history-panel" id="history-panel">
-            <div class="top-controls">
-                <button class="icon-btn" id="history-close">✕</button>
-                <h3 style="color:white; font-weight: 300;">History</h3>
-                <button class="icon-btn" id="history-clear">🗑️</button>
+        <aside class="history-panel" id="history-panel">
+            <div class="history-header">
+                <h2 style="font-weight: 600; font-size: 1.4rem;">Activity</h2>
+                <button class="nav-btn" id="history-close-btn">
+                    <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
             </div>
-            <div class="history-list" id="history-list"></div>
-        </div>
+            <div class="history-list" id="history-list">
+                <!-- Entries generated by JS -->
+            </div>
+            <button class="btn btn-func btn-text" style="border-radius: 16px; aspect-ratio: unset; height: 50px; margin-top: 20px;" id="clear-history-btn">Clear History</button>
+        </aside>
     </div>
 
     <script>
         /**
-         * AUDIO ENGINE (Web Audio API)
-         * Generates synthetic sounds to ensure zero latency and zero external assets
+         * PRODUCTION GRADE CALCULATOR ENGINE
+         * Modular State Management & Business Logic
          */
-        const AudioEngine = (() => {
+        
+        const AudioSystem = (() => {
             const ctx = new (window.AudioContext || window.webkitAudioContext)();
             let muted = false;
 
-            const playTone = (freq, type, duration, vol) => {
+            const play = (freq, duration) => {
                 if (muted) return;
                 const osc = ctx.createOscillator();
                 const gain = ctx.createGain();
-                osc.type = type;
+                osc.type = 'sine';
                 osc.frequency.setValueAtTime(freq, ctx.currentTime);
-                gain.gain.setValueAtTime(vol, ctx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + duration);
+                gain.gain.setValueAtTime(0.05, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
                 osc.connect(gain);
                 gain.connect(ctx.destination);
                 osc.start();
@@ -355,228 +368,244 @@
             };
 
             return {
-                click: () => playTone(800, 'sine', 0.1, 0.1),
-                op: () => playTone(600, 'triangle', 0.15, 0.1),
-                equal: () => playTone(1200, 'sine', 0.2, 0.1),
-                toggleMute: () => { muted = !muted; return muted; }
+                tap: () => play(600, 0.1),
+                error: () => play(150, 0.3),
+                toggle: () => muted = !muted
             };
         })();
 
-        /**
-         * CALCULATOR LOGIC
-         */
-        const state = {
-            curr: '0',
-            prev: '',
-            op: null,
-            waiting: false,
+        const CalculatorState = {
+            current: '0',
+            previous: null,
+            operator: null,
+            waitingForNext: false,
             memory: 0,
-            history: JSON.parse(localStorage.getItem('pro_calc_history')) || []
+            history: JSON.parse(localStorage.getItem('fin_calc_history')) || []
         };
 
-        const display = document.getElementById('curr-display');
-        const prevDisplay = document.getElementById('prev-display');
-        const calcEl = document.getElementById('calculator');
+        const UI = {
+            primary: document.getElementById('primary-display'),
+            secondary: document.getElementById('secondary-display'),
+            memLabel: document.getElementById('mem-label'),
+            historyList: document.getElementById('history-list'),
+            app: document.getElementById('app'),
 
-        // Logic Functions
-        const updateUI = () => {
-            display.innerText = state.curr;
-            prevDisplay.innerText = state.op ? `${state.prev} ${state.op}` : '';
-            
-            // Font Scaling
-            const len = state.curr.length;
-            if (len > 6) display.style.fontSize = '3rem';
-            else if (len > 9) display.style.fontSize = '2rem';
-            else display.style.fontSize = '4.5rem';
-        };
+            update() {
+                // Font resizing logic for large numbers
+                const length = CalculatorState.current.length;
+                if (length > 12) this.primary.style.fontSize = '2.2rem';
+                else if (length > 8) this.primary.style.fontSize = '3rem';
+                else this.primary.style.fontSize = '5rem';
 
-        const pushToHistory = (expr, res) => {
-            state.history.unshift({ expr, res });
-            if (state.history.length > 30) state.history.pop();
-            localStorage.setItem('pro_calc_history', JSON.stringify(state.history));
-            renderHistory();
-        };
-
-        const renderHistory = () => {
-            const list = document.getElementById('history-list');
-            list.innerHTML = state.history.map((item, idx) => `
-                <div class="history-item" onclick="loadHistory(${idx})">
-                    <div class="expr">${item.expr}</div>
-                    <div class="res">${item.res}</div>
-                </div>
-            `).join('');
-        };
-
-        window.loadHistory = (idx) => {
-            state.curr = String(state.history[idx].res);
-            updateUI();
-            toggleHistory(false);
-        };
-
-        const calculate = () => {
-            if (!state.op || state.waiting) return;
-            const a = parseFloat(state.prev);
-            const b = parseFloat(state.curr);
-            let res = 0;
-
-            switch(state.op) {
-                case '+': res = a + b; break;
-                case '-': res = a - b; break;
-                case '*': res = a * b; break;
-                case '/': res = b === 0 ? "Error" : a / b; break;
-            }
-
-            if (res !== "Error") res = parseFloat(res.toFixed(10));
-            
-            pushToHistory(`${a} ${state.op} ${b} =`, res);
-            state.curr = String(res);
-            state.prev = '';
-            state.op = null;
-            state.waiting = false;
-        };
-
-        // Handlers
-        const handleInput = (action, val, rawVal) => {
-            // Visual feedback
-            calcEl.classList.remove('vibrate');
-            void calcEl.offsetWidth; // Trigger reflow
-            calcEl.classList.add('vibrate');
-
-            switch(action) {
-                case 'number':
-                    AudioEngine.click();
-                    if (state.waiting) {
-                        state.curr = val;
-                        state.waiting = false;
-                    } else {
-                        state.curr = state.curr === '0' ? val : state.curr + val;
-                    }
-                    break;
+                this.primary.innerText = this.formatNumber(CalculatorState.current);
+                this.secondary.innerText = CalculatorState.operator 
+                    ? `${this.formatNumber(CalculatorState.previous)} ${CalculatorState.operator}` 
+                    : '';
                 
-                case 'operator':
-                    AudioEngine.op();
-                    if (state.op && !state.waiting) calculate();
-                    state.prev = state.curr;
-                    state.op = rawVal;
-                    state.waiting = true;
-                    break;
+                this.memLabel.classList.toggle('visible', CalculatorState.memory !== 0);
+                document.getElementById('ac-btn').innerText = CalculatorState.current === '0' ? 'AC' : 'C';
+                
+                // Highlight active operator
+                document.querySelectorAll('.btn-op').forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.value === CalculatorState.operator && CalculatorState.waitingForNext);
+                });
+            },
 
-                case 'calculate':
-                    AudioEngine.equal();
-                    calculate();
-                    break;
+            formatNumber(num) {
+                if (!num || num === 'Error') return num;
+                const parts = num.toString().split('.');
+                parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                return parts.join('.');
+            },
 
-                case 'clear':
-                    AudioEngine.click();
-                    state.curr = '0';
-                    state.prev = '';
-                    state.op = null;
-                    break;
-
-                case 'decimal':
-                    if (!state.curr.includes('.')) state.curr += '.';
-                    break;
-
-                case 'negate':
-                    state.curr = String(parseFloat(state.curr) * -1);
-                    break;
-
-                case 'percent':
-                    state.curr = String(parseFloat(state.curr) / 100);
-                    break;
-
-                case 'm-plus': state.memory += parseFloat(state.curr); break;
-                case 'm-minus': state.memory -= parseFloat(state.curr); break;
-                case 'mr': state.curr = String(state.memory); break;
-                case 'mc': state.memory = 0; break;
-
-                // Scientific functions
-                case 'sin': state.curr = String(Math.sin(parseFloat(state.curr)).toFixed(8)); break;
-                case 'cos': state.curr = String(Math.cos(parseFloat(state.curr)).toFixed(8)); break;
-                case 'tan': state.curr = String(Math.tan(parseFloat(state.curr)).toFixed(8)); break;
-                case 'sqrt': state.curr = String(Math.sqrt(parseFloat(state.curr)).toFixed(8)); break;
-                case 'pow': state.curr = String(Math.pow(parseFloat(state.curr), 2)); break;
-                case 'log': state.curr = String(Math.log10(parseFloat(state.curr)).toFixed(8)); break;
-                case 'fact': 
-                    let f = 1, n = parseInt(state.curr);
-                    for(let i=2; i<=n; i++) f *= i;
-                    state.curr = String(f);
-                    break;
-                case 'pi': state.curr = String(Math.PI.toFixed(8)); break;
-                case 'e': state.curr = String(Math.E.toFixed(8)); break;
-                case 'rand': state.curr = String(Math.random().toFixed(4)); break;
+            renderHistory() {
+                this.historyList.innerHTML = CalculatorState.history.map((item, idx) => `
+                    <div class="history-entry" data-index="${idx}">
+                        <div class="history-entry-expr">${item.expr}</div>
+                        <div class="history-entry-res">${this.formatNumber(item.res)}</div>
+                    </div>
+                `).join('');
             }
-            updateUI();
+        };
+
+        const Engine = {
+            inputNumber(digit) {
+                if (CalculatorState.waitingForNext) {
+                    CalculatorState.current = digit;
+                    CalculatorState.waitingForNext = false;
+                } else {
+                    CalculatorState.current = CalculatorState.current === '0' ? digit : CalculatorState.current + digit;
+                }
+            },
+
+            inputDecimal() {
+                if (CalculatorState.waitingForNext) {
+                    CalculatorState.current = '0.';
+                    CalculatorState.waitingForNext = false;
+                    return;
+                }
+                if (!CalculatorState.current.includes('.')) {
+                    CalculatorState.current += '.';
+                }
+            },
+
+            handleOperator(nextOp) {
+                const inputValue = parseFloat(CalculatorState.current);
+
+                if (CalculatorState.operator && CalculatorState.waitingForNext) {
+                    CalculatorState.operator = nextOp;
+                    return;
+                }
+
+                if (CalculatorState.previous === null) {
+                    CalculatorState.previous = inputValue;
+                } else if (CalculatorState.operator) {
+                    const result = this.performCalculation();
+                    CalculatorState.current = String(result);
+                    CalculatorState.previous = result;
+                }
+
+                CalculatorState.waitingForNext = true;
+                CalculatorState.operator = nextOp;
+            },
+
+            performCalculation() {
+                const first = CalculatorState.previous;
+                const second = parseFloat(CalculatorState.current);
+                let result = 0;
+
+                switch (CalculatorState.operator) {
+                    case '+': result = first + second; break;
+                    case '-': result = first - second; break;
+                    case '*': result = first * second; break;
+                    case '/': result = second === 0 ? 'Error' : first / second; break;
+                    default: return second;
+                }
+
+                if (result !== 'Error') {
+                    result = parseFloat(result.toFixed(10)); // Precision handling
+                    this.saveHistory(`${first} ${CalculatorState.operator} ${second} =`, result);
+                } else {
+                    AudioSystem.error();
+                }
+
+                return result;
+            },
+
+            saveHistory(expr, res) {
+                CalculatorState.history.unshift({ expr, res });
+                if (CalculatorState.history.length > 50) CalculatorState.history.pop();
+                localStorage.setItem('fin_calc_history', JSON.stringify(CalculatorState.history));
+                UI.renderHistory();
+            },
+
+            handleFunction(type, value) {
+                const currentVal = parseFloat(CalculatorState.current);
+                
+                switch(value) {
+                    case 'm-plus': CalculatorState.memory += currentVal; break;
+                    case 'm-minus': CalculatorState.memory -= currentVal; break;
+                    case 'mr': CalculatorState.current = String(CalculatorState.memory); break;
+                    case 'mc': CalculatorState.memory = 0; break;
+                }
+            },
+
+            clear() {
+                if (CalculatorState.current !== '0') {
+                    CalculatorState.current = '0';
+                } else {
+                    CalculatorState.previous = null;
+                    CalculatorState.operator = null;
+                    CalculatorState.waitingForNext = false;
+                }
+            }
         };
 
         /**
-         * UI INTERACTIONS
+         * EVENT LISTENERS
          */
-        document.querySelectorAll('button').forEach(btn => {
-            btn.addEventListener('click', () => {
-                handleInput(btn.dataset.action, btn.innerText, btn.dataset.val);
-            });
+        document.body.addEventListener('click', (e) => {
+            const btn = e.target.closest('.btn');
+            if (!btn) return;
+
+            const { type, value } = btn.dataset;
+            AudioSystem.tap();
+
+            switch(type) {
+                case 'number': Engine.inputNumber(value); break;
+                case 'decimal': Engine.inputDecimal(); break;
+                case 'operator': Engine.handleOperator(value); break;
+                case 'equals': 
+                    const res = Engine.performCalculation();
+                    CalculatorState.current = String(res);
+                    CalculatorState.previous = null;
+                    CalculatorState.operator = null;
+                    CalculatorState.waitingForNext = true;
+                    break;
+                case 'clear': Engine.clear(); break;
+                case 'negate': CalculatorState.current = String(parseFloat(CalculatorState.current) * -1); break;
+                case 'percent': CalculatorState.current = String(parseFloat(CalculatorState.current) / 100); break;
+                case 'sci': Engine.handleFunction(type, value); break;
+            }
+            UI.update();
         });
 
-        // Toggle History
-        const toggleHistory = (show) => {
-            document.getElementById('history-panel').classList.toggle('active', show);
-        };
-        document.getElementById('history-open').onclick = () => toggleHistory(true);
-        document.getElementById('history-close').onclick = () => toggleHistory(false);
-        document.getElementById('history-clear').onclick = () => {
-            state.history = [];
-            localStorage.removeItem('pro_calc_history');
-            renderHistory();
-        };
-
-        // Long Press AC to Clear All
-        let acTimer;
-        const acBtn = document.getElementById('btn-ac');
-        acBtn.onmousedown = () => acTimer = setTimeout(() => {
-            state.history = [];
-            renderHistory();
-            AudioEngine.equal();
-        }, 800);
-        acBtn.onmouseup = () => clearTimeout(acTimer);
-
-        // Scientific Toggle
-        document.getElementById('sci-toggle').onclick = (e) => {
-            calcEl.classList.toggle('scientific');
-            e.target.classList.toggle('active');
-        };
-
-        // Sound Toggle
-        document.getElementById('sound-toggle').onclick = (e) => {
-            const isMuted = AudioEngine.toggleMute();
-            e.target.innerText = isMuted ? '🔇' : '🔊';
+        // Toggle Scientific Mode
+        document.getElementById('sci-btn').onclick = function() {
+            this.classList.toggle('active');
+            UI.app.classList.toggle('scientific');
         };
 
         // Theme Toggle
-        document.getElementById('theme-toggle').onclick = () => {
-            const current = document.body.getAttribute('data-theme');
-            document.body.setAttribute('data-theme', current === 'light' ? 'dark' : 'light');
+        document.getElementById('theme-btn').onclick = function() {
+            const theme = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', theme);
         };
 
-        // Swipe Gesture for History (on display area)
-        let touchStart = 0;
-        const swipeArea = document.getElementById('swipe-area');
-        swipeArea.addEventListener('touchstart', e => touchStart = e.changedTouches[0].screenX);
-        swipeArea.addEventListener('touchend', e => {
-            if (e.changedTouches[0].screenX < touchStart - 50) toggleHistory(true);
-        });
+        // History Management
+        const historyPanel = document.getElementById('history-panel');
+        document.getElementById('history-btn').onclick = () => historyPanel.classList.add('open');
+        document.getElementById('history-close-btn').onclick = () => historyPanel.classList.remove('open');
+        document.getElementById('clear-history-btn').onclick = () => {
+            CalculatorState.history = [];
+            localStorage.removeItem('fin_calc_history');
+            UI.renderHistory();
+        };
 
-        // Init
-        renderHistory();
-        updateUI();
+        UI.historyList.onclick = (e) => {
+            const entry = e.target.closest('.history-entry');
+            if (entry) {
+                const data = CalculatorState.history[entry.dataset.index];
+                CalculatorState.current = String(data.res);
+                UI.update();
+                historyPanel.classList.remove('open');
+            }
+        };
 
-        // Keyboard support
+        // Keyboard Support
         window.addEventListener('keydown', (e) => {
-            if (/[0-9]/.test(e.key)) handleInput('number', e.key);
-            if (['+', '-', '*', '/'].includes(e.key)) handleInput('operator', null, e.key);
-            if (e.key === 'Enter') handleInput('calculate');
-            if (e.key === 'Escape') handleInput('clear');
+            if (e.key >= '0' && e.key <= '9') Engine.inputNumber(e.key);
+            if (e.key === '.') Engine.inputDecimal();
+            if (['+', '-', '*', '/'].includes(e.key)) Engine.handleOperator(e.key);
+            if (e.key === 'Enter' || e.key === '=') {
+                const res = Engine.performCalculation();
+                CalculatorState.current = String(res);
+                CalculatorState.previous = null;
+                CalculatorState.operator = null;
+                CalculatorState.waitingForNext = true;
+            }
+            if (e.key === 'Escape') Engine.clear();
+            if (e.key === 'Backspace') {
+                CalculatorState.current = CalculatorState.current.length > 1 
+                    ? CalculatorState.current.slice(0, -1) 
+                    : '0';
+            }
+            UI.update();
         });
+
+        // Initialize
+        UI.update();
+        UI.renderHistory();
 
     </script>
 </body>
