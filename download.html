@@ -3,128 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تثبيت تطبيق Eddaouiri</title>
+    <title>تحميل تطبيق Eddaouiri</title>
+    <link rel="manifest" href="manifest.json">
     <style>
-        :root {
-            --ios-blue: #007aff;
-            --ios-bg: #f2f2f7;
-        }
+        :root { --ios-blue: #007aff; }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--ios-bg);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
+            font-family: -apple-system, system-ui, sans-serif;
+            background-color: #f2f2f7;
+            display: flex; justify-content: center; align-items: center;
+            height: 100vh; margin: 0; text-align: center;
         }
-        .container {
-            background: white;
-            width: 90%;
-            max-width: 400px;
-            border-radius: 30px;
-            padding: 40px 20px;
-            text-align: center;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        .card {
+            background: white; width: 85%; max-width: 350px;
+            padding: 40px 20px; border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
         }
-        .app-icon {
-            width: 100px;
-            height: 100px;
-            background: linear-gradient(135deg, #007aff, #5856d6);
-            border-radius: 22px;
-            margin: 0 auto 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 10px 20px rgba(0,122,255,0.3);
+        .icon {
+            width: 80px; height: 80px; background: var(--ios-blue);
+            border-radius: 18px; margin: 0 auto 20px;
+            display: flex; justify-content: center; align-items: center;
+            box-shadow: 0 8px 15px rgba(0,122,255,0.3);
         }
-        .app-icon svg { width: 50px; fill: white; }
-        h1 { font-size: 24px; margin-bottom: 5px; color: #1c1c1e; }
-        p { color: #8e8e93; font-size: 14px; margin-bottom: 30px; }
-        
-        .btn-install {
-            background-color: var(--ios-blue);
-            color: white;
-            border: none;
-            padding: 15px 40px;
-            border-radius: 25px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            width: 100%;
-            transition: transform 0.2s;
+        .btn-download {
+            background: var(--ios-blue); color: white; border: none;
+            padding: 15px 30px; border-radius: 15px;
+            font-size: 16px; font-weight: 700; width: 100%;
+            cursor: pointer; transition: 0.2s;
         }
-        .btn-install:active { transform: scale(0.95); }
-
-        .ios-instruction {
-            display: none;
-            margin-top: 20px;
-            padding: 15px;
-            background: #f8f8f8;
-            border-radius: 15px;
-            font-size: 13px;
-            color: #3a3a3c;
-            line-height: 1.6;
-        }
-        .share-icon { display: inline-block; width: 20px; vertical-align: middle; }
+        .btn-download:active { transform: scale(0.98); }
+        .loader { display: none; margin-top: 15px; font-size: 14px; color: #8e8e93; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="app-icon">
-        <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+<div class="card">
+    <div class="icon">
+        <svg width="40" height="40" fill="white" viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
     </div>
-    <h1>Eddaouiri Pro Max</h1>
-    <p>تطبيق إدارة فواتير الألمنيوم</p>
+    <h1 style="font-size: 20px; margin-bottom: 10px;">Eddaouiri Pro Max</h1>
+    <p style="color: #666; font-size: 14px; margin-bottom: 25px;">اضغط للتحميل والتثبيت مباشرة</p>
     
-    <button id="installBtn" class="btn-install" style="display: none;">تثبيت التطبيق الآن</button>
-    
-    <div id="iosText" class="ios-instruction">
-        لمستخدمي <b>iPhone</b>:<br>
-        1. اضغط على زر المشاركة <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/IOS_Share_Icon.svg/1200px-IOS_Share_Icon.svg.png" class="share-icon"> أسفل الشاشة.<br>
-        2. اختر <b>"Add to Home Screen"</b> أو <b>"إضافة إلى الشاشة الرئيسية"</b>.
-    </div>
+    <button id="installBtn" class="btn-download">تحميل التطبيق (App)</button>
+    <div id="loader" class="loader">جاري التحضير...</div>
 
-    <div style="margin-top: 25px;">
-        <a href="karim.html" style="color: var(--ios-blue); text-decoration: none; font-size: 13px;">الدخول للموقع مباشرة</a>
-    </div>
+    <p id="ios-msg" style="display:none; font-size: 12px; margin-top: 15px; color: #ff3b30;">
+        لمستخدمي iPhone: اضغط على زر المشاركة ثم "Add to Home Screen"
+    </p>
 </div>
 
 <script>
     let deferredPrompt;
     const installBtn = document.getElementById('installBtn');
-    const iosText = document.getElementById('iosText');
+    const loader = document.getElementById('loader');
 
-    // كشف نظام التشغيل
-    const isIos = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-
-    if (isIos) {
-        iosText.style.display = 'block';
+    // تسجيل الـ Service Worker ضروري باش يخدم التثبيت
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js');
     }
 
-    // الانتظار حتى يكون التطبيق جاهز للتثبيت (Android)
+    // الانتظار حتى المتصفح يعطي الإذن بالتثبيت
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
         deferredPrompt = e;
-        installBtn.style.display = 'block';
     });
 
     installBtn.addEventListener('click', async () => {
-        if (deferredPrompt) {
-            deferredPrompt.prompt();
-            const { outcome } = await deferredPrompt.userChoice;
-            if (outcome === 'accepted') {
-                console.log('User accepted the install prompt');
+        // إظهار اللودر كأن التطبيق كيتحمل
+        installBtn.style.display = 'none';
+        loader.style.display = 'block';
+
+        // محاكاة تحميل بسيط
+        setTimeout(async () => {
+            if (deferredPrompt) {
+                loader.innerText = 'جاري التثبيت...';
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    console.log('User installed the app');
+                }
+                deferredPrompt = null;
+            } else {
+                // إذا كان ديجا مثبت أو المتصفح لا يدعم
+                alert('التطبيق جاهز! إذا لم يبدأ التثبيت، تأكد أنك تستعمل متصفح Chrome.');
             }
-            deferredPrompt = null;
-            installBtn.style.display = 'none';
-        }
+            loader.style.display = 'none';
+            installBtn.style.display = 'block';
+        }, 1500);
     });
 
-    // تسجيل الـ Service Worker باش يخدم الـ PWA
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('sw.js');
+    // كشف الأيفون
+    if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
+        document.getElementById('ios-msg').style.display = 'block';
     }
 </script>
 
