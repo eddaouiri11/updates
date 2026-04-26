@@ -3,425 +3,270 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Eddaouiri Pro Max | iOS Edition</title>
+    <title>Eddaouiri Pro Max</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root {
             --ios-blue: #007aff;
             --ios-bg: #f2f2f7;
-            --ios-card: rgba(255, 255, 255, 0.8);
+            --ios-card: #ffffff;
             --ios-text: #1c1c1e;
             --ios-secondary: #8e8e93;
             --ios-red: #ff3b30;
-            --glass-border: rgba(255, 255, 255, 0.3);
         }
 
-        * { 
-            box-sizing: border-box; 
-            -webkit-tap-highlight-color: transparent; 
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", Roboto, sans-serif; 
-        }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
 
         body {
-            background-color: #e5e5ea;
-            background-image: radial-gradient(circle at 20% 30%, #d1d1d6 0%, #f2f2f7 100%);
-            margin: 0;
-            padding: 0;
-            color: var(--ios-text);
-            min-height: 100vh;
+            background-color: var(--ios-bg);
+            margin: 0; padding: 0; color: var(--ios-text);
+            display: flex; flex-direction: column; align-items: center;
         }
 
         .app-shell {
-            max-width: 480px;
-            margin: 0 auto;
-            padding: 20px;
-            padding-bottom: 120px;
+            width: 100%; max-width: 500px;
+            padding: 15px; padding-bottom: 110px;
         }
 
-        /* Glassmorphism Invoice Card */
-        .invoice-paper {
+        /* Invoice Style */
+        .invoice-card {
             background: var(--ios-card);
-            backdrop-filter: blur(25px) saturate(180%);
-            -webkit-backdrop-filter: blur(25px) saturate(180%);
-            border-radius: 30px;
-            border: 1px solid var(--glass-border);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
-            padding: 35px 20px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        header {
-            text-align: right;
-            margin-bottom: 30px;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            padding: 30px 20px;
             position: relative;
         }
 
-        header h1 { 
-            margin: 0; 
-            font-size: 24px; 
-            font-weight: 800;
-            letter-spacing: -0.8px;
-            background: linear-gradient(to left, #1c1c1e, #636366);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+        header { text-align: right; border-bottom: 1px solid #eee; padding-bottom: 20px; margin-bottom: 20px; }
+        header h1 { margin: 0; font-size: 24px; font-weight: 800; color: #000; }
+        header p { margin: 5px 0; font-size: 14px; color: var(--ios-secondary); font-weight: 500; }
 
-        header p { 
-            margin: 4px 0; 
-            font-size: 13px; 
-            color: var(--ios-secondary);
-            font-weight: 500;
-        }
-
-        .meta-box {
-            display: flex;
-            justify-content: space-between;
-            background: rgba(0, 0, 0, 0.03);
-            padding: 14px;
-            border-radius: 18px;
-            font-size: 12px;
-            margin-bottom: 25px;
-            border: 1px solid rgba(0,0,0,0.02);
+        .meta-data {
+            display: flex; justify-content: space-between;
+            background: #f8f8f8; padding: 12px; border-radius: 12px;
+            font-size: 13px; margin-bottom: 20px; font-weight: 600;
         }
 
         table { width: 100%; border-collapse: collapse; }
+        th { text-align: right; font-size: 11px; color: var(--ios-secondary); padding: 10px 5px; text-transform: uppercase; }
+        td { padding: 15px 5px; border-bottom: 0.5px solid #f0f0f0; }
+
+        .input-plain { border: none; outline: none; background: transparent; width: 100%; font-size: 15px; font-weight: 600; }
         
-        th { 
-            text-align: right; 
-            font-size: 11px; 
-            color: var(--ios-secondary); 
-            padding: 10px 8px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+        .size-tag {
+            background: #f2f2f7; color: var(--ios-blue);
+            padding: 6px 10px; border-radius: 8px; font-size: 12px;
+            font-weight: 700; cursor: pointer; display: inline-block;
         }
 
-        td { padding: 15px 8px; border-bottom: 0.5px solid rgba(0,0,0,0.05); }
+        .price-input { width: 80px; text-align: left; font-weight: 800; color: var(--ios-blue); font-size: 16px; }
 
-        .desc-cell input {
-            width: 100%;
-            border: none;
-            font-size: 16px;
-            font-weight: 600;
-            outline: none;
-            background: transparent;
-            color: var(--ios-text);
+        .total-box {
+            margin-top: 25px; padding: 20px;
+            background: #f9f9fb; border-radius: 18px;
+            display: flex; justify-content: space-between; align-items: center;
         }
+        .total-label { font-weight: 700; color: var(--ios-secondary); }
+        .total-amount { font-size: 22px; font-weight: 900; color: #000; }
 
-        .size-btn {
-            background: rgba(0, 122, 255, 0.1);
-            border-radius: 10px;
-            padding: 8px 12px;
-            font-size: 12px;
-            color: var(--ios-blue);
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: inline-block;
-        }
+        footer { margin-top: 30px; text-align: center; font-size: 12px; color: var(--ios-secondary); line-height: 1.5; }
 
-        .size-btn:active { transform: scale(0.9); background: rgba(0, 122, 255, 0.2); }
-
-        .price-input {
-            width: 75px;
-            border: none;
-            font-weight: 800;
-            text-align: left;
-            font-size: 16px;
-            outline: none;
-            background: transparent;
-            color: var(--ios-blue);
-        }
-
-        .total-section {
-            margin-top: 30px;
-            padding: 22px;
-            background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 100%);
-            border-radius: 22px;
-            border: 1px solid var(--glass-border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .total-label { font-weight: 700; font-size: 15px; color: var(--ios-secondary); }
-        .total-val { font-size: 24px; font-weight: 900; color: var(--ios-text); }
-
-        footer {
-            margin-top: 40px;
-            text-align: center;
-            font-size: 12px;
-            color: var(--ios-secondary);
-            line-height: 1.6;
-        }
-
-        /* iOS Control Bar - Blured */
+        /* Floating Actions Bar */
         .actions-bar {
-            position: fixed;
-            bottom: 25px; left: 20px; right: 20px;
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(30px) saturate(200%);
-            -webkit-backdrop-filter: blur(30px) saturate(200%);
-            padding: 15px;
-            display: flex;
-            gap: 12px;
-            border-radius: 24px;
-            border: 1px solid var(--glass-border);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
-            z-index: 1000;
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            width: 90%; max-width: 400px;
+            background: rgba(255,255,255,0.8); backdrop-filter: blur(20px);
+            padding: 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.3);
+            display: flex; gap: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
 
-        .btn-ios {
-            flex: 1;
-            border: none;
-            border-radius: 18px;
-            padding: 16px;
-            font-weight: 700;
-            font-size: 15px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .btn-add { background: #1c1c1e; color: white; }
-        .btn-add:active { transform: scale(0.95); opacity: 0.9; }
-
-        .btn-save { background: var(--ios-blue); color: white; box-shadow: 0 8px 20px rgba(0, 122, 255, 0.3); }
-        .btn-save:active { transform: scale(0.95); }
-
-        .btn-delete {
-            background: rgba(255, 59, 48, 0.1);
-            color: var(--ios-red);
-            border: none;
-            width: 32px; height: 32px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-weight: bold;
+        .btn {
+            flex: 1; border: none; border-radius: 14px; padding: 14px;
+            font-weight: 700; font-size: 15px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
             transition: 0.2s;
         }
+        .btn-black { background: #000; color: #fff; }
+        .btn-blue { background: var(--ios-blue); color: #fff; }
+        .btn:active { transform: scale(0.95); opacity: 0.8; }
 
-        /* Modal Blur */
-        #modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.2);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+        .btn-del {
+            background: #ff3b3015; color: var(--ios-red); border: none;
+            width: 28px; height: 28px; border-radius: 50%; font-weight: 800;
         }
 
-        .ios-modal {
-            background: rgba(255, 255, 255, 0.9);
-            width: 300px;
-            border-radius: 24px;
-            padding: 25px;
-            text-align: center;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-            border: 1px solid white;
+        /* Modal Style */
+        #modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.3); backdrop-filter: blur(5px);
+            z-index: 999; justify-content: center; align-items: center;
         }
-
-        .modal-inputs input { 
-            width: 100%; 
-            padding: 14px; 
-            border: none; 
-            background: rgba(0,0,0,0.05);
-            border-radius: 12px; 
-            text-align: center; 
-            font-size: 18px; 
-            font-weight: 700;
-            outline-color: var(--ios-blue); 
+        .modal-content {
+            background: #fff; width: 280px; padding: 25px; border-radius: 20px; text-align: center;
+            animation: pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
+        @keyframes pop { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        
+        .modal-inputs { display: flex; align-items: center; gap: 10px; margin: 20px 0; }
+        .modal-inputs input { width: 100%; padding: 12px; border: 1px solid #eee; border-radius: 10px; text-align: center; font-size: 18px; font-weight: 700; outline: none; }
+        .btn-done { background: var(--ios-blue); color: #fff; border: none; width: 100%; padding: 12px; border-radius: 12px; font-weight: 700; }
 
-        /* Capture Mode */
-        .is-capturing { background: #f2f2f7 !important; }
-        .is-capturing .actions-bar, .is-capturing .btn-delete { display: none !important; }
-        .is-capturing .invoice-paper { border: none; box-shadow: none; background: white; }
-
+        /* Styles for Capture */
+        .is-capturing .actions-bar, .is-capturing .btn-del { display: none !important; }
+        .is-capturing .invoice-card { box-shadow: none; border: 1px solid #eee; }
     </style>
 </head>
 <body>
 
 <div class="app-shell">
-    <div id="invoice-capture" class="invoice-paper">
+    <div id="invoice-capture" class="invoice-card">
         <header>
             <h1 contenteditable="true">Abdelkarim Eddaouiri</h1>
             <p contenteditable="true">Menuiserie Aluminium & Vitrage</p>
             <p contenteditable="true">📍 Al Hoceïma, Maroc</p>
         </header>
 
-        <div class="meta-box">
-            <div>التاريخ: <span id="date-val" style="font-weight: 700;"></span></div>
-            <div id="time-val" style="color: var(--ios-blue); font-weight: 700;"></div>
+        <div class="meta-data">
+            <div>التاريخ: <span id="date-now"></span></div>
+            <div id="time-now" style="color: var(--ios-blue);"></div>
         </div>
 
         <table>
             <thead>
                 <tr>
-                    <th width="45%">الوصف</th>
-                    <th width="25%">القياس</th>
+                    <th width="50%">الوصف</th>
+                    <th width="20%">القياس</th>
                     <th width="25%">الثمن</th>
-                    <th class="hide-on-save" width="5%"></th>
+                    <th width="5%"></th>
                 </tr>
             </thead>
-            <tbody id="items-list">
+            <tbody id="list">
                 <tr>
-                    <td class="desc-cell"><input type="text" value="نافذة ألومنيوم"></td>
-                    <td><div class="size-btn" onclick="openSizePicker(this)">120 × 100</div></td>
-                    <td><input type="number" class="price-input" value="850" oninput="doMath()"></td>
-                    <td class="hide-on-save"><button class="btn-delete" onclick="removeRow(this)">✕</button></td>
+                    <td><input type="text" class="input-plain" value="نافذة ألومنيوم"></td>
+                    <td><div class="size-tag" onclick="openModal(this)">120×100</div></td>
+                    <td><input type="number" class="input-plain price-input" value="850" oninput="calc()"></td>
+                    <td><button class="btn-del" onclick="delRow(this)">✕</button></td>
                 </tr>
             </tbody>
         </table>
 
-        <div class="total-section">
-            <div class="total-label">المجموع الإجمالي</div>
-            <div class="total-val" id="grand-total">850.00 DH</div>
+        <div class="total-box">
+            <span class="total-label">المجموع الصافي</span>
+            <span class="total-amount" id="total-val">850.00 DH</span>
         </div>
 
         <footer>
-            <p contenteditable="true">شكرًا لتعاملكم معنا ✨<br><b>06 00 00 00 00</b></p>
+            <p contenteditable="true">شكراً لثقتكم بنا<br>الهاتف: 06 00 00 00 00</p>
         </footer>
     </div>
 </div>
 
-<div id="modal-overlay">
-    <div class="ios-modal">
-        <h3 style="margin-top:0; margin-bottom:15px; font-size:18px;">تعديل المقاس (cm)</h3>
-        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
-            <input type="number" id="inp-w" placeholder="العرض" style="flex:1; padding: 12px; border-radius: 12px; border: none; background: #eee; text-align: center;">
-            <span style="font-weight: 900;">×</span>
-            <input type="number" id="inp-h" placeholder="الطول" style="flex:1; padding: 12px; border-radius: 12px; border: none; background: #eee; text-align: center;">
+<div id="modal">
+    <div class="modal-content">
+        <h3 style="margin:0;">تحديد القياس</h3>
+        <div class="modal-inputs">
+            <input type="number" id="w" placeholder="W">
+            <span>×</span>
+            <input type="number" id="h" placeholder="H">
         </div>
-        <button class="btn-confirm" onclick="applySize()" style="background: var(--ios-blue); color: white; border: none; width: 100%; padding: 15px; border-radius: 15px; font-weight: 700;">تأكيد</button>
+        <button class="btn-done" onclick="saveSize()">تم</button>
     </div>
 </div>
 
 <div class="actions-bar">
-    <button class="btn-ios btn-add" onclick="addNewRow()">
-        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg>
-        إضافة بند
+    <button class="btn btn-black" onclick="addRow()">
+        <svg width="20" height="20" fill="white" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+        إضافة
     </button>
-    <button class="btn-ios btn-save" onclick="saveAsImage()">
-        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-        تصدير الفاتورة
+    <button class="btn btn-blue" onclick="exportImg()">
+        <svg width="20" height="20" fill="white" viewBox="0 0 24 24"><path d="M12 16l-4-4h3V4h2v8h3l-4 4zm9 4H3v-2h18v2z"/></svg>
+        حفظ الصورة
     </button>
 </div>
 
 <script>
-    let activeSizeTrigger = null;
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    
-    function playIOSSound(type) {
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        if(type === 'add') {
-            osc.frequency.setValueAtTime(880, audioCtx.currentTime);
-            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
-        } else if(type === 'delete') {
-            osc.frequency.setValueAtTime(440, audioCtx.currentTime);
-            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
-        } else if(type === 'save') {
-            osc.frequency.setValueAtTime(1200, audioCtx.currentTime);
-            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
-        }
-        osc.start();
-        osc.stop(audioCtx.currentTime + 0.3);
+    let activeTag = null;
+
+    // تحديث التاريخ
+    function updateDT() {
+        const n = new Date();
+        document.getElementById('date-now').innerText = n.toLocaleDateString('ar-MA');
+        document.getElementById('time-now').innerText = n.toLocaleTimeString('ar-MA', {hour:'2-digit', minute:'2-digit'});
+    }
+    updateDT();
+
+    function addRow() {
+        const row = `<tr>
+            <td><input type="text" class="input-plain" placeholder="وصف المنتج..."></td>
+            <td><div class="size-tag" onclick="openModal(this)">0×0</div></td>
+            <td><input type="number" class="input-plain price-input" value="0" oninput="calc()"></td>
+            <td><button class="btn-del" onclick="delRow(this)">✕</button></td>
+        </tr>`;
+        document.getElementById('list').insertAdjacentHTML('beforeend', row);
     }
 
-    function updateClock() {
-        const d = new Date();
-        document.getElementById('date-val').innerText = d.toLocaleDateString('ar-MA');
-        document.getElementById('time-val').innerText = d.toLocaleTimeString('ar-MA', {hour:'2-digit', minute:'2-digit'});
-    }
-    updateClock();
-
-    function addNewRow() {
-        playIOSSound('add');
-        const html = `
-            <tr style="animation: slideIn 0.3s ease-out;">
-                <td class="desc-cell"><input type="text" placeholder="بند جديد..."></td>
-                <td><div class="size-btn" onclick="openSizePicker(this)">0 × 0</div></td>
-                <td><input type="number" class="price-input" value="0" oninput="doMath()"></td>
-                <td class="hide-on-save"><button class="btn-delete" onclick="removeRow(this)">✕</button></td>
-            </tr>`;
-        document.getElementById('items-list').insertAdjacentHTML('beforeend', html);
+    function delRow(btn) {
+        btn.closest('tr').remove();
+        calc();
     }
 
-    function removeRow(btn) {
-        playIOSSound('delete');
-        btn.closest('tr').style.opacity = '0';
-        setTimeout(() => { btn.closest('tr').remove(); doMath(); }, 200);
-    }
-
-    function doMath() {
-        let total = 0;
-        document.querySelectorAll('.price-input').forEach(input => {
-            total += parseFloat(input.value || 0);
+    function calc() {
+        let t = 0;
+        document.querySelectorAll('.price-input').forEach(i => {
+            t += parseFloat(i.value || 0);
         });
-        document.getElementById('grand-total').innerText = total.toLocaleString('en-US', {minimumFractionDigits: 2}) + ' DH';
+        document.getElementById('total-val').innerText = t.toLocaleString('en-US', {minimumFractionDigits: 2}) + ' DH';
     }
 
-    function openSizePicker(el) {
-        activeSizeTrigger = el;
-        document.getElementById('modal-overlay').style.display = 'flex';
+    function openModal(el) {
+        activeTag = el;
+        document.getElementById('modal').style.display = 'flex';
+        document.getElementById('w').focus();
     }
 
-    function applySize() {
-        playIOSSound('add');
-        const w = document.getElementById('inp-w').value || '0';
-        const h = document.getElementById('inp-h').value || '0';
-        activeSizeTrigger.innerText = `${w} × ${h}`;
-        document.getElementById('modal-overlay').style.display = 'none';
-        document.getElementById('inp-w').value = '';
-        document.getElementById('inp-h').value = '';
+    function saveSize() {
+        const wv = document.getElementById('w').value || '0';
+        const hv = document.getElementById('h').value || '0';
+        activeTag.innerText = wv + '×' + hv;
+        document.getElementById('modal').style.display = 'none';
+        document.getElementById('w').value = '';
+        document.getElementById('h').value = '';
     }
 
-    async function saveAsImage() {
-        playIOSSound('save');
-        const target = document.getElementById('invoice-capture');
+    async function exportImg() {
+        const box = document.getElementById('invoice-capture');
         document.body.classList.add('is-capturing');
-
-        // تحسين جودة الصورة: تحويل المدخلات لنصوص
-        const inputs = target.querySelectorAll('input');
-        const backups = [];
+        
+        // تحسين مظهر الحقول قبل التصوير
+        const inputs = box.querySelectorAll('input');
+        const temps = [];
         inputs.forEach(inp => {
-            const span = document.createElement('span');
-            span.innerText = inp.value || "...";
-            span.className = "temp-text";
-            span.style.fontSize = "16px";
-            span.style.fontWeight = "700";
+            const s = document.createElement('span');
+            s.innerText = inp.value;
+            s.style.cssText = window.getComputedStyle(inp).cssText;
+            s.style.display = 'inline-block';
             inp.style.display = 'none';
-            inp.parentNode.insertBefore(span, inp);
-            backups.push({s: span, i: inp});
+            inp.parentNode.insertBefore(s, inp);
+            temps.push({s, inp});
         });
 
-        const canvas = await html2canvas(target, {
-            scale: 3,
-            backgroundColor: "#f2f2f7",
-            useCORS: true,
-            logging: false
-        });
+        try {
+            const cvs = await html2canvas(box, {
+                scale: 3,
+                backgroundColor: "#f2f2f7",
+                borderRadius: 25
+            });
+            const link = document.createElement('a');
+            link.download = `فاتورة_الدويري_${Date.now()}.png`;
+            link.href = cvs.toDataURL('image/png');
+            link.click();
+        } catch (e) {
+            alert('Error creating image');
+        }
 
-        // استعادة الوضع الأصلي
-        backups.forEach(b => { b.s.remove(); b.i.style.display = 'block'; });
+        // إرجاع الحالة الأصلية
+        temps.forEach(t => { t.s.remove(); t.inp.style.display = 'block'; });
         document.body.classList.remove('is-capturing');
-
-        const link = document.createElement('a');
-        link.download = `فاتورة_الدويري_${Date.now()}.png`;
-        link.href = canvas.toDataURL('image/png', 1.0);
-        link.click();
     }
 </script>
 
