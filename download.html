@@ -2,53 +2,167 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تحميل تطبيق Eddaouiri</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>تثبيت Eddaouiri Pro Max</title>
     <link rel="manifest" href="manifest.json">
     <style>
-        :root { --ios-blue: #007aff; }
+        :root {
+            --ios-blue: #007aff;
+            --ios-gradient: linear-gradient(180deg, #5ac8fa 0%, #007aff 100%);
+            --glass: rgba(255, 255, 255, 0.8);
+        }
+
         body {
-            font-family: -apple-system, system-ui, sans-serif;
-            background-color: #f2f2f7;
-            display: flex; justify-content: center; align-items: center;
-            height: 100vh; margin: 0; text-align: center;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: #000 url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1964&auto=format&fit=crop') no-repeat center center fixed;
+            background-size: cover;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
         }
+
+        /* Glassmorphism Card */
         .card {
-            background: white; width: 85%; max-width: 350px;
-            padding: 40px 20px; border-radius: 25px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            background: var(--glass);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            width: 85%;
+            max-width: 380px;
+            padding: 40px 25px;
+            border-radius: 35px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            text-align: center;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+            animation: slideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .icon-box {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 25px;
+        }
+
         .icon {
-            width: 80px; height: 80px; background: var(--ios-blue);
-            border-radius: 18px; margin: 0 auto 20px;
-            display: flex; justify-content: center; align-items: center;
-            box-shadow: 0 8px 15px rgba(0,122,255,0.3);
+            width: 100%;
+            height: 100%;
+            background: var(--ios-gradient);
+            border-radius: 22px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 15px 30px rgba(0,122,255,0.4);
+            position: relative;
+            z-index: 2;
         }
+
+        /* Pulse Animation around Icon */
+        .icon-box::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: var(--ios-blue);
+            border-radius: 22px;
+            z-index: 1;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.5; }
+            100% { transform: scale(1.4); opacity: 0; }
+        }
+
+        h1 { font-size: 26px; font-weight: 800; margin: 10px 0; color: #1c1c1e; letter-spacing: -0.5px; }
+        p { color: #3a3a3c; font-size: 15px; margin-bottom: 35px; line-height: 1.4; }
+
         .btn-download {
-            background: var(--ios-blue); color: white; border: none;
-            padding: 15px 30px; border-radius: 15px;
-            font-size: 16px; font-weight: 700; width: 100%;
-            cursor: pointer; transition: 0.2s;
+            background: #1c1c1e;
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 18px;
+            font-size: 17px;
+            font-weight: 700;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         }
-        .btn-download:active { transform: scale(0.98); }
-        .loader { display: none; margin-top: 15px; font-size: 14px; color: #8e8e93; }
+
+        .btn-download:active { transform: scale(0.96); background: #000; }
+
+        /* Loader Animation */
+        .loader-container {
+            display: none;
+            margin-top: 10px;
+        }
+
+        .spinner {
+            width: 30px; height: 30px;
+            border: 3px solid rgba(0,0,0,0.1);
+            border-top: 3px solid var(--ios-blue);
+            border-radius: 50%;
+            margin: 0 auto 10px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        #ios-msg {
+            display: none;
+            margin-top: 25px;
+            padding: 15px;
+            background: rgba(255,255,255,0.5);
+            border-radius: 15px;
+            font-size: 13px;
+            color: #1c1c1e;
+            border: 1px dashed var(--ios-blue);
+        }
+
+        .share-icon { width: 20px; vertical-align: middle; margin: 0 3px; }
     </style>
 </head>
 <body>
 
 <div class="card">
-    <div class="icon">
-        <svg width="40" height="40" fill="white" viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+    <div class="icon-box">
+        <div class="icon">
+            <svg width="45" height="45" fill="white" viewBox="0 0 24 24">
+                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+            </svg>
+        </div>
     </div>
-    <h1 style="font-size: 20px; margin-bottom: 10px;">Eddaouiri Pro Max</h1>
-    <p style="color: #666; font-size: 14px; margin-bottom: 25px;">اضغط للتحميل والتثبيت مباشرة</p>
-    
-    <button id="installBtn" class="btn-download">تحميل التطبيق (App)</button>
-    <div id="loader" class="loader">جاري التحضير...</div>
 
-    <p id="ios-msg" style="display:none; font-size: 12px; margin-top: 15px; color: #ff3b30;">
-        لمستخدمي iPhone: اضغط على زر المشاركة ثم "Add to Home Screen"
-    </p>
+    <h1>Eddaouiri Pro Max</h1>
+    <p>نظام إدارة فواتير الألمنيوم المتطور.<br>ثبت التطبيق الآن للعمل حتى بدون أنترنت.</p>
+    
+    <button id="installBtn" class="btn-download">
+        <svg width="22" height="22" fill="white" viewBox="0 0 24 24"><path d="M12 16l-4-4h3V4h2v8h3l-4 4zm9 4H3v-2h18v2z"/></svg>
+        تحميل وتثبيت التطبيق
+    </button>
+
+    <div id="loader" class="loader-container">
+        <div class="spinner"></div>
+        <div style="font-weight: 600; font-size: 14px;">جاري التحضير...</div>
+    </div>
+
+    <div id="ios-msg">
+        💡 لمستخدمي iPhone:<br>
+        اضغط على <b>مشاركة</b> <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/IOS_Share_Icon.svg/1200px-IOS_Share_Icon.svg.png" class="share-icon"> 
+        ثم اختر <b>"Add to Home Screen"</b>
+    </div>
 </div>
 
 <script>
@@ -56,44 +170,38 @@
     const installBtn = document.getElementById('installBtn');
     const loader = document.getElementById('loader');
 
-    // تسجيل الـ Service Worker ضروري باش يخدم التثبيت
+    // تسجيل الـ Service Worker
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('sw.js');
     }
 
-    // الانتظار حتى المتصفح يعطي الإذن بالتثبيت
+    // رصد إمكانية التثبيت
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
         deferredPrompt = e;
     });
 
     installBtn.addEventListener('click', async () => {
-        // إظهار اللودر كأن التطبيق كيتحمل
         installBtn.style.display = 'none';
         loader.style.display = 'block';
 
-        // محاكاة تحميل بسيط
         setTimeout(async () => {
             if (deferredPrompt) {
-                loader.innerText = 'جاري التثبيت...';
                 deferredPrompt.prompt();
                 const { outcome } = await deferredPrompt.userChoice;
-                if (outcome === 'accepted') {
-                    console.log('User installed the app');
-                }
                 deferredPrompt = null;
             } else {
-                // إذا كان ديجا مثبت أو المتصفح لا يدعم
-                alert('التطبيق جاهز! إذا لم يبدأ التثبيت، تأكد أنك تستعمل متصفح Chrome.');
+                alert('تنبيه: التثبيت متاح عبر متصفح Chrome للأندرويد، أو Safari للأيفون.');
             }
             loader.style.display = 'none';
-            installBtn.style.display = 'block';
+            installBtn.style.display = 'flex';
         }, 1500);
     });
 
-    // كشف الأيفون
+    // إظهار تنبيه الأيفون فقط لمستخدمي iOS
     if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
         document.getElementById('ios-msg').style.display = 'block';
+        installBtn.style.display = 'none'; // في الأيفون المتصفح لا يدعم زر التثبيت المباشر
     }
 </script>
 
