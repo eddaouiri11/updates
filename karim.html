@@ -10,149 +10,249 @@
             --ios-blue: #007aff;
             --ios-bg: #f2f2f7;
             --ios-card: #ffffff;
-            --ios-text: #1c1c1e;
+            --ios-text: #000000;
             --ios-secondary: #8e8e93;
             --ios-red: #ff3b30;
+            --ios-green: #34c759;
         }
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
 
         body {
             background-color: var(--ios-bg);
-            margin: 0; padding: 0; color: var(--ios-text);
-            display: flex; flex-direction: column; align-items: center;
+            margin: 0;
+            padding: 0;
+            color: var(--ios-text);
         }
 
         .app-shell {
-            width: 100%; max-width: 500px;
-            padding: 15px; padding-bottom: 110px;
+            max-width: 500px;
+            margin: 0 auto;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
         }
 
-        /* Invoice Style */
-        .invoice-card {
+        /* Invoice Card - iOS Style */
+        .invoice-paper {
             background: var(--ios-card);
-            border-radius: 25px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            padding: 30px 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            padding: 40px 25px;
             position: relative;
+            transition: transform 0.3s ease;
         }
 
-        header { text-align: right; border-bottom: 1px solid #eee; padding-bottom: 20px; margin-bottom: 20px; }
-        header h1 { margin: 0; font-size: 24px; font-weight: 800; color: #000; }
-        header p { margin: 5px 0; font-size: 14px; color: var(--ios-secondary); font-weight: 500; }
+        header {
+            text-align: right;
+            border-bottom: 0.5px solid #d1d1d6;
+            padding-bottom: 25px;
+            margin-bottom: 30px;
+        }
 
-        .meta-data {
-            display: flex; justify-content: space-between;
-            background: #f8f8f8; padding: 12px; border-radius: 12px;
-            font-size: 13px; margin-bottom: 20px; font-weight: 600;
+        header h1 { 
+            margin: 0; 
+            font-size: 22px; 
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        header p { margin: 4px 0; font-size: 13px; color: var(--ios-secondary); }
+
+        .meta-box {
+            display: flex;
+            justify-content: space-between;
+            background: #f8f8f8;
+            padding: 12px 15px;
+            border-radius: 12px;
+            font-size: 12px;
+            margin-bottom: 25px;
+            font-weight: 500;
         }
 
         table { width: 100%; border-collapse: collapse; }
-        th { text-align: right; font-size: 11px; color: var(--ios-secondary); padding: 10px 5px; text-transform: uppercase; }
-        td { padding: 15px 5px; border-bottom: 0.5px solid #f0f0f0; }
-
-        .input-plain { border: none; outline: none; background: transparent; width: 100%; font-size: 15px; font-weight: 600; }
         
-        .size-tag {
-            background: #f2f2f7; color: var(--ios-blue);
-            padding: 6px 10px; border-radius: 8px; font-size: 12px;
-            font-weight: 700; cursor: pointer; display: inline-block;
+        th { 
+            text-align: right; 
+            font-size: 11px; 
+            color: var(--ios-secondary); 
+            padding: 10px 5px;
+            text-transform: uppercase;
         }
 
-        .price-input { width: 80px; text-align: left; font-weight: 800; color: var(--ios-blue); font-size: 16px; }
+        td { padding: 18px 5px; border-bottom: 0.5px solid #e5e5ea; }
 
-        .total-box {
-            margin-top: 25px; padding: 20px;
-            background: #f9f9fb; border-radius: 18px;
-            display: flex; justify-content: space-between; align-items: center;
+        .desc-cell input {
+            width: 100%;
+            border: none;
+            font-size: 15px;
+            font-weight: 500;
+            outline: none;
+            background: transparent;
         }
-        .total-label { font-weight: 700; color: var(--ios-secondary); }
-        .total-amount { font-size: 22px; font-weight: 900; color: #000; }
 
-        footer { margin-top: 30px; text-align: center; font-size: 12px; color: var(--ios-secondary); line-height: 1.5; }
+        .size-btn {
+            background: #f2f2f7;
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 12px;
+            color: var(--ios-blue);
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            display: inline-block;
+        }
 
-        /* Floating Actions Bar */
+        .price-input {
+            width: 70px;
+            border: none;
+            font-weight: 700;
+            text-align: left;
+            font-size: 15px;
+            outline: none;
+            background: transparent;
+        }
+
+        .total-section {
+            margin-top: 35px;
+            padding: 20px;
+            background: #fafafa;
+            border-radius: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .total-label { font-weight: 600; font-size: 14px; color: var(--ios-secondary); }
+        .total-val { font-size: 22px; font-weight: 800; color: var(--ios-blue); }
+
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 11px;
+            color: var(--ios-secondary);
+            line-height: 1.5;
+        }
+
+        /* iOS Control Bar */
         .actions-bar {
-            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-            width: 90%; max-width: 400px;
-            background: rgba(255,255,255,0.8); backdrop-filter: blur(20px);
-            padding: 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.3);
-            display: flex; gap: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 20px;
+            display: flex;
+            gap: 15px;
+            border-top: 0.5px solid #d1d1d6;
+            z-index: 100;
         }
 
-        .btn {
-            flex: 1; border: none; border-radius: 14px; padding: 14px;
-            font-weight: 700; font-size: 15px; cursor: pointer;
-            display: flex; align-items: center; justify-content: center; gap: 8px;
-            transition: 0.2s;
+        .btn-ios {
+            flex: 1;
+            border: none;
+            border-radius: 14px;
+            padding: 16px;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s;
         }
-        .btn-black { background: #000; color: #fff; }
-        .btn-blue { background: var(--ios-blue); color: #fff; }
-        .btn:active { transform: scale(0.95); opacity: 0.8; }
 
-        .btn-del {
-            background: #ff3b3015; color: var(--ios-red); border: none;
-            width: 28px; height: 28px; border-radius: 50%; font-weight: 800;
+        .btn-add { background: #323232; color: white; }
+        .btn-add:active { transform: scale(0.96); opacity: 0.8; }
+
+        .btn-save { background: var(--ios-blue); color: white; }
+        .btn-save:active { transform: scale(0.96); background: #0062cc; }
+
+        .btn-delete {
+            background: #ff3b3020;
+            color: var(--ios-red);
+            border: none;
+            width: 30px; height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: bold;
         }
 
-        /* Modal Style */
-        #modal {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.3); backdrop-filter: blur(5px);
-            z-index: 999; justify-content: center; align-items: center;
+        /* iOS Modal */
+        #modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.4);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
         }
-        .modal-content {
-            background: #fff; width: 280px; padding: 25px; border-radius: 20px; text-align: center;
-            animation: pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        @keyframes pop { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-        
-        .modal-inputs { display: flex; align-items: center; gap: 10px; margin: 20px 0; }
-        .modal-inputs input { width: 100%; padding: 12px; border: 1px solid #eee; border-radius: 10px; text-align: center; font-size: 18px; font-weight: 700; outline: none; }
-        .btn-done { background: var(--ios-blue); color: #fff; border: none; width: 100%; padding: 12px; border-radius: 12px; font-weight: 700; }
 
-        /* Styles for Capture */
-        .is-capturing .actions-bar, .is-capturing .btn-del { display: none !important; }
-        .is-capturing .invoice-card { box-shadow: none; border: 1px solid #eee; }
+        .ios-modal {
+            background: white;
+            width: 280px;
+            border-radius: 14px;
+            padding: 20px;
+            text-align: center;
+            animation: modalPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes modalPop {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-inputs { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 10px; margin: 20px 0; }
+        .modal-inputs input { width: 100%; padding: 12px; border: 1px solid #e5e5ea; border-radius: 10px; text-align: center; font-size: 16px; outline-color: var(--ios-blue); }
+
+        .btn-confirm { background: var(--ios-blue); color: white; width: 100%; padding: 12px; border: none; border-radius: 10px; font-weight: 600; }
+
+        /* Capture Optimization */
+        .is-capturing .actions-bar { display: none; }
+        .is-capturing .btn-delete { display: none; }
     </style>
 </head>
 <body>
 
 <div class="app-shell">
-    <div id="invoice-capture" class="invoice-card">
+    <div id="invoice-capture" class="invoice-paper">
         <header>
             <h1 contenteditable="true">Abdelkarim Eddaouiri</h1>
             <p contenteditable="true">Menuiserie Aluminium & Vitrage</p>
-            <p contenteditable="true">📍 Al Hoceïma, Maroc</p>
+            <p contenteditable="true">Al Hoceïma, Maroc</p>
         </header>
 
-        <div class="meta-data">
-            <div>التاريخ: <span id="date-now"></span></div>
-            <div id="time-now" style="color: var(--ios-blue);"></div>
+        <div class="meta-box">
+            <div>التاريخ: <span id="date-val"></span></div>
+            <div id="time-val"></div>
         </div>
 
         <table>
             <thead>
                 <tr>
                     <th width="50%">الوصف</th>
-                    <th width="20%">القياس</th>
-                    <th width="25%">الثمن</th>
-                    <th width="5%"></th>
+                    <th width="25%">القياس</th>
+                    <th width="20%">الثمن</th>
+                    <th class="hide-on-save" width="5%"></th>
                 </tr>
             </thead>
-            <tbody id="list">
+            <tbody id="items-list">
                 <tr>
-                    <td><input type="text" class="input-plain" value="نافذة ألومنيوم"></td>
-                    <td><div class="size-tag" onclick="openModal(this)">120×100</div></td>
-                    <td><input type="number" class="input-plain price-input" value="850" oninput="calc()"></td>
-                    <td><button class="btn-del" onclick="delRow(this)">✕</button></td>
+                    <td class="desc-cell"><input type="text" value="باب ألومنيوم بروفيل"></td>
+                    <td><div class="size-btn" onclick="openSizePicker(this)">80 × 220</div></td>
+                    <td><input type="number" class="price-input" value="1450" oninput="doMath()"></td>
+                    <td class="hide-on-save"><button class="btn-delete" onclick="removeRow(this)">✕</button></td>
                 </tr>
             </tbody>
         </table>
 
-        <div class="total-box">
-            <span class="total-label">المجموع الصافي</span>
-            <span class="total-amount" id="total-val">850.00 DH</span>
+        <div class="total-section">
+            <div class="total-label">المجموع الصافي</div>
+            <div class="total-val" id="grand-total">1,450.00 DH</div>
         </div>
 
         <footer>
@@ -161,112 +261,147 @@
     </div>
 </div>
 
-<div id="modal">
-    <div class="modal-content">
-        <h3 style="margin:0;">تحديد القياس</h3>
+<div id="modal-overlay">
+    <div class="ios-modal">
+        <h3 style="margin:0; font-size:17px;">تعديل المقاس</h3>
         <div class="modal-inputs">
-            <input type="number" id="w" placeholder="W">
+            <input type="number" id="inp-w" placeholder="W">
             <span>×</span>
-            <input type="number" id="h" placeholder="H">
+            <input type="number" id="inp-h" placeholder="H">
         </div>
-        <button class="btn-done" onclick="saveSize()">تم</button>
+        <button class="btn-confirm" onclick="applySize()">تم</button>
     </div>
 </div>
 
 <div class="actions-bar">
-    <button class="btn btn-black" onclick="addRow()">
-        <svg width="20" height="20" fill="white" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+    <button class="btn-ios btn-add" onclick="addNewRow()">
+        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
         إضافة
     </button>
-    <button class="btn btn-blue" onclick="exportImg()">
-        <svg width="20" height="20" fill="white" viewBox="0 0 24 24"><path d="M12 16l-4-4h3V4h2v8h3l-4 4zm9 4H3v-2h18v2z"/></svg>
+    <button class="btn-ios btn-save" onclick="saveAsImage()">
+        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>
         حفظ الصورة
     </button>
 </div>
 
 <script>
-    let activeTag = null;
+    let activeSizeTrigger = null;
 
-    // تحديث التاريخ
-    function updateDT() {
-        const n = new Date();
-        document.getElementById('date-now').innerText = n.toLocaleDateString('ar-MA');
-        document.getElementById('time-now').innerText = n.toLocaleTimeString('ar-MA', {hour:'2-digit', minute:'2-digit'});
-    }
-    updateDT();
+    // --- نظام الأصوات المحاكي لـ iOS ---
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    
+    function playIOSSound(type) {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
 
-    function addRow() {
-        const row = `<tr>
-            <td><input type="text" class="input-plain" placeholder="وصف المنتج..."></td>
-            <td><div class="size-tag" onclick="openModal(this)">0×0</div></td>
-            <td><input type="number" class="input-plain price-input" value="0" oninput="calc()"></td>
-            <td><button class="btn-del" onclick="delRow(this)">✕</button></td>
-        </tr>`;
-        document.getElementById('list').insertAdjacentHTML('beforeend', row);
-    }
-
-    function delRow(btn) {
-        btn.closest('tr').remove();
-        calc();
-    }
-
-    function calc() {
-        let t = 0;
-        document.querySelectorAll('.price-input').forEach(i => {
-            t += parseFloat(i.value || 0);
-        });
-        document.getElementById('total-val').innerText = t.toLocaleString('en-US', {minimumFractionDigits: 2}) + ' DH';
-    }
-
-    function openModal(el) {
-        activeTag = el;
-        document.getElementById('modal').style.display = 'flex';
-        document.getElementById('w').focus();
-    }
-
-    function saveSize() {
-        const wv = document.getElementById('w').value || '0';
-        const hv = document.getElementById('h').value || '0';
-        activeTag.innerText = wv + '×' + hv;
-        document.getElementById('modal').style.display = 'none';
-        document.getElementById('w').value = '';
-        document.getElementById('h').value = '';
-    }
-
-    async function exportImg() {
-        const box = document.getElementById('invoice-capture');
-        document.body.classList.add('is-capturing');
-        
-        // تحسين مظهر الحقول قبل التصوير
-        const inputs = box.querySelectorAll('input');
-        const temps = [];
-        inputs.forEach(inp => {
-            const s = document.createElement('span');
-            s.innerText = inp.value;
-            s.style.cssText = window.getComputedStyle(inp).cssText;
-            s.style.display = 'inline-block';
-            inp.style.display = 'none';
-            inp.parentNode.insertBefore(s, inp);
-            temps.push({s, inp});
-        });
-
-        try {
-            const cvs = await html2canvas(box, {
-                scale: 3,
-                backgroundColor: "#f2f2f7",
-                borderRadius: 25
-            });
-            const link = document.createElement('a');
-            link.download = `فاتورة_الدويري_${Date.now()}.png`;
-            link.href = cvs.toDataURL('image/png');
-            link.click();
-        } catch (e) {
-            alert('Error creating image');
+        if(type === 'add') {
+            osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.1);
+            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+        } else if(type === 'delete') {
+            osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 0.1);
+            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+        } else if(type === 'save') {
+            osc.frequency.setValueAtTime(1000, audioCtx.currentTime);
+            gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
         }
+        
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.5);
+    }
 
-        // إرجاع الحالة الأصلية
-        temps.forEach(t => { t.s.remove(); t.inp.style.display = 'block'; });
+    // تحديث الوقت
+    function updateClock() {
+        const d = new Date();
+        document.getElementById('date-val').innerText = d.toLocaleDateString('ar-MA');
+        document.getElementById('time-val').innerText = d.toLocaleTimeString('ar-MA', {hour:'2-digit', minute:'2-digit'});
+    }
+    updateClock();
+
+    function addNewRow() {
+        playIOSSound('add');
+        const html = `
+            <tr>
+                <td class="desc-cell"><input type="text" placeholder="اسم المنتج..."></td>
+                <td><div class="size-btn" onclick="openSizePicker(this)">0 × 0</div></td>
+                <td><input type="number" class="price-input" value="0" oninput="doMath()"></td>
+                <td class="hide-on-save"><button class="btn-delete" onclick="removeRow(this)">✕</button></td>
+            </tr>`;
+        document.getElementById('items-list').insertAdjacentHTML('beforeend', html);
+        doMath();
+    }
+
+    function removeRow(btn) {
+        playIOSSound('delete');
+        btn.closest('tr').remove();
+        doMath();
+    }
+
+    function doMath() {
+        let total = 0;
+        document.querySelectorAll('.price-input').forEach(input => {
+            total += parseFloat(input.value || 0);
+        });
+        document.getElementById('grand-total').innerText = total.toLocaleString('en-US', {minimumFractionDigits: 2}) + ' DH';
+    }
+
+    function openSizePicker(el) {
+        activeSizeTrigger = el;
+        document.getElementById('modal-overlay').style.display = 'flex';
+        document.getElementById('inp-w').focus();
+    }
+
+    function applySize() {
+        playIOSSound('add');
+        const w = document.getElementById('inp-w').value || '0';
+        const h = document.getElementById('inp-h').value || '0';
+        activeSizeTrigger.innerText = `${w} × ${h}`;
+        document.getElementById('modal-overlay').style.display = 'none';
+        document.getElementById('inp-w').value = '';
+        document.getElementById('inp-h').value = '';
+    }
+
+    async function saveAsImage() {
+        playIOSSound('save');
+        const target = document.getElementById('invoice-capture');
+        document.body.classList.add('is-capturing');
+
+        // تحويل المدخلات لنصوص قبل التصوير لضمان الجودة
+        const inputs = target.querySelectorAll('input');
+        const spans = [];
+        inputs.forEach(inp => {
+            const span = document.createElement('span');
+            span.innerText = inp.value || "...";
+            span.style.fontSize = "15px";
+            span.style.fontWeight = inp.classList.contains('price-input') ? "800" : "500";
+            inp.style.display = 'none';
+            inp.parentNode.insertBefore(span, inp);
+            spans.push({s: span, i: inp});
+        });
+
+        const canvas = await html2canvas(target, {
+            scale: 3,
+            backgroundColor: "#f2f2f7",
+            borderRadius: 20
+        });
+
+        // إعادة المدخلات
+        spans.forEach(item => {
+            item.s.remove();
+            item.i.style.display = 'inline-block';
+        });
         document.body.classList.remove('is-capturing');
+
+        const link = document.createElement('a');
+        link.download = `فاتورة_الدويري_${Date.now()}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
     }
 </script>
 
