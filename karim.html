@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>تطبيق الفواتير - Eddaouiri</title>
+    <title>Eddaouiri Pro App</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root {
@@ -25,97 +25,119 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            user-select: none;
         }
 
-        /* تنسيق يشبه التطبيق */
         .app-container {
             width: 100%;
-            max-width: 500px; /* حجم مناسب للهاتف */
-            padding-bottom: 80px; /* مساحة للأزرار في الأسفل */
+            max-width: 500px;
+            padding-bottom: 100px;
         }
 
         .invoice-card {
             background: var(--card);
             padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border-radius: 16px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
+            position: relative;
         }
 
         header {
             text-align: center;
-            border-bottom: 2px solid #e2e8f0;
+            border-bottom: 2px dashed #e2e8f0;
             padding-bottom: 15px;
             margin-bottom: 20px;
         }
 
-        header h1 { margin: 0; font-size: 20px; color: var(--primary); }
+        header h1 { margin: 0; font-size: 22px; color: var(--primary); letter-spacing: -0.5px; }
         header p { margin: 5px 0; font-size: 14px; color: #64748b; }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
+        .info-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-size: 11px;
+            background: #f8fafc;
+            padding: 5px 10px;
+            border-radius: 8px;
         }
 
-        th { font-size: 12px; color: #64748b; text-align: right; padding: 8px; background: #f8fafc; }
-        td { padding: 8px 4px; border-bottom: 1px solid #f1f5f9; }
+        table { width: 100%; border-collapse: collapse; }
+        th { font-size: 12px; color: #64748b; text-align: right; padding: 10px 5px; }
+        td { padding: 10px 2px; border-bottom: 1px solid #f1f5f9; }
 
         input {
-            width: 100%;
             border: 1px solid #e2e8f0;
             padding: 8px;
-            border-radius: 6px;
-            font-size: 14px;
-            box-sizing: border-box;
+            border-radius: 8px;
+            font-size: 13px;
+            outline: none;
+            transition: 0.2s;
         }
 
-        input:focus { border-color: var(--accent); outline: none; background: #f0f7ff; }
+        input:focus { border-color: var(--accent); background: #f0f7ff; }
+
+        /* تنسيق القياس الذكي */
+        .size-container {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+        }
+        .size-input { width: 45px; text-align: center; padding: 6px 2px; }
+        .multiply-sign { font-weight: bold; color: var(--accent); font-size: 12px; }
+
+        .price-input { width: 60px; font-weight: bold; color: var(--primary); }
 
         .total-section {
-            margin-top: 20px;
-            background: var(--primary);
+            margin-top: 25px;
+            background: linear-gradient(135deg, var(--primary), #1e293b);
             color: white;
-            padding: 15px;
-            border-radius: 10px;
+            padding: 18px;
+            border-radius: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.3);
         }
 
-        /* الأزرار الثابتة في الأسفل كالتطبيقات */
         .bottom-nav {
             position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: white;
-            padding: 15px;
+            bottom: 0; left: 0; right: 0;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 15px 20px;
             display: flex;
-            gap: 10px;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            gap: 12px;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.05);
             z-index: 100;
         }
 
         .btn {
             flex: 1;
             border: none;
-            padding: 12px;
-            border-radius: 10px;
-            font-weight: bold;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 800;
             font-size: 14px;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
+            transition: transform 0.1s active;
         }
 
+        .btn:active { transform: scale(0.95); }
         .btn-add { background: var(--success); color: white; }
         .btn-generate { background: var(--accent); color: white; }
-        .btn-remove { background: var(--danger); color: white; width: 30px; height: 30px; border-radius: 50%; padding: 0; }
+        
+        .btn-remove {
+            background: #fee2e2;
+            color: var(--danger);
+            width: 28px; height: 28px;
+            border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: bold; border: none;
+        }
 
-        /* ستايل للصورة الناتجة */
-        #temp-canvas { display: none; }
+        @media print { .bottom-nav, .btn-remove { display: none; } }
     </style>
 </head>
 <body>
@@ -125,64 +147,109 @@
             <header>
                 <h1 contenteditable="true">Eddaouiri Abdelkarim</h1>
                 <p contenteditable="true">متخصص الألومنيوم والزجاج</p>
-                <div style="display: flex; justify-content: space-between; margin-top: 10px; font-size: 12px;">
-                    <span><strong>التاريخ:</strong> <span id="date"></span></span>
-                    <span style="color: var(--accent); font-weight: bold;">فاتورة عمل</span>
+                <div class="info-bar">
+                    <span>📅 <span id="current-date"></span></span>
+                    <span>⏰ <span id="current-time"></span></span>
                 </div>
             </header>
 
             <table>
                 <thead>
                     <tr>
-                        <th width="45%">الوصف</th>
-                        <th width="25%">القياس</th>
+                        <th width="40%">المنتج</th>
+                        <th width="35%">القياس (L×W)</th>
                         <th width="20%">الثمن</th>
-                        <th width="10%"></th>
+                        <th width="5%"></th>
                     </tr>
                 </thead>
                 <tbody id="invoice-body">
                     <tr>
-                        <td><input type="text" value="باب ألومنيوم"></td>
-                        <td><input type="text" value="80×222"></td>
+                        <td><input type="text" placeholder="مثلاً: باب..." value="باب ألومنيوم"></td>
+                        <td>
+                            <div class="size-container">
+                                <input type="number" class="size-input" placeholder="0" value="80">
+                                <span class="multiply-sign">×</span>
+                                <input type="number" class="size-input" placeholder="0" value="222">
+                            </div>
+                        </td>
                         <td><input type="number" class="price-input" value="1400" oninput="calculateTotal()"></td>
-                        <td><button class="btn-remove" onclick="removeRow(this)">×</button></td>
+                        <td><button class="btn-remove" onclick="removeRow(this)">✕</button></td>
                     </tr>
                 </tbody>
             </table>
 
             <div class="total-section">
-                <span>المجموع الإجمالي:</span>
-                <span id="grand-total" style="font-size: 20px; font-weight: 800;">1400 DH</span>
+                <span style="font-size: 14px; opacity: 0.9;">المجموع الكلي:</span>
+                <span id="grand-total" style="font-size: 22px; font-weight: 900; letter-spacing: 1px;">1,400 DH</span>
             </div>
 
-            <footer style="margin-top: 20px; text-align: center; font-size: 11px; color: #94a3b8;">
-                <p contenteditable="true">شكراً لتعاملكم معنا | الهاتف: 06XXXXXXXX</p>
+            <footer style="margin-top: 25px; text-align: center; font-size: 11px; color: #94a3b8; border-top: 1px solid #f1f5f9; padding-top: 10px;">
+                <p contenteditable="true">شكراً لثقتكم بنا | 📞 0600000000</p>
             </footer>
         </div>
     </div>
 
     <div class="bottom-nav">
-        <button class="btn btn-add" onclick="addRow()">+ إضافة سطر</button>
-        <button class="btn btn-generate" onclick="generatePhoto()">حفظ كصورة (Generate)</button>
+        <button class="btn btn-add" onclick="addRow()">➕ إضافة</button>
+        <button class="btn btn-generate" onclick="generatePhoto()">📸 حفظ الصورة</button>
     </div>
 
     <script>
-        // ضبط التاريخ التلقائي
-        document.getElementById('date').innerText = new Date().toLocaleDateString('ar-MA');
+        // نظام الصوتيات
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playSound(type) {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            
+            if(type === 'add') {
+                osc.frequency.setValueAtTime(500, audioCtx.currentTime);
+                osc.type = 'sine';
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+            } else if(type === 'remove') {
+                osc.frequency.setValueAtTime(200, audioCtx.currentTime);
+                osc.type = 'square';
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+            } else {
+                osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+            }
+            
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.1);
+        }
+
+        // تحديث الوقت والتاريخ تلقائياً
+        function updateDateTime() {
+            const now = new Date();
+            document.getElementById('current-date').innerText = now.toLocaleDateString('ar-MA');
+            document.getElementById('current-time').innerText = now.toLocaleTimeString('ar-MA', {hour: '2-digit', minute:'2-digit'});
+        }
+        setInterval(updateDateTime, 1000);
+        updateDateTime();
 
         function addRow() {
+            playSound('add');
             const tbody = document.getElementById('invoice-body');
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td><input type="text" placeholder="المنتج..."></td>
-                <td><input type="text" placeholder="القياس..."></td>
+                <td>
+                    <div class="size-container">
+                        <input type="number" class="size-input" placeholder="0">
+                        <span class="multiply-sign">×</span>
+                        <input type="number" class="size-input" placeholder="0">
+                    </div>
+                </td>
                 <td><input type="number" class="price-input" value="0" oninput="calculateTotal()"></td>
-                <td><button class="btn-remove" onclick="removeRow(this)">×</button></td>
+                <td><button class="btn-remove" onclick="removeRow(this)">✕</button></td>
             `;
             tbody.appendChild(row);
         }
 
         function removeRow(btn) {
+            playSound('remove');
             btn.parentElement.parentElement.remove();
             calculateTotal();
         }
@@ -195,27 +262,27 @@
             document.getElementById('grand-total').innerText = total.toLocaleString() + ' DH';
         }
 
-        // دالة تحويل الفاتورة لصورة وتحميلها
         function generatePhoto() {
+            playSound('gen');
             const captureArea = document.getElementById('capture-area');
-            
-            // إخفاء أزرار الحذف والحدود قبل التصوير لتبدو احترافية
             const removes = document.querySelectorAll('.btn-remove');
             const inputs = document.querySelectorAll('input');
-            removes.forEach(b => b.style.visibility = 'hidden');
-            inputs.forEach(i => i.style.border = 'none');
+
+            // تحسين المظهر قبل التصوير
+            removes.forEach(b => b.style.display = 'none');
+            inputs.forEach(i => { i.style.border = 'none'; i.style.background = 'transparent'; });
 
             html2canvas(captureArea, {
-                backgroundColor: "#ffffff",
-                scale: 2, // جودة عالية
+                backgroundColor: "#f1f5f9",
+                scale: 3, // جودة فائقة
+                logging: false,
+                useCORS: true
             }).then(canvas => {
-                // إرجاع العناصر كما كانت
-                removes.forEach(b => b.style.visibility = 'visible');
-                inputs.forEach(i => i.style.border = '1px solid #e2e8f0');
+                removes.forEach(b => b.style.display = 'flex');
+                inputs.forEach(i => { i.style.border = '1px solid #e2e8f0'; i.style.background = 'white'; });
 
-                // تحميل الصورة
                 const link = document.createElement('a');
-                link.download = `Invoice_${new Date().getTime()}.png`;
+                link.download = `Invoice_Eddaouiri_${new Date().getTime()}.png`;
                 link.href = canvas.toDataURL("image/png");
                 link.click();
             });
