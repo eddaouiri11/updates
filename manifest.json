@@ -1,0 +1,17 @@
+{
+  "short_name": "Eddaouiri",
+  "name": "Eddaouiri Pro Max",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/5968/5968242.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/updates/karim.html",
+  "background_color": "#f2f2f7",
+  "display": "standalone",
+  "scope": "/updates/",
+  "theme_color": "#007aff"
+}
