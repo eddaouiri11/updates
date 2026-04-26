@@ -3,26 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Eddaouiri Invoice Pro</title>
+    <title>Eddaouiri Pro Max</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root {
-            --primary-color: #1e293b;
-            --accent-color: #2563eb;
-            --success-color: #059669;
-            --danger-color: #dc2626;
-            --bg-app: #f1f5f9;
-            --border-color: #e2e8f0;
+            --ios-blue: #007aff;
+            --ios-bg: #f2f2f7;
+            --ios-card: #ffffff;
+            --ios-text: #000000;
+            --ios-secondary: #8e8e93;
+            --ios-red: #ff3b30;
+            --ios-green: #34c759;
         }
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
 
         body {
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-app);
+            background-color: var(--ios-bg);
             margin: 0;
             padding: 0;
-            color: var(--primary-color);
+            color: var(--ios-text);
         }
 
         .app-shell {
@@ -31,214 +31,189 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            padding: 15px;
+            padding: 20px;
         }
 
-        /* Invoice Style */
+        /* Invoice Card - iOS Style */
         .invoice-paper {
-            background: #ffffff;
-            border-radius: 4px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            background: var(--ios-card);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
             padding: 40px 25px;
             position: relative;
-            overflow: hidden;
-        }
-
-        /* Branding Stripe */
-        .invoice-paper::before {
-            content: "";
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 6px;
-            background: var(--accent-color);
+            transition: transform 0.3s ease;
         }
 
         header {
             text-align: right;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 20px;
+            border-bottom: 0.5px solid #d1d1d6;
+            padding-bottom: 25px;
             margin-bottom: 30px;
         }
 
         header h1 { 
             margin: 0; 
-            font-size: 20px; 
-            color: var(--primary-color); 
-            font-weight: 800;
-            text-transform: uppercase;
+            font-size: 22px; 
+            font-weight: 700;
+            letter-spacing: -0.5px;
         }
 
-        header p { margin: 5px 0; font-size: 13px; color: #64748b; }
+        header p { margin: 4px 0; font-size: 13px; color: var(--ios-secondary); }
 
-        .meta-data {
+        .meta-box {
             display: flex;
             justify-content: space-between;
-            margin: 20px 0;
+            background: #f8f8f8;
+            padding: 12px 15px;
+            border-radius: 12px;
             font-size: 12px;
-            color: #475569;
-            background: #f8fafc;
-            padding: 10px;
-            border-radius: 4px;
+            margin-bottom: 25px;
+            font-weight: 500;
         }
 
         table { width: 100%; border-collapse: collapse; }
         
         th { 
             text-align: right; 
-            font-size: 12px; 
-            text-transform: uppercase; 
-            color: #94a3b8; 
+            font-size: 11px; 
+            color: var(--ios-secondary); 
             padding: 10px 5px;
-            border-bottom: 2px solid var(--border-color);
+            text-transform: uppercase;
         }
 
-        td { padding: 15px 5px; border-bottom: 1px solid #f1f5f9; }
+        td { padding: 18px 5px; border-bottom: 0.5px solid #e5e5ea; }
 
         .desc-cell input {
             width: 100%;
             border: none;
-            font-size: 14px;
+            font-size: 15px;
             font-weight: 500;
-            color: var(--primary-color);
-            background: transparent;
             outline: none;
+            background: transparent;
         }
 
         .size-btn {
-            background: #f1f5f9;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            padding: 6px 10px;
+            background: #f2f2f7;
+            border-radius: 8px;
+            padding: 8px 12px;
             font-size: 12px;
-            color: var(--accent-color);
+            color: var(--ios-blue);
+            font-weight: 600;
             cursor: pointer;
             text-align: center;
-            min-width: 80px;
+            display: inline-block;
         }
 
         .price-input {
-            width: 80px;
+            width: 70px;
             border: none;
             font-weight: 700;
-            color: var(--primary-color);
             text-align: left;
-            font-size: 14px;
+            font-size: 15px;
             outline: none;
             background: transparent;
         }
 
-        .total-container {
-            margin-top: 30px;
-            border-top: 2px solid var(--primary-color);
-            padding-top: 15px;
+        .total-section {
+            margin-top: 35px;
+            padding: 20px;
+            background: #fafafa;
+            border-radius: 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .total-label { font-weight: 800; font-size: 14px; }
-        .total-amount { font-size: 20px; font-weight: 900; color: var(--accent-color); }
+        .total-label { font-weight: 600; font-size: 14px; color: var(--ios-secondary); }
+        .total-val { font-size: 22px; font-weight: 800; color: var(--ios-blue); }
 
         footer {
             margin-top: 40px;
             text-align: center;
             font-size: 11px;
-            color: #94a3b8;
+            color: var(--ios-secondary);
+            line-height: 1.5;
         }
 
-        /* Controls */
+        /* iOS Control Bar */
         .actions-bar {
             position: fixed;
             bottom: 0; left: 0; right: 0;
-            background: white;
-            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 20px;
             display: flex;
-            gap: 10px;
-            box-shadow: 0 -10px 20px rgba(0,0,0,0.05);
+            gap: 15px;
+            border-top: 0.5px solid #d1d1d6;
             z-index: 100;
         }
 
-        .btn-main {
+        .btn-ios {
             flex: 1;
             border: none;
-            border-radius: 8px;
-            padding: 14px;
-            font-weight: 700;
-            font-size: 14px;
+            border-radius: 14px;
+            padding: 16px;
+            font-weight: 600;
+            font-size: 15px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-            transition: 0.2s;
+            transition: all 0.2s;
         }
 
-        .btn-add { background: var(--primary-color); color: white; }
-        .btn-save { background: var(--accent-color); color: white; }
+        .btn-add { background: #323232; color: white; }
+        .btn-add:active { transform: scale(0.96); opacity: 0.8; }
+
+        .btn-save { background: var(--ios-blue); color: white; }
+        .btn-save:active { transform: scale(0.96); background: #0062cc; }
 
         .btn-delete {
-            background: #fee2e2;
-            color: var(--danger-color);
+            background: #ff3b3020;
+            color: var(--ios-red);
             border: none;
-            width: 28px; height: 28px;
-            border-radius: 6px;
+            width: 30px; height: 30px;
+            border-radius: 50%;
             cursor: pointer;
+            font-weight: bold;
         }
 
-        /* Modal */
+        /* iOS Modal */
         #modal-overlay {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(15, 23, 42, 0.8);
+            background: rgba(0,0,0,0.4);
             z-index: 2000;
             justify-content: center;
             align-items: center;
-            backdrop-filter: blur(4px);
+            backdrop-filter: blur(5px);
         }
 
-        .modal {
+        .ios-modal {
             background: white;
-            width: 90%;
-            max-width: 320px;
-            border-radius: 12px;
-            padding: 25px;
-        }
-
-        .modal h3 { margin-top: 0; font-size: 16px; text-align: center; }
-
-        .modal-grid {
-            display: grid;
-            grid-template-columns: 1fr auto 1fr;
-            align-items: center;
-            gap: 10px;
-            margin: 20px 0;
-        }
-
-        .modal input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
+            width: 280px;
+            border-radius: 14px;
+            padding: 20px;
             text-align: center;
-            font-size: 16px;
+            animation: modalPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        .btn-confirm {
-            background: var(--accent-color);
-            color: white;
-            width: 100%;
-            padding: 12px;
-            border: none;
-            border-radius: 6px;
-            font-weight: 700;
+        @keyframes modalPop {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
         }
 
-        /* Hidden elements during capture */
-        .is-capturing .btn-delete, 
-        .is-capturing .actions-bar,
-        .is-capturing .size-btn { border: none !important; background: transparent !important; }
-        
+        .modal-inputs { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 10px; margin: 20px 0; }
+        .modal-inputs input { width: 100%; padding: 12px; border: 1px solid #e5e5ea; border-radius: 10px; text-align: center; font-size: 16px; outline-color: var(--ios-blue); }
+
+        .btn-confirm { background: var(--ios-blue); color: white; width: 100%; padding: 12px; border: none; border-radius: 10px; font-weight: 600; }
+
+        /* Capture Optimization */
+        .is-capturing .actions-bar { display: none; }
+        .is-capturing .btn-delete { display: none; }
     </style>
 </head>
 <body>
@@ -248,10 +223,10 @@
         <header>
             <h1 contenteditable="true">Abdelkarim Eddaouiri</h1>
             <p contenteditable="true">Menuiserie Aluminium & Vitrage</p>
-            <p contenteditable="true" style="font-size: 11px;">Al Hoceïma, Maroc</p>
+            <p contenteditable="true">Al Hoceïma, Maroc</p>
         </header>
 
-        <div class="meta-data">
+        <div class="meta-box">
             <div>التاريخ: <span id="date-val"></span></div>
             <div id="time-val"></div>
         </div>
@@ -267,52 +242,81 @@
             </thead>
             <tbody id="items-list">
                 <tr>
-                    <td class="desc-cell"><input type="text" value="باب ألومنيوم ممتاز"></td>
+                    <td class="desc-cell"><input type="text" value="باب ألومنيوم بروفيل"></td>
                     <td><div class="size-btn" onclick="openSizePicker(this)">80 × 220</div></td>
                     <td><input type="number" class="price-input" value="1450" oninput="doMath()"></td>
-                    <td class="hide-on-save"><button class="btn-delete" onclick="this.closest('tr').remove(); doMath();">✕</button></td>
+                    <td class="hide-on-save"><button class="btn-delete" onclick="removeRow(this)">✕</button></td>
                 </tr>
             </tbody>
         </table>
 
-        <div class="total-container">
+        <div class="total-section">
             <div class="total-label">المجموع الصافي</div>
-            <div class="total-amount" id="grand-total">1,450.00 DH</div>
+            <div class="total-val" id="grand-total">1,450.00 DH</div>
         </div>
 
         <footer>
-            <p contenteditable="true">شكراً لتعاملكم معنا. الهاتف: 06 00 00 00 00</p>
+            <p contenteditable="true">شكراً لثقتكم بنا<br>الهاتف: 06 00 00 00 00</p>
         </footer>
     </div>
 </div>
 
 <div id="modal-overlay">
-    <div class="modal">
-        <h3>تحديد المقاسات (cm)</h3>
-        <div class="modal-grid">
-            <input type="number" id="inp-w" placeholder="العرض">
-            <span style="color: #94a3b8;">×</span>
-            <input type="number" id="inp-h" placeholder="الطول">
+    <div class="ios-modal">
+        <h3 style="margin:0; font-size:17px;">تعديل المقاس</h3>
+        <div class="modal-inputs">
+            <input type="number" id="inp-w" placeholder="W">
+            <span>×</span>
+            <input type="number" id="inp-h" placeholder="H">
         </div>
-        <button class="btn-confirm" onclick="applySize()">تحديث القياس</button>
+        <button class="btn-confirm" onclick="applySize()">تم</button>
     </div>
 </div>
 
 <div class="actions-bar">
-    <button class="btn-main btn-add" onclick="addNewRow()">
-        <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
-        إضافة بند
+    <button class="btn-ios btn-add" onclick="addNewRow()">
+        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+        إضافة
     </button>
-    <button class="btn-main btn-save" onclick="saveAsImage()">
-        <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>
-        حفظ وتصدير
+    <button class="btn-ios btn-save" onclick="saveAsImage()">
+        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>
+        حفظ الصورة
     </button>
 </div>
 
 <script>
     let activeSizeTrigger = null;
 
-    // Update Date/Time
+    // --- نظام الأصوات المحاكي لـ iOS ---
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    
+    function playIOSSound(type) {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        if(type === 'add') {
+            osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.1);
+            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+        } else if(type === 'delete') {
+            osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 0.1);
+            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+        } else if(type === 'save') {
+            osc.frequency.setValueAtTime(1000, audioCtx.currentTime);
+            gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+        }
+        
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.5);
+    }
+
+    // تحديث الوقت
     function updateClock() {
         const d = new Date();
         document.getElementById('date-val').innerText = d.toLocaleDateString('ar-MA');
@@ -321,14 +325,22 @@
     updateClock();
 
     function addNewRow() {
+        playIOSSound('add');
         const html = `
             <tr>
-                <td class="desc-cell"><input type="text" placeholder="أدخل الوصف..."></td>
+                <td class="desc-cell"><input type="text" placeholder="اسم المنتج..."></td>
                 <td><div class="size-btn" onclick="openSizePicker(this)">0 × 0</div></td>
                 <td><input type="number" class="price-input" value="0" oninput="doMath()"></td>
-                <td class="hide-on-save"><button class="btn-delete" onclick="this.closest('tr').remove(); doMath();">✕</button></td>
+                <td class="hide-on-save"><button class="btn-delete" onclick="removeRow(this)">✕</button></td>
             </tr>`;
         document.getElementById('items-list').insertAdjacentHTML('beforeend', html);
+        doMath();
+    }
+
+    function removeRow(btn) {
+        playIOSSound('delete');
+        btn.closest('tr').remove();
+        doMath();
     }
 
     function doMath() {
@@ -346,6 +358,7 @@
     }
 
     function applySize() {
+        playIOSSound('add');
         const w = document.getElementById('inp-w').value || '0';
         const h = document.getElementById('inp-h').value || '0';
         activeSizeTrigger.innerText = `${w} × ${h}`;
@@ -355,40 +368,38 @@
     }
 
     async function saveAsImage() {
+        playIOSSound('save');
         const target = document.getElementById('invoice-capture');
-        const hideElements = document.querySelectorAll('.hide-on-save');
-        
-        // Prepare UI for capture
         document.body.classList.add('is-capturing');
-        hideElements.forEach(el => el.style.opacity = '0');
 
-        // Fix inputs (convert to text so they show up perfectly)
+        // تحويل المدخلات لنصوص قبل التصوير لضمان الجودة
         const inputs = target.querySelectorAll('input');
+        const spans = [];
         inputs.forEach(inp => {
             const span = document.createElement('span');
-            span.className = 'temp-span';
-            span.innerText = inp.value;
-            span.style.fontSize = '14px';
-            span.style.fontWeight = inp.classList.contains('price-input') ? '900' : '500';
+            span.innerText = inp.value || "...";
+            span.style.fontSize = "15px";
+            span.style.fontWeight = inp.classList.contains('price-input') ? "800" : "500";
             inp.style.display = 'none';
             inp.parentNode.insertBefore(span, inp);
+            spans.push({s: span, i: inp});
         });
 
         const canvas = await html2canvas(target, {
             scale: 3,
-            useCORS: true,
-            backgroundColor: "#f1f5f9"
+            backgroundColor: "#f2f2f7",
+            borderRadius: 20
         });
 
-        // Restore UI
+        // إعادة المدخلات
+        spans.forEach(item => {
+            item.s.remove();
+            item.i.style.display = 'inline-block';
+        });
         document.body.classList.remove('is-capturing');
-        hideElements.forEach(el => el.style.opacity = '1');
-        target.querySelectorAll('.temp-span').forEach(s => s.remove());
-        inputs.forEach(inp => inp.style.display = 'inline-block');
 
-        // Download
         const link = document.createElement('a');
-        link.download = `EDDAOUIRI_INV_${Date.now()}.png`;
+        link.download = `فاتورة_الدويري_${Date.now()}.png`;
         link.href = canvas.toDataURL('image/png');
         link.click();
     }
