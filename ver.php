@@ -9,7 +9,7 @@
   "login_download_optionalpack": "optionalclothres:shaders|optionalpetres:optionalpetres_commonab_shader|optionallobbyres:",
   "need_track_hotupdate": false,
   "abhotupdate_check": "",
-  "latest_release_version": "OB48",
+  "latest_release_version": "",
   "min_hint_size": 1,
   "space_required_in_GB": 0,
   "should_check_ab_load": false,
