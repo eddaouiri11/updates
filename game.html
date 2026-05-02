@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>eFootball 2026 | Custom Liga</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&display=swap');
+        
+        :root { --ef-blue: #001c4d; --ef-yellow: #fff200; --ef-pink: #ff0055; }
+        
+        body { 
+            background: #000c24; 
+            color: white; 
+            font-family: 'Cairo', sans-serif; 
+            overflow: hidden; 
+            margin: 0; 
+            user-select: none;
+            touch-action: none; /* منع تحريك الصفحة تماماً */
+        }
+        
+        .pes-btn { 
+            background: var(--ef-blue); 
+            border: 2px solid var(--ef-yellow); 
+            color: var(--ef-yellow); 
+            font-weight: 900; 
+            transition: 0.2s; 
+            text-transform: uppercase;
+        }
+        
+        .pes-btn:active { transform: scale(0.95); background: var(--ef-yellow); color: var(--ef-blue); }
+        
+        .input-style { 
+            background: rgba(255,255,255,0.05); 
+            border: 1px solid rgba(255,255,255,0.2); 
+            padding: 12px; 
+            border-radius: 8px; 
+            width: 100%; 
+            outline: none; 
+            text-align: center; 
+            color: white;
+        }
+        
+        canvas { 
+            background: radial-gradient(circle, #001c4d 0%, #000 100%); 
+            border: 3px solid var(--ef-yellow); 
+            border-radius: 15px; 
+            display: block; 
+            margin: 0 auto; 
+            box-shadow: 0 0 30px rgba(0,0,0,0.8);
+            touch-action: none;
+        }
+        
+        .glass { background: rgba(0, 28, 77, 0.85); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+        
+        .text-glow { text-shadow: 0 0 15px var(--ef-yellow); }
+    </style>
+</head>
+<body>
+
+<!-- شاشة اختيار المود -->
+<div id="mode-screen" class="min-h-screen flex flex-col items-center justify-center p-6">
+    <h1 class="text-5xl font-black italic text-[#fff200] mb-8 text-center">eFOOTBALL <span class="text-white">LIGA</span></h1>
+    <div class="grid grid-cols-1 gap-4 w-full max-w-sm">
+        <button onclick="showSetup('ai')" class="pes-btn p-6 rounded-2xl text-xl italic">اللعب ضد الكمبيوتر (AI)</button>
+        <button onclick="showSetup('friends')" class="pes-btn p-6 rounded-2xl text-xl italic">اللعب مع الأصدقاء (Local)</button>
+    </div>
+</div>
+
+<!-- شاشة الإعدادات -->
+<div id="setup-screen" class="hidden min-h-screen flex flex-col items-center justify-center p-6">
+    <div class="glass p-8 rounded-3xl w-full max-w-md shadow-2xl">
+        <h2 id="setup-title" class="text-2xl font-black mb-6 text-center text-[#fff200]">إعدادات الدوري</h2>
+        
+        <div id="ai-options" class="hidden space-y-4">
+            <label class="block text-sm text-gray-400">عدد منافسي الـ AI (2-10):</label>
+            <input id="ai-count" type="number" min="2" max="10" value="3" class="input-style">
+            <input id="p1-name" type="text" placeholder="اسمك الكريم" class="input-style">
+        </div>
+
+        <div id="friends-options" class="hidden space-y-4">
+            <label class="block text-sm text-gray-400">أدخل أسماء اللاعبين (يفصل بينهم فاصلة):</label>
+            <textarea id="friends-names" placeholder="أناس, كريم, حسن" class="input-style h-24"></textarea>
+            <p class="text-[10px] text-pink-500">مثال: أناس, كريم, محمد</p>
+        </div>
+
+        <button onclick="initLiga()" class="w-full pes-btn mt-6 py-4 rounded-xl text-lg">إنشاء البطولة الآن</button>
+        <button onclick="location.reload()" class="w-full text-gray-400 mt-4 text-sm hover:text-white">رجوع للرئيسية</button>
+    </div>
+</div>
+
+<!-- شاشة جدول الدوري -->
+<div id="league-screen" class="hidden min-h-screen p-4 flex flex-col">
+    <header class="flex justify-between items-center mb-4 p-4 glass rounded-xl border-b-2 border-pink-500">
+        <div class="font-black italic text-[#fff200] text-xl">LIGA TABLE</div>
+        <div id="match-info" class="text-xs bg-pink-600 px-3 py-1 rounded-full font-bold">الجولة 1</div>
+    </header>
+
+    <div class="glass rounded-xl overflow-hidden mb-6 shadow-xl">
+        <table class="w-full text-right text-sm">
+            <thead class="bg-black/40 text-[#fff200]">
+                <tr>
+                    <th class="p-3">#</th>
+                    <th class="p-3">اللاعب</th>
+                    <th class="p-3 text-center">نقاط</th>
+                </tr>
+            </thead>
+            <tbody id="league-body"></tbody>
+        </table>
+    </div>
+
+    <div id="next-match-box" class="mt-auto p-5 bg-[#fff200] text-blue-900 rounded-2xl font-black text-center shadow-2xl cursor-pointer transform active:scale-95 transition-all" onclick="startMatch()">
+        <div class="text-xs uppercase opacity-70">المباراة القادمة</div>
+        <div class="flex justify-center items-center gap-4 mt-1">
+            <span id="p1-match" class="text-xl">---</span> 
+            <span class="italic text-pink-600 text-sm">VS</span> 
+            <span id="p2-match" class="text-xl">---</span>
+        </div>
+        <div class="mt-2 text-[10px] bg-blue-900 text-white inline-block px-4 py-1 rounded-full uppercase">إضغط للبدء</div>
+    </div>
+</div>
+
+<!-- شاشة المباراة -->
+<div id="game-screen" class="hidden fixed inset-0 bg-[#000c24] flex flex-col items-center justify-center">
+    <div class="w-full max-w-[400px] flex justify-between items-center p-4 glass rounded-t-2xl border-b-2 border-[#fff200]">
+        <div class="text-center w-1/3">
+            <span id="game-p1" class="text-[10px] block opacity-60 truncate">---</span>
+            <span id="s1" class="text-4xl font-black">0</span>
+        </div>
+        <div class="text-pink-500 font-black text-2xl animate-pulse" id="game-timer">00:45</div>
+        <div class="text-center w-1/3">
+            <span id="game-p2" class="text-[10px] block opacity-60 truncate">---</span>
+            <span id="s2" class="text-4xl font-black">0</span>
+        </div>
+    </div>
+    
+    <canvas id="gameCanvas"></canvas>
+    
+    <div class="w-full max-w-[400px] p-4 text-center text-[10px] opacity-40 italic">
+        حرك إصبعك في منطقتك للتحكم بالمضرب
+    </div>
+
+    <div id="goal-msg" class="fixed inset-0 flex items-center justify-center pointer-events-none opacity-0 transition-opacity duration-300 text-6xl font-black italic text-[#fff200] text-glow z-50">GOAL!</div>
+</div>
+
+<script>
+    let gameMode = ''; 
+    let players = [];
+    let fixtures = [];
+    let currentMatchIdx = 0;
+    let isRunning = false;
+    let gameTimer = null;
+    
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    
+    let p1 = { x: 0, y: 0, r: 0, score: 0, color: '#fff200' };
+    let p2 = { x: 0, y: 0, r: 0, score: 0, color: '#ff0055' };
+    let puck = { x: 0, y: 0, dx: 0, dy: 0, r: 0 };
+
+    function showSetup(mode) {
+        gameMode = mode;
+        document.getElementById('mode-screen').classList.add('hidden');
+        document.getElementById('setup-screen').classList.remove('hidden');
+        document.getElementById('ai-options').classList.toggle('hidden', mode !== 'ai');
+        document.getElementById('friends-options').classList.toggle('hidden', mode !== 'friends');
+        document.getElementById('setup-title').innerText = mode === 'ai' ? 'دوري ضد الكمبيوتر' : 'دوري الأصدقاء';
+    }
+
+    function initLiga() {
+        players = [];
+        if(gameMode === 'ai') {
+            const myName = document.getElementById('p1-name').value.trim() || "أنت";
+            const count = parseInt(document.getElementById('ai-count').value);
+            players.push({ name: myName, pts: 0, isAI: false });
+            for(let i=1; i<=count; i++) players.push({ name: `AI Bot ${i}`, pts: 0, isAI: true });
+        } else {
+            const names = document.getElementById('friends-names').value.split(',').map(n => n.trim()).filter(n => n !== "");
+            if(names.length < 2) {
+                alert("يرجى إدخال اسمين على الأقل");
+                return;
+            }
+            names.forEach(n => players.push({ name: n, pts: 0, isAI: false }));
+        }
+
+        generateFixtures();
+        renderLeague();
+        document.getElementById('setup-screen').classList.add('hidden');
+        document.getElementById('league-screen').classList.remove('hidden');
+    }
+
+    function generateFixtures() {
+        fixtures = [];
+        for (let i = 0; i < players.length; i++) {
+            for (let j = i + 1; j < players.length; j++) {
+                fixtures.push({ p1: players[i], p2: players[j] });
+            }
+        }
+        fixtures = fixtures.sort(() => Math.random() - 0.5); 
+    }
+
+    function renderLeague() {
+        const sorted = [...players].sort((a,b) => b.pts - a.pts);
+        const body = document.getElementById('league-body');
+        body.innerHTML = "";
+        sorted.forEach((p, i) => {
+            body.innerHTML += `<tr class="${i===0?'text-[#fff200] bg-white/5':''}">
+                <td class="p-3 font-bold opacity-50">${i+1}</td>
+                <td class="p-3 font-bold">${p.name} ${p.isAI ? '(AI)' : ''}</td>
+                <td class="p-3 text-center font-black">${p.pts}</td>
+            </tr>`;
+        });
+
+        if(currentMatchIdx < fixtures.length) {
+            const m = fixtures[currentMatchIdx];
+            document.getElementById('p1-match').innerText = m.p1.name;
+            document.getElementById('p2-match').innerText = m.p2.name;
+            document.getElementById('match-info').innerText = `المباراة ${currentMatchIdx+1} / ${fixtures.length}`;
+        } else {
+            alert("انتهى الدوري! البطل هو: " + sorted[0].name);
+            location.reload();
+        }
+    }
+
+    function startMatch() {
+        const m = fixtures[currentMatchIdx];
+        if(m.p1.isAI && m.p2.isAI) {
+            simulateAIvsAI(m);
+            return;
+        }
+
+        document.getElementById('league-screen').classList.add('hidden');
+        document.getElementById('game-screen').classList.remove('hidden');
+        document.getElementById('game-p1').innerText = m.p1.name;
+        document.getElementById('game-p2').innerText = m.p2.name;
+        
+        setupPhysics();
+        runGame();
+    }
+
+    function simulateAIvsAI(m) {
+        const s1 = Math.floor(Math.random() * 4);
+        const s2 = Math.floor(Math.random() * 4);
+        updatePts(m, s1, s2);
+        alert(`نتيجة المحاكاة (AI vs AI):\n${m.p1.name} ${s1} - ${s2} ${m.p2.name}`);
+        currentMatchIdx++;
+        renderLeague();
+    }
+
+    function setupPhysics() {
+        const w = Math.min(window.innerWidth - 40, 400);
+        canvas.width = w; 
+        canvas.height = w * 1.4;
+        
+        p1.r = p2.r = w * 0.09; 
+        puck.r = w * 0.05;
+        
+        p1.x = w/2; p1.y = canvas.height - p1.r*2;
+        p2.x = w/2; p2.y = p2.r*2;
+        
+        p1.score = p2.score = 0;
+        document.getElementById('s1').innerText = "0";
+        document.getElementById('s2').innerText = "0";
+        
+        resetPuck();
+    }
+
+    function resetPuck() {
+        puck.x = canvas.width/2; 
+        puck.y = canvas.height/2;
+        puck.dx = (Math.random()-0.5)*10; 
+        puck.dy = (Math.random() > 0.5 ? 6 : -6);
+    }
+
+    function runGame() {
+        let time = 45;
+        isRunning = true;
+        const timerEl = document.getElementById('game-timer');
+        timerEl.innerText = "00:45";
+        
+        if(gameTimer) clearInterval(gameTimer);
+        
+        gameTimer = setInterval(() => {
+            if(!isRunning) return;
+            time--;
+            timerEl.innerText = `00:${time < 10 ? '0'+time : time}`;
+            if(time <= 0) {
+                clearInterval(gameTimer);
+                finishMatch();
+            }
+        }, 1000);
+
+        function loop() {
+            if(!isRunning && time > 0) {
+                requestAnimationFrame(loop);
+                return;
+            }
+            if(time <= 0) return;
+            
+            update();
+            draw();
+            requestAnimationFrame(loop);
+        }
+        loop();
+    }
+
+    function update() {
+        const match = fixtures[currentMatchIdx];
+        
+        // تحريك AI الخصم (دائماً p2 هو الخصم العلوي في وضع AI)
+        if(match.p2.isAI) {
+            let speed = 4.5;
+            if(puck.x > p2.x + 10) p2.x += speed;
+            else if(puck.x < p2.x - 10) p2.x -= speed;
+            
+            // العودة للمنتصف
+            if(puck.y > canvas.height/2 && p2.y > p2.r*2) p2.y -= 2;
+        }
+
+        // حركة القرص
+        puck.x += puck.dx; 
+        puck.y += puck.dy;
+
+        // اصطدام الجدران
+        if(puck.x < puck.r || puck.x > canvas.width - puck.r) {
+            puck.dx *= -1;
+            puck.x = puck.x < puck.r ? puck.r : canvas.width - puck.r;
+        }
+
+        // اصطدام المضارب
+        [p1, p2].forEach(p => {
+            let dist = Math.hypot(puck.x - p.x, puck.y - p.y);
+            if(dist < p.r + puck.r) {
+                let ang = Math.atan2(puck.y - p.y, puck.x - p.x);
+                let force = 12;
+                puck.dx = Math.cos(ang) * force; 
+                puck.dy = Math.sin(ang) * force;
+                // منع التعليق داخل المضرب
+                puck.x = p.x + Math.cos(ang) * (p.r + puck.r + 2);
+                puck.y = p.y + Math.sin(ang) * (p.r + puck.r + 2);
+            }
+        });
+
+        // الأهداف
+        if(puck.y < -puck.r) { p1.score++; goal(); }
+        else if(puck.y > canvas.height + puck.r) { p2.score++; goal(); }
+    }
+
+    function goal() {
+        document.getElementById('s1').innerText = p1.score;
+        document.getElementById('s2').innerText = p2.score;
+        document.getElementById('goal-msg').style.opacity = 1;
+        isRunning = false;
+        setTimeout(() => {
+            document.getElementById('goal-msg').style.opacity = 0;
+            resetPuck(); 
+            isRunning = true;
+        }, 1200);
+    }
+
+    function finishMatch() {
+        isRunning = false;
+        const m = fixtures[currentMatchIdx];
+        updatePts(m, p1.score, p2.score);
+        
+        setTimeout(() => {
+            alert(`انتهت المباراة!\n${m.p1.name} ${p1.score} - ${p2.score} ${m.p2.name}`);
+            currentMatchIdx++;
+            document.getElementById('game-screen').classList.add('hidden');
+            document.getElementById('league-screen').classList.remove('hidden');
+            renderLeague();
+        }, 500);
+    }
+
+    function updatePts(m, s1, s2) {
+        if(s1 > s2) m.p1.pts += 3;
+        else if(s2 > s1) m.p2.pts += 3;
+        else { m.p1.pts += 1; m.p2.pts += 1; }
+    }
+
+    function draw() {
+        ctx.clearRect(0,0, canvas.width, canvas.height);
+        
+        // رسم الملعب
+        ctx.strokeStyle = "rgba(255,252,0,0.2)";
+        ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.moveTo(0, canvas.height/2); ctx.lineTo(canvas.width, canvas.height/2); ctx.stroke();
+        ctx.beginPath(); ctx.arc(canvas.width/2, canvas.height/2, 50, 0, Math.PI*2); ctx.stroke();
+        
+        // رسم اللاعبين
+        ctx.shadowBlur = 15;
+        ctx.fillStyle = p1.color; ctx.shadowColor = p1.color;
+        ctx.beginPath(); ctx.arc(p1.x, p1.y, p1.r, 0, Math.PI*2); ctx.fill();
+        
+        ctx.fillStyle = p2.color; ctx.shadowColor = p2.color;
+        ctx.beginPath(); ctx.arc(p2.x, p2.y, p2.r, 0, Math.PI*2); ctx.fill();
+        
+        // القرص
+        ctx.shadowBlur = 10; ctx.shadowColor = "#fff";
+        ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.arc(puck.x, puck.y, puck.r, 0, Math.PI*2); ctx.fill();
+        ctx.shadowBlur = 0;
+    }
+
+    // إحصائيات اللمس المصلحة
+    function handleTouch(e) {
+        if(!isRunning) return;
+        e.preventDefault();
+        
+        const rect = canvas.getBoundingClientRect();
+        const touch = e.touches[0];
+        
+        // حساب الإحداثيات بالنسبة للكانفاس مع مراعاة السكيل
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
+        
+        const touchX = (touch.clientX - rect.left) * scaleX;
+        const touchY = (touch.clientY - rect.top) * scaleY;
+
+        // p1 (اللاعب السفلي) يتحرك دائماً في النصف الخاص به
+        if (touchY > canvas.height / 2) {
+            p1.x = Math.max(p1.r, Math.min(canvas.width - p1.r, touchX));
+            p1.y = Math.max(canvas.height/2 + p1.r, Math.min(canvas.height - p1.r, touchY));
+        } 
+        // إذا كان هناك لاعب ثانٍ (Local Multiplayer) يتحكم في النصف العلوي
+        else if (gameMode === 'friends') {
+            p2.x = Math.max(p2.r, Math.min(canvas.width - p2.r, touchX));
+            p2.y = Math.max(p2.r, Math.min(canvas.height/2 - p2.r, touchY));
+        }
+    }
+
+    canvas.addEventListener('touchstart', handleTouch, {passive: false});
+    canvas.addEventListener('touchmove', handleTouch, {passive: false});
+
+</script>
+</body>
+</html>
