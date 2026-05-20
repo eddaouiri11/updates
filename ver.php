@@ -16,7 +16,7 @@
   "force_refresh_restype": "optionalavatarres",
   "remote_version": "1.108.14",
   "server_url": "https://loginbp.ggpolarbear.com/",
-  "is_review_server": false,
+  "is_review_server": true,
   "use_login_optional_download": true,
   "use_background_download": false,
   "use_background_download_lobby": false,
