@@ -15,5 +15,5 @@
   "maintenance_announcement": "",
   "maintenance_region": "",
   "remote_version": "2.117.1",
-  "server_url": "https://loginpol.barbosasmobile.com/"
+  "server_url": "https://loginbp.ggpolarbear.com/"
 }
