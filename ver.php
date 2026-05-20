@@ -8,12 +8,12 @@
   "country_code": "MA",
   "gdpr_version": 0,
   "img_cdn_url": "https://dl.cdn.freefiremobile.com/common/",
-  "is_firewall_open": true,
+  "is_firewall_open": false,
   "is_review_server": false,
   "is_server_open": true,
-  "latest_release_version": "OB51",
+  "latest_release_version": "",
   "maintenance_announcement": "",
   "maintenance_region": "",
-  "remote_version": "2.117.1",
+  "remote_version": "1.108.1",
   "server_url": "https://loginbp.ggpolarbear.com/"
 }
