@@ -18,5 +18,5 @@
   },
   "remote_option_version": "1.0.0",
   "remote_version": "1.24.0",
-  "server_url": "http://localhost:8080/"
+  "server_url": "http://192.168.8.122:5000/"
 }
