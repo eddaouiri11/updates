@@ -15,7 +15,7 @@
   "should_check_ab_load": false,
   "force_refresh_restype": "",
   "remote_version": "1.123.16",
-  "server_url": "https://loginbp.ggpolarbear.com/",
+  "server_url": "https://review.client.common.freefiremobile.com/",
   "is_review_server": false,
   "use_login_optional_download": true,
   "use_background_download": false,
