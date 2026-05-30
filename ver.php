@@ -16,7 +16,7 @@
   "force_refresh_restype": "",
   "remote_version": "1.123.16",
   "server_url": "https://review.client.common.freefiremobile.com/",
-  "is_review_server": true,
+  "is_review_server": false,
   "use_login_optional_download": true,
   "use_background_download": false,
   "use_background_download_lobby": false,
