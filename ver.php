@@ -14,5 +14,5 @@
   "maintenance_region": "",
   "remote_option_version": "optionallocres:26|optionalclothres:282",
   "remote_version": "1.70.4",
-  "server_url": "https://loginbp2.barbosasmobile.com/"
+  "server_url": "https://upgraded-broccoli-v65jrvqj4j6qcppw9-5000.app.github.dev/"
 }
