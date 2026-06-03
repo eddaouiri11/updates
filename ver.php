@@ -14,7 +14,7 @@
   "space_required_in_GB": 1.48,
   "should_check_ab_load": false,
   "force_refresh_restype": "optionalavatarres",
-  "remote_version": "1.123.21",
+  "remote_version": "1.123.17",
   "server_url": "https://loginbp.ggpolarbear.com/",
   "is_review_server": false,
   "use_login_optional_download": true,
@@ -54,8 +54,8 @@
   "remote_option_version": "optionallocres:49|optionalavatarres:757|optionalclothres:1184|optionalfootballres:27|optionalfullscreencgres:319|optionalhuntinggroundres:246|optionalinfection:125|optionalingameres:503|optionallobbyres:613|optionallonewolfres:86|optionallonewolfstrikeoutres:59|optionalludores:42|optionalmap1res:385|optionalmap2res:156|optionalmap4res:139|optionalmaphippores:115|optionalmapres:357|optionalnewblast:163|optionalpetres:871|optionalrushb:108|optionalrushingpetsres:84|optionalsnowduelres:65|optionalsocialres:223|optionaltrainingres:297|optionalugcres:809|optionalvoiceres:341|optionalwerewolves:153|optionalwerunres:92|optionalmapponyres:204|optionalugcoldparadiseres:34|optionalmultiregionres:29",
   "remote_option_version_astc": "optionallocres:49|optionalavatarres:719|optionalclothres:1184|optionalfootballres:29|optionalfullscreencgres:306|optionalhuntinggroundres:216|optionalinfection:124|optionalingameres:461|optionallobbyres:612|optionallonewolfres:206|optionallonewolfstrikeoutres:155|optionalludores:175|optionalmap1res:385|optionalmap2res:192|optionalmap4res:175|optionalmaphippores:115|optionalmapres:391|optionalnewblast:162|optionalpetres:871|optionalrushb:241|optionalrushingpetsres:217|optionalsnowduelres:65|optionalsocialres:215|optionaltrainingres:267|optionalugcres:751|optionalvoiceres:376|optionalwerewolves:286|optionalwerunres:81|optionalmapponyres:204|optionalugcoldparadiseres:33|optionalmultiregionres:27",
   "device_whitelist_version": "1.5.0",
-  "whitelist_mask": 0,
+  "whitelist_mask": 1,
   "device_whitelist_sp_version": "1.0.0",
-  "whitelist_sp_mask": 0,
+  "whitelist_sp_mask": 1,
   "ggp_url": "gin.freefiremobile.com"
 }
