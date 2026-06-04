@@ -20,9 +20,9 @@
   "use_login_optional_download": true,
   "use_background_download": true,
   "use_background_download_lobby": true,
-  "country_code": "ES",
+  "country_code": "BR",
   "client_ip": "105.129.222.82",
-  "gdpr_version": 1,
+  "gdpr_version": 0,
   "billboard_cdn_url": "https://dl.dir.freefiremobile.com/common/OB53/CSH/patchupdate/meenhfuHFHf101.ff_extend;https://dl.dir.freefiremobile.com/common/OB53/CSH/patchupdate/meenhfuHFHf102.ff_extend;https://dl.dir.freefiremobile.com/common/OB53/CSH/patchupdate/meenhfuHFHf103.ff_extend;https://dl.dir.freefiremobile.com/common/OB53/CSH/patchupdate/meenhfuHFHf104.ff_extend;https://dl.dir.freefiremobile.com/common/OB53/CSH/patchupdate/meenhfuHFHf105.ff_extend;https://dl.dir.freefiremobile.com/common/OB53/CSH/patchupdate/meenhfuHFHf106.ff_extend;https://dl.dir.freefiremobile.com/common/OB53/CSH/patchupdate/meenhfuHFHf107.ff_extend",
   "billboard_msg": "",
   "web_url": "",
@@ -31,7 +31,7 @@
   "max_web": "",
   "max_video": "",
   "patchnote_url": "https://dl.dir.freefiremobile.com/common/web_event/aswqooiwd/8vdjQOul.html?lang=en",
-  "multi_region": "ME,EU,NA",
+  "multi_region": "BR",
   "need_check_ip_list": [
     "202.81.108.9"
   ],
