@@ -9,7 +9,7 @@
   "gdpr_version": 2,
   "is_firewall_open": false,
   "is_review_server": false,
-  "is_server_open": false,
+  "is_server_open": true,
   "maintenance_announcement": "",
   "maintenance_region": "",
   "remote_option_version": "optionallocres:48|optionalavatarres:644|optionalclothres:72",
