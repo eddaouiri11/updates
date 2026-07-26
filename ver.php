@@ -13,6 +13,6 @@
   "maintenance_announcement": "",
   "maintenance_region": "",
   "remote_option_version": "optionallocres:48|optionalavatarres:644|optionalclothres:72",
-  "remote_version": "1.43.2",
-  "server_url": "https://client.barbosasmobile.com/"
+  "remote_version": "1.25.3",
+  "server_url": "https://loginbp.barbosasmobile.com/"
 }
