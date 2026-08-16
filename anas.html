@@ -3,83 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>iOS Launcher</title>
+    <title>iOS Dashboard & Launcher</title>
     <style>
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, sans-serif;
             -webkit-tap-highlight-color: transparent;
             user-select: none;
         }
         body {
-            background-color: #000;
-            background-image: radial-gradient(circle at 50% 20%, #1c1c1e, #000000);
-            color: #fff;
-            padding: 25px 15px 50px;
+            background-color: #000000;
+            background-image: radial-gradient(circle at 50% 0%, #1c1c1e, #000000 80%);
+            color: #ffffff;
+            padding: 20px 12px 60px;
             display: flex;
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
         }
+        
+        /* Header & Search Bar */
         .header {
+            width: 100%;
+            max-width: 420px;
             text-align: center;
-            margin-bottom: 25px;
+            margin-bottom: 15px;
         }
         .header h1 {
-            font-size: 22px;
+            font-size: 24px;
             font-weight: 700;
             letter-spacing: -0.5px;
+            margin-bottom: 4px;
         }
         .header p {
             font-size: 12px;
             color: #8e8e93;
-            margin-top: 4px;
         }
+        .search-box {
+            width: 100%;
+            max-width: 420px;
+            margin: 15px 0 10px;
+            display: flex;
+            background: rgba(120, 120, 128, 0.24);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 12px;
+            padding: 8px 12px;
+            border: 0.5px solid rgba(255, 255, 255, 0.1);
+        }
+        .search-box input {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #fff;
+            width: 100%;
+            font-size: 15px;
+            padding-right: 8px;
+        }
+        .search-box input::placeholder {
+            color: #8e8e93;
+        }
+
+        /* Sections & Grids */
         .section-title {
             width: 100%;
-            max-width: 380px;
-            font-size: 13px;
+            max-width: 420px;
+            font-size: 12px;
             color: #8e8e93;
-            margin: 18px 0 10px 8px;
+            text-transform: uppercase;
+            margin: 22px 0 10px 6px;
             font-weight: 600;
+            letter-spacing: 0.5px;
         }
         .grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 18px 12px;
+            gap: 16px 10px;
             width: 100%;
-            max-width: 380px;
+            max-width: 420px;
         }
+
+        /* App Card Styling */
         .app-card {
             display: flex;
             flex-direction: column;
             align-items: center;
+            cursor: pointer;
             text-decoration: none;
             color: #fff;
-            cursor: pointer;
         }
         .icon {
             width: 62px;
             height: 62px;
-            border-radius: 15px;
+            border-radius: 16px;
             display: flex;
             justify-content: center;
             align-items: center;
             font-size: 28px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            transition: transform 0.12s ease, opacity 0.12s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+            transition: transform 0.1s ease, opacity 0.1s ease;
+            position: relative;
+            overflow: hidden;
+            border: 0.5px solid rgba(255, 255, 255, 0.1);
         }
         .app-card:active .icon {
-            transform: scale(0.85);
-            opacity: 0.7;
+            transform: scale(0.86);
+            opacity: 0.75;
         }
         .name {
             font-size: 11px;
             margin-top: 6px;
             text-align: center;
-            color: #e5e5ea;
+            color: #f2f2f7;
             width: 100%;
             white-space: nowrap;
             overflow: hidden;
@@ -87,107 +124,176 @@
             font-weight: 500;
         }
 
-        /* الألوان والخلفيات */
-        .yt { background: #FF0000; }
-        .wa { background: #25D366; }
+        /* App Specific Styles & Gradients */
+        .wa { background: linear-gradient(135deg, #25D366, #128C7E); }
         .ig { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
-        .fb { background: #1877F2; }
-        .msg { background: #0084FF; }
+        .fb { background: linear-gradient(135deg, #1877F2, #0B51B3); }
+        .msg { background: linear-gradient(135deg, #00B2FF, #006aff); }
         .sc { background: #FFFC00; color: #000; }
-        .tg { background: #24A1DE; }
+        .tg { background: linear-gradient(135deg, #2AABEE, #229ED9); }
         .tw { background: #000000; border: 1px solid #333; }
         .tk { background: #000000; border: 1px solid #333; }
+        .pin { background: #E60023; }
+        .twch { background: #9146FF; }
+        .kick { background: #53FC18; color: #000; font-weight: bold; font-size: 18px; }
+
+        .yt { background: linear-gradient(135deg, #FF0000, #CC0000); }
         .sp { background: #1ED760; }
         .nfx { background: #E50914; }
         .dc { background: #5865F2; }
         .rd { background: #FF4500; }
+
+        .gpt { background: linear-gradient(135deg, #10a37f, #0d8a6a); }
+        .claude { background: #D97757; }
+        .gemini { background: linear-gradient(135deg, #4285F4, #9B51E0, #E91E63); }
         .goog { background: #FFFFFF; color: #000; }
-        .gpt { background: #10a37f; }
-        .bing { background: #00838f; }
+        .trans { background: linear-gradient(135deg, #1a73e8, #4285f4); }
+
+        .maps { background: linear-gradient(135deg, #34C759, #109b30); }
+        .gmaps { background: #FFFFFF; color: #4285F4; }
+        .git { background: #24292e; }
+        .drive { background: #FFFFFF; }
+
+        .roblox { background: #000000; border: 1px solid #444; }
+        .ff { background: linear-gradient(135deg, #ff9900, #cc0000); }
+        .efoot { background: linear-gradient(135deg, #001f60, #0050ff); }
+
+        .shrt { background: linear-gradient(135deg, #FF2D55, #5856D6); }
+        .sett { background: linear-gradient(135deg, #8E8E93, #636366); }
+        .saf { background: linear-gradient(180deg, #34AADC, #007AFF); }
     </style>
 </head>
 <body>
 
     <div class="header">
         <h1>مُشغل التطبيقات</h1>
-        <p>اضغط للفتح المباشر عبر الويب والتطبيقات</p>
+        <p>اختصارات سريعة للفتح المباشر</p>
     </div>
+
+    <!-- البحث المباشر -->
+    <form class="search-box" action="https://www.google.com/search" method="get">
+        <input type="text" name="q" placeholder="بحث في Google..." required>
+    </form>
 
     <!-- التواصل الاجتماعي -->
     <div class="section-title">التواصل والاجتماع</div>
     <div class="grid">
-        <div class="app-card" onclick="launch('whatsapp://', 'https://web.whatsapp.com')">
+        <div class="app-card" onclick="launch('whatsapp://', 'https://web.whatsapp.com')" ontouchstart="launch('whatsapp://', 'https://web.whatsapp.com')">
             <div class="icon wa">💬</div><span class="name">واتساب</span>
         </div>
-        <div class="app-card" onclick="launch('instagram://', 'https://www.instagram.com')">
+        <div class="app-card" onclick="launch('instagram://', 'https://www.instagram.com')" ontouchstart="launch('instagram://', 'https://www.instagram.com')">
             <div class="icon ig">📷</div><span class="name">إنستغرام</span>
         </div>
-        <div class="app-card" onclick="launch('fb://', 'https://m.facebook.com')">
+        <div class="app-card" onclick="launch('fb://', 'https://m.facebook.com')" ontouchstart="launch('fb://', 'https://m.facebook.com')">
             <div class="icon fb">f</div><span class="name">فيسبوك</span>
         </div>
-        <div class="app-card" onclick="launch('fb-messenger://', 'https://www.messenger.com')">
+        <div class="app-card" onclick="launch('fb-messenger://', 'https://www.messenger.com')" ontouchstart="launch('fb-messenger://', 'https://www.messenger.com')">
             <div class="icon msg">⚡</div><span class="name">ماسينجر</span>
         </div>
-        <div class="app-card" onclick="launch('snapchat://', 'https://www.snapchat.com')">
+        <div class="app-card" onclick="launch('snapchat://', 'https://www.snapchat.com')" ontouchstart="launch('snapchat://', 'https://www.snapchat.com')">
             <div class="icon sc">👻</div><span class="name">سناب شات</span>
         </div>
-        <div class="app-card" onclick="launch('tg://', 'https://web.telegram.org')">
+        <div class="app-card" onclick="launch('tg://', 'https://web.telegram.org')" ontouchstart="launch('tg://', 'https://web.telegram.org')">
             <div class="icon tg">✈️</div><span class="name">تلغرام</span>
         </div>
-        <div class="app-card" onclick="launch('twitter://', 'https://m.twitter.com')">
-            <div class="icon tw">𝕏</div><span class="name">تويتر / X</span>
+        <div class="app-card" onclick="launch('twitter://', 'https://m.twitter.com')" ontouchstart="launch('twitter://', 'https://m.twitter.com')">
+            <div class="icon tw">𝕏</div><span class="name">X / تويتر</span>
         </div>
-        <div class="app-card" onclick="launch('snssdk1180://', 'https://www.tiktok.com')">
+        <div class="app-card" onclick="launch('snssdk1180://', 'https://www.tiktok.com')" ontouchstart="launch('snssdk1180://', 'https://www.tiktok.com')">
             <div class="icon tk">🎵</div><span class="name">تيك توك</span>
+        </div>
+        <div class="app-card" onclick="launch('pinterest://', 'https://www.pinterest.com')" ontouchstart="launch('pinterest://', 'https://www.pinterest.com')">
+            <div class="icon pin">📌</div><span class="name">Pinterest</span>
         </div>
     </div>
 
-    <!-- الترفيه والوسائط -->
+    <!-- الترفيه والستريم -->
     <div class="section-title">الترفيه والوسائط</div>
     <div class="grid">
-        <div class="app-card" onclick="launch('youtube://', 'https://m.youtube.com')">
+        <div class="app-card" onclick="launch('youtube://', 'https://m.youtube.com')" ontouchstart="launch('youtube://', 'https://m.youtube.com')">
             <div class="icon yt">▶</div><span class="name">يوتيوب</span>
         </div>
-        <div class="app-card" onclick="launch('spotify://', 'https://open.spotify.com')">
+        <div class="app-card" onclick="launch('twitch://', 'https://m.twitch.tv')" ontouchstart="launch('twitch://', 'https://m.twitch.tv')">
+            <div class="icon twch">👾</div><span class="name">Twitch</span>
+        </div>
+        <div class="app-card" onclick="launch('https://kick.com', 'https://kick.com')" ontouchstart="launch('https://kick.com', 'https://kick.com')">
+            <div class="icon kick">KICK</div><span class="name">Kick</span>
+        </div>
+        <div class="app-card" onclick="launch('spotify://', 'https://open.spotify.com')" ontouchstart="launch('spotify://', 'https://open.spotify.com')">
             <div class="icon sp">🎧</div><span class="name">سبوتيفاي</span>
         </div>
-        <div class="app-card" onclick="launch('nflx://', 'https://www.netflix.com')">
+        <div class="app-card" onclick="launch('nflx://', 'https://www.netflix.com')" ontouchstart="launch('nflx://', 'https://www.netflix.com')">
             <div class="icon nfx">🎬</div><span class="name">نتفليكس</span>
         </div>
-        <div class="app-card" onclick="launch('discord://', 'https://discord.com/app')">
+        <div class="app-card" onclick="launch('discord://', 'https://discord.com/app')" ontouchstart="launch('discord://', 'https://discord.com/app')">
             <div class="icon dc">🎮</div><span class="name">ديسكورد</span>
         </div>
-        <div class="app-card" onclick="launch('reddit://', 'https://www.reddit.com')">
+        <div class="app-card" onclick="launch('reddit://', 'https://www.reddit.com')" ontouchstart="launch('reddit://', 'https://www.reddit.com')">
             <div class="icon rd">🤖</div><span class="name">ريديت</span>
         </div>
     </div>
 
-    <!-- محركات البحث والذكاء الاصطناعي -->
-    <div class="section-title">الخدمات والبحث</div>
+    <!-- الذكاء الاصطناعي والأدوات -->
+    <div class="section-title">الذكاء الاصطناعي والأدوات</div>
     <div class="grid">
-        <div class="app-card" onclick="launch('https://www.google.com', 'https://www.google.com')">
-            <div class="icon goog">🔍</div><span class="name">جوجل</span>
-        </div>
-        <div class="app-card" onclick="launch('https://chatgpt.com', 'https://chatgpt.com')">
+        <div class="app-card" onclick="launch('https://chatgpt.com', 'https://chatgpt.com')" ontouchstart="launch('https://chatgpt.com', 'https://chatgpt.com')">
             <div class="icon gpt">🤖</div><span class="name">ChatGPT</span>
         </div>
-        <div class="app-card" onclick="launch('https://www.bing.com', 'https://www.bing.com')">
-            <div class="icon bing">🌐</div><span class="name">Bing</span>
+        <div class="app-card" onclick="launch('https://claude.ai', 'https://claude.ai')" ontouchstart="launch('https://claude.ai', 'https://claude.ai')">
+            <div class="icon claude">🧠</div><span class="name">Claude</span>
+        </div>
+        <div class="app-card" onclick="launch('https://gemini.google.com', 'https://gemini.google.com')" ontouchstart="launch('https://gemini.google.com', 'https://gemini.google.com')">
+            <div class="icon gemini">✨</div><span class="name">Gemini</span>
+        </div>
+        <div class="app-card" onclick="launch('https://translate.google.com', 'https://translate.google.com')" ontouchstart="launch('https://translate.google.com', 'https://translate.google.com')">
+            <div class="icon trans">🌐</div><span class="name">الترجمة</span>
+        </div>
+        <div class="app-card" onclick="launch('https://github.com', 'https://github.com')" ontouchstart="launch('https://github.com', 'https://github.com')">
+            <div class="icon git">🐙</div><span class="name">GitHub</span>
+        </div>
+        <div class="app-card" onclick="launch('https://drive.google.com', 'https://drive.google.com')" ontouchstart="launch('https://drive.google.com', 'https://drive.google.com')">
+            <div class="icon drive">📁</div><span class="name">Google Drive</span>
+        </div>
+        <div class="app-card" onclick="launch('maps://', 'https://maps.apple.com')" ontouchstart="launch('maps://', 'https://maps.apple.com')">
+            <div class="icon maps">🗺️</div><span class="name">الخرائط</span>
+        </div>
+    </div>
+
+    <!-- الألعاب -->
+    <div class="section-title">الألعاب</div>
+    <div class="grid">
+        <div class="app-card" onclick="launch('roblox://', 'https://www.roblox.com')" ontouchstart="launch('roblox://', 'https://www.roblox.com')">
+            <div class="icon roblox">🔳</div><span class="name">Roblox</span>
+        </div>
+        <div class="app-card" onclick="launch('freefire://', 'https://ff.garena.com')" ontouchstart="launch('freefire://', 'https://ff.garena.com')">
+            <div class="icon ff">🔥</div><span class="name">Free Fire</span>
+        </div>
+        <div class="app-card" onclick="launch('efootball://', 'https://www.konami.com/efootball')" ontouchstart="launch('efootball://', 'https://www.konami.com/efootball')">
+            <div class="icon efoot">⚽</div><span class="name">eFootball</span>
+        </div>
+    </div>
+
+    <!-- النظام -->
+    <div class="section-title">النظام والخدمات</div>
+    <div class="grid">
+        <div class="app-card" onclick="launch('shortcuts://', 'shortcuts://')" ontouchstart="launch('shortcuts://', 'shortcuts://')">
+            <div class="icon shrt">⚡</div><span class="name">Shortcuts</span>
+        </div>
+        <div class="app-card" onclick="launch('App-Prefs://', 'App-Prefs://')" ontouchstart="launch('App-Prefs://', 'App-Prefs://')">
+            <div class="icon sett">⚙️</div><span class="name">الإعدادات</span>
         </div>
     </div>
 
     <script>
         function launch(appUrl, webUrl) {
-            // محاولة فتح التطبيق المباشر
             var start = Date.now();
             window.location.href = appUrl;
             
-            // في حال منع النظام فتح التطبيق أو لم يكن مثبتاً، يتم التحويل لنسخة الويب فوراً
             setTimeout(function() {
-                if (Date.now() - start < 1500) {
+                if (Date.now() - start < 1200) {
                     window.location.href = webUrl;
                 }
-            }, 500);
+            }, 400);
         }
     </script>
 
