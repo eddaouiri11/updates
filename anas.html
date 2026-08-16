@@ -3,64 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>iOS App Launcher</title>
+    <title>iOS Launcher</title>
     <style>
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
             -webkit-tap-highlight-color: transparent;
             user-select: none;
         }
         body {
-            background-color: #000000;
-            color: #ffffff;
-            padding: 20px 10px 50px;
+            background-color: #000;
+            background-image: radial-gradient(circle at 50% 20%, #1c1c1e, #000000);
+            color: #fff;
+            padding: 25px 15px 50px;
             display: flex;
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
         }
-        h1 {
-            font-size: 20px;
-            margin-bottom: 20px;
-            color: #f1f1f1;
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .header h1 {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        .header p {
+            font-size: 12px;
+            color: #8e8e93;
+            margin-top: 4px;
         }
         .section-title {
             width: 100%;
-            max-width: 400px;
-            font-size: 12px;
+            max-width: 380px;
+            font-size: 13px;
             color: #8e8e93;
-            text-transform: uppercase;
-            margin: 15px 0 10px 10px;
-            font-weight: bold;
+            margin: 18px 0 10px 8px;
+            font-weight: 600;
         }
         .grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 15px 10px;
+            gap: 18px 12px;
             width: 100%;
-            max-width: 400px;
+            max-width: 380px;
         }
-        .app-btn {
+        .app-card {
             display: flex;
             flex-direction: column;
             align-items: center;
+            text-decoration: none;
+            color: #fff;
             cursor: pointer;
         }
         .icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 14px;
+            width: 62px;
+            height: 62px;
+            border-radius: 15px;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 26px;
-            box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
-            transition: transform 0.1s;
+            font-size: 28px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            transition: transform 0.12s ease, opacity 0.12s ease;
         }
-        .app-btn:active .icon {
+        .app-card:active .icon {
             transform: scale(0.85);
             opacity: 0.7;
         }
@@ -68,14 +79,15 @@
             font-size: 11px;
             margin-top: 6px;
             text-align: center;
-            color: #d1d1d6;
+            color: #e5e5ea;
             width: 100%;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            font-weight: 500;
         }
 
-        /* ألوان الأيقونات */
+        /* الألوان والخلفيات */
         .yt { background: #FF0000; }
         .wa { background: #25D366; }
         .ig { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
@@ -89,47 +101,43 @@
         .nfx { background: #E50914; }
         .dc { background: #5865F2; }
         .rd { background: #FF4500; }
-        .shrt { background: linear-gradient(135deg, #FF2D55, #5856D6); }
-        .sett { background: #8E8E93; }
-        .saf { background: linear-gradient(180deg, #34AADC, #007AFF); }
-        .appst { background: #007AFF; }
-        .maps { background: #34C759; }
-        .mail { background: #007AFF; }
-        .note { background: #FFCC00; color: #000; }
-        .calc { background: #FF9500; }
-        .phot { background: #FFFFFF; color: #000; }
-        .clock { background: #000000; border: 1px solid #444; }
+        .goog { background: #FFFFFF; color: #000; }
+        .gpt { background: #10a37f; }
+        .bing { background: #00838f; }
     </style>
 </head>
 <body>
 
-    <h1>اختصارات التطبيقات</h1>
+    <div class="header">
+        <h1>مُشغل التطبيقات</h1>
+        <p>اضغط للفتح المباشر عبر الويب والتطبيقات</p>
+    </div>
 
     <!-- التواصل الاجتماعي -->
     <div class="section-title">التواصل والاجتماع</div>
     <div class="grid">
-        <div class="app-btn" onclick="openApp('whatsapp://')" ontouchstart="openApp('whatsapp://')">
+        <div class="app-card" onclick="launch('whatsapp://', 'https://web.whatsapp.com')">
             <div class="icon wa">💬</div><span class="name">واتساب</span>
         </div>
-        <div class="app-btn" onclick="openApp('instagram://')" ontouchstart="openApp('instagram://')">
+        <div class="app-card" onclick="launch('instagram://', 'https://www.instagram.com')">
             <div class="icon ig">📷</div><span class="name">إنستغرام</span>
         </div>
-        <div class="app-btn" onclick="openApp('fb://')" ontouchstart="openApp('fb://')">
+        <div class="app-card" onclick="launch('fb://', 'https://m.facebook.com')">
             <div class="icon fb">f</div><span class="name">فيسبوك</span>
         </div>
-        <div class="app-btn" onclick="openApp('fb-messenger://')" ontouchstart="openApp('fb-messenger://')">
+        <div class="app-card" onclick="launch('fb-messenger://', 'https://www.messenger.com')">
             <div class="icon msg">⚡</div><span class="name">ماسينجر</span>
         </div>
-        <div class="app-btn" onclick="openApp('snapchat://')" ontouchstart="openApp('snapchat://')">
+        <div class="app-card" onclick="launch('snapchat://', 'https://www.snapchat.com')">
             <div class="icon sc">👻</div><span class="name">سناب شات</span>
         </div>
-        <div class="app-btn" onclick="openApp('tg://')" ontouchstart="openApp('tg://')">
+        <div class="app-card" onclick="launch('tg://', 'https://web.telegram.org')">
             <div class="icon tg">✈️</div><span class="name">تلغرام</span>
         </div>
-        <div class="app-btn" onclick="openApp('twitter://')" ontouchstart="openApp('twitter://')">
+        <div class="app-card" onclick="launch('twitter://', 'https://m.twitter.com')">
             <div class="icon tw">𝕏</div><span class="name">تويتر / X</span>
         </div>
-        <div class="app-btn" onclick="openApp('snssdk1180://')" ontouchstart="openApp('snssdk1180://')">
+        <div class="app-card" onclick="launch('snssdk1180://', 'https://www.tiktok.com')">
             <div class="icon tk">🎵</div><span class="name">تيك توك</span>
         </div>
     </div>
@@ -137,61 +145,49 @@
     <!-- الترفيه والوسائط -->
     <div class="section-title">الترفيه والوسائط</div>
     <div class="grid">
-        <div class="app-btn" onclick="openApp('youtube://')" ontouchstart="openApp('youtube://')">
+        <div class="app-card" onclick="launch('youtube://', 'https://m.youtube.com')">
             <div class="icon yt">▶</div><span class="name">يوتيوب</span>
         </div>
-        <div class="app-btn" onclick="openApp('spotify://')" ontouchstart="openApp('spotify://')">
+        <div class="app-card" onclick="launch('spotify://', 'https://open.spotify.com')">
             <div class="icon sp">🎧</div><span class="name">سبوتيفاي</span>
         </div>
-        <div class="app-btn" onclick="openApp('nflx://')" ontouchstart="openApp('nflx://')">
+        <div class="app-card" onclick="launch('nflx://', 'https://www.netflix.com')">
             <div class="icon nfx">🎬</div><span class="name">نتفليكس</span>
         </div>
-        <div class="app-btn" onclick="openApp('discord://')" ontouchstart="openApp('discord://')">
+        <div class="app-card" onclick="launch('discord://', 'https://discord.com/app')">
             <div class="icon dc">🎮</div><span class="name">ديسكورد</span>
         </div>
-        <div class="app-btn" onclick="openApp('reddit://')" ontouchstart="openApp('reddit://')">
+        <div class="app-card" onclick="launch('reddit://', 'https://www.reddit.com')">
             <div class="icon rd">🤖</div><span class="name">ريديت</span>
         </div>
     </div>
 
-    <!-- تطبيقات النظام -->
-    <div class="section-title">تطبيقات النظام</div>
+    <!-- محركات البحث والذكاء الاصطناعي -->
+    <div class="section-title">الخدمات والبحث</div>
     <div class="grid">
-        <div class="app-btn" onclick="openApp('shortcuts://')" ontouchstart="openApp('shortcuts://')">
-            <div class="icon shrt">⚡</div><span class="name">Shortcuts</span>
+        <div class="app-card" onclick="launch('https://www.google.com', 'https://www.google.com')">
+            <div class="icon goog">🔍</div><span class="name">جوجل</span>
         </div>
-        <div class="app-btn" onclick="openApp('App-Prefs://')" ontouchstart="openApp('App-Prefs://')">
-            <div class="icon sett">⚙️</div><span class="name">الإعدادات</span>
+        <div class="app-card" onclick="launch('https://chatgpt.com', 'https://chatgpt.com')">
+            <div class="icon gpt">🤖</div><span class="name">ChatGPT</span>
         </div>
-        <div class="app-btn" onclick="openApp('googlechrome://')" ontouchstart="openApp('googlechrome://')">
-            <div class="icon saf">🌐</div><span class="name">كروم</span>
-        </div>
-        <div class="app-btn" onclick="openApp('itms-apps://')" ontouchstart="openApp('itms-apps://')">
-            <div class="icon appst">🅰️</div><span class="name">App Store</span>
-        </div>
-        <div class="app-btn" onclick="openApp('maps://')" ontouchstart="openApp('maps://')">
-            <div class="icon maps">🗺️</div><span class="name">الخرائط</span>
-        </div>
-        <div class="app-btn" onclick="openApp('message://')" ontouchstart="openApp('message://')">
-            <div class="icon mail">✉️</div><span class="name">الرسائل</span>
-        </div>
-        <div class="app-btn" onclick="openApp('mobilenotes://')" ontouchstart="openApp('mobilenotes://')">
-            <div class="icon note">📝</div><span class="name">الملاحظات</span>
-        </div>
-        <div class="app-btn" onclick="openApp('calculator://')" ontouchstart="openApp('calculator://')">
-            <div class="icon calc">➕</div><span class="name">الحاسبة</span>
-        </div>
-        <div class="app-btn" onclick="openApp('photos-redirect://')" ontouchstart="openApp('photos-redirect://')">
-            <div class="icon phot">🖼️</div><span class="name">الصور</span>
-        </div>
-        <div class="app-btn" onclick="openApp('clock-alarm://')" ontouchstart="openApp('clock-alarm://')">
-            <div class="icon clock">⏰</div><span class="name">الساعة</span>
+        <div class="app-card" onclick="launch('https://www.bing.com', 'https://www.bing.com')">
+            <div class="icon bing">🌐</div><span class="name">Bing</span>
         </div>
     </div>
 
     <script>
-        function openApp(urlScheme) {
-            window.location.href = urlScheme;
+        function launch(appUrl, webUrl) {
+            // محاولة فتح التطبيق المباشر
+            var start = Date.now();
+            window.location.href = appUrl;
+            
+            // في حال منع النظام فتح التطبيق أو لم يكن مثبتاً، يتم التحويل لنسخة الويب فوراً
+            setTimeout(function() {
+                if (Date.now() - start < 1500) {
+                    window.location.href = webUrl;
+                }
+            }, 500);
         }
     </script>
 
