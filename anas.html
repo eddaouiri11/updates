@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>iOS Shortcuts Hub</title>
+    <title>iOS Apple & iCloud Hub</title>
     <style>
         * {
             box-sizing: border-box;
@@ -11,6 +11,9 @@
             padding: 0;
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, sans-serif;
             -webkit-tap-highlight-color: transparent;
+            /* تعطيل تحديد النصوص والنسخ عبر الكود كامل */
+            -webkit-user-select: none;
+            user-select: none;
         }
         body {
             background-color: #000000;
@@ -57,14 +60,14 @@
             max-width: 420px;
         }
         
-        /* A tags configured for Long Press Context Menu */
         a.app-card {
             display: flex;
             flex-direction: column;
             align-items: center;
             text-decoration: none;
             color: #fff;
-            -webkit-touch-callout: default !important; /* يضمن ظهور قائمة الضغط المطول */
+            /* السماح بقائمة المعاينة والضغط المطول الخاصة بـ iOS */
+            -webkit-touch-callout: default !important;
             cursor: pointer;
         }
         .icon {
@@ -95,103 +98,85 @@
             font-weight: 500;
         }
 
-        /* Gradient & Theme Styles */
-        .shrt-app { background: linear-gradient(135deg, #FF2D55, #5856D6); }
-        .shrt-gallery { background: linear-gradient(135deg, #007AFF, #5856D6); }
-        .shrt-icloud { background: linear-gradient(135deg, #34C759, #007AFF); }
-        .sett { background: linear-gradient(135deg, #8E8E93, #636366); }
-        .saf { background: linear-gradient(180deg, #34AADC, #007AFF); }
-        .appst { background: linear-gradient(135deg, #007AFF, #00C6FF); }
-        .goog { background: #FFFFFF; color: #000; }
-        .yt { background: linear-gradient(135deg, #FF0000, #CC0000); }
-        .wa { background: linear-gradient(135deg, #25D366, #128C7E); }
-        .ig { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
-        .fb { background: linear-gradient(135deg, #1877F2, #0B51B3); }
-        .tg { background: linear-gradient(135deg, #2AABEE, #229ED9); }
-        .tw { background: #000000; border: 1px solid #333; }
-        .gpt { background: linear-gradient(135deg, #10a37f, #0d8a6a); }
-        .git { background: #24292e; }
-        .maps { background: linear-gradient(135deg, #34C759, #109b30); }
+        /* Gradients لخدمات آبل */
+        .ic-drive { background: linear-gradient(135deg, #007AFF, #00C6FF); }
+        .ic-notes { background: linear-gradient(135deg, #FFCC00, #FF9500); }
+        .ic-photos { background: linear-gradient(135deg, #FF2D55, #FF9500, #4CD964, #5AC8FA); }
+        .ic-find { background: linear-gradient(135deg, #34C759, #109b30); }
+        .ic-remind { background: linear-gradient(135deg, #FF3B30, #FF9500); }
+        
+        .media-music { background: linear-gradient(135deg, #FA233B, #FB5C74); }
+        .media-podcasts { background: linear-gradient(135deg, #AF52DE, #5856D6); }
+        .media-tv { background: linear-gradient(135deg, #2C2C2E, #000000); }
+        .media-books { background: linear-gradient(135deg, #FF9500, #FF2D55); }
+        
+        .dev-testflight { background: linear-gradient(135deg, #007AFF, #5856D6); }
+        .dev-appstore { background: linear-gradient(180deg, #1D7AF3, #084EB7); }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <h1>iOS Shortcuts Hub</h1>
-        <p>اضغط مطولاً (Long Press) على أي عنصر لإظهار قائمة الخيارات وقسم "Open in App"</p>
+        <h1>Apple & iCloud Hub</h1>
+        <p>اضغط مطولاً (Long Press) على أي تطبيق لاختيار "Open in App"</p>
     </div>
 
-    <!-- قسم اختصارات النظام المباشرة -->
-    <div class="section-title">اختصارات النظام والـ Schemes</div>
+    <!-- iCloud Apps & Cloud Services -->
+    <div class="section-title">iCloud Services</div>
     <div class="grid">
-        <a href="shortcuts://" target="_blank" class="app-card">
-            <div class="icon shrt-app">⚡</div>
-            <span class="name">Shortcuts App</span>
+        <a href="https://www.icloud.com/iclouddrive" target="_blank" class="app-card">
+            <div class="icon ic-drive">📁</div>
+            <span class="name">Drive</span>
         </a>
         <a href="https://www.icloud.com/notes" target="_blank" class="app-card">
-            <div class="icon shrt-icloud">☁️</div>
-            <span class="name">iCloud Shortcuts</span>
+            <div class="icon ic-notes">📝</div>
+            <span class="name">Notes</span>
         </a>
-        <a href="shortcuts://gallery" target="_blank" class="app-card">
-            <div class="icon shrt-gallery">🎨</div>
-            <span class="name">Gallery</span>
+        <a href="https://www.icloud.com/photos" target="_blank" class="app-card">
+            <div class="icon ic-photos">🖼️</div>
+            <span class="name">Photos</span>
         </a>
-        <a href="App-Prefs://" target="_blank" class="app-card">
-            <div class="icon sett">⚙️</div>
-            <span class="name">الإعدادات</span>
+        <a href="https://www.icloud.com/find" target="_blank" class="app-card">
+            <div class="icon ic-find">📍</div>
+            <span class="name">Find My</span>
         </a>
-        <a href="x-web-search://" target="_blank" class="app-card">
-            <div class="icon saf">🌐</div>
-            <span class="name">سفاري Search</span>
-        </a>
-        <a href="itms-apps://" target="_blank" class="app-card">
-            <div class="icon appst">🅰️</div>
-            <span class="name">App Store</span>
+        <a href="https://www.icloud.com/reminders" target="_blank" class="app-card">
+            <div class="icon ic-remind">المهام</div>
+            <span class="name">Reminders</span>
         </a>
     </div>
 
-    <!-- قسم روابط الويب المباشرة (فتح في المتصفح أو التطبيق) -->
-    <div class="section-title">اختصارات الويب المباشرة</div>
+    <!-- Media & Entertainment -->
+    <div class="section-title">Media & Entertainment</div>
     <div class="grid">
-        <a href="https://www.google.com" target="_blank" class="app-card">
-            <div class="icon goog">🔍</div>
-            <span class="name">جوجل</span>
+        <a href="https://music.apple.com" target="_blank" class="app-card">
+            <div class="icon media-music">🎵</div>
+            <span class="name">Music</span>
         </a>
-        <a href="https://chatgpt.com" target="_blank" class="app-card">
-            <div class="icon gpt">🤖</div>
-            <span class="name">ChatGPT</span>
+        <a href="https://podcasts.apple.com" target="_blank" class="app-card">
+            <div class="icon media-podcasts">🎙️</div>
+            <span class="name">Podcasts</span>
         </a>
-        <a href="https://m.youtube.com" target="_blank" class="app-card">
-            <div class="icon yt">▶</div>
-            <span class="name">يوتيوب</span>
+        <a href="https://tv.apple.com" target="_blank" class="app-card">
+            <div class="icon media-tv">📺</div>
+            <span class="name">Apple TV</span>
         </a>
-        <a href="https://web.whatsapp.com" target="_blank" class="app-card">
-            <div class="icon wa">💬</div>
-            <span class="name">واتساب</span>
+        <a href="https://books.apple.com" target="_blank" class="app-card">
+            <div class="icon media-books">📚</div>
+            <span class="name">Books</span>
         </a>
-        <a href="https://www.instagram.com" target="_blank" class="app-card">
-            <div class="icon ig">📷</div>
-            <span class="name">إنستغرام</span>
+    </div>
+
+    <!-- Developer & Utility Links -->
+    <div class="section-title">Developer & Apps</div>
+    <div class="grid">
+        <a href="https://testflight.apple.com" target="_blank" class="app-card">
+            <div class="icon dev-testflight">✈️</div>
+            <span class="name">TestFlight</span>
         </a>
-        <a href="https://m.facebook.com" target="_blank" class="app-card">
-            <div class="icon fb">f</div>
-            <span class="name">فيسبوك</span>
-        </a>
-        <a href="https://web.telegram.org" target="_blank" class="app-card">
-            <div class="icon tg">✈️</div>
-            <span class="name">تلغرام</span>
-        </a>
-        <a href="https://m.twitter.com" target="_blank" class="app-card">
-            <div class="icon tw">𝕏</div>
-            <span class="name">X / تويتر</span>
-        </a>
-        <a href="https://github.com" target="_blank" class="app-card">
-            <div class="icon git">🐙</div>
-            <span class="name">GitHub</span>
-        </a>
-        <a href="https://maps.apple.com" target="_blank" class="app-card">
-            <div class="icon maps">🗺️</div>
-            <span class="name">الخرائط</span>
+        <a href="https://apps.apple.com" target="_blank" class="app-card">
+            <div class="icon dev-appstore">🅰️</div>
+            <span class="name">App Store</span>
         </a>
     </div>
 
