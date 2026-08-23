@@ -1,827 +1,927 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" class="dark">
+<html lang="ar" dir="rtl" class="h-full bg-slate-900">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>CyberRadar ALPR Pro - Traffic Scanner System</title>
-  
-  <!-- Tailwind CSS -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>محاكي ودليل الإقامة الخمسية في إسبانيا | Larga Duración & UE</title>
+
+  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- FontAwesome Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- Futuristic Tactical Fonts -->
+
+  <!-- FontAwesome 6 Icons CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Google Fonts: Cairo & Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Share+Tech+Mono&family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Cairo', 'Inter', 'sans-serif'],
+          },
+          colors: {
+            spainRed: '#c60b1e',
+            spainYellow: '#ffc400',
+            euBlue: '#003399',
+            brandBlue: '#2563eb',
+            brandDark: '#0f172a',
+            iosBg: '#f2f2f7',
+          },
+          boxShadow: {
+            'ios': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
+            'float': '0 10px 30px -5px rgba(37, 99, 235, 0.3)',
+          }
+        }
+      }
+    }
+  </script>
 
   <style>
+    /* iOS Tap & Smooth Scrolling optimizations */
     * {
+      -webkit-tap-highlight-color: transparent;
       user-select: none;
-      -webkit-user-select: none;
-      touch-action: manipulation;
+    }
+    input, select, textarea, button, p, h1, h2, h3, h4, span, label {
+      user-select: text;
     }
     body {
-      font-family: 'Tajawal', sans-serif;
-      background-color: #030712;
-      color: #00ff66;
-      overflow: hidden;
-    }
-    .font-hud {
-      font-family: 'Share Tech Mono', monospace;
-    }
-    .font-orbitron {
-      font-family: 'Orbitron', sans-serif;
+      font-family: 'Cairo', sans-serif;
+      background-color: #f8fafc;
+      padding-bottom: env(safe-area-inset-bottom, 80px);
+      -webkit-font-smoothing: antialiased;
     }
     
-    /* Radar Scan Sweep Effect */
-    @keyframes sweep {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    .radar-sweep {
-      animation: sweep 4s linear infinite;
-    }
-
-    /* Target Reticle Pulsing */
-    @keyframes pulse-lock {
-      0%, 100% { transform: scale(1); opacity: 0.9; }
-      50% { transform: scale(1.08); opacity: 0.4; }
-    }
-    .pulse-target {
-      animation: pulse-lock 1.2s infinite ease-in-out;
-    }
-
-    /* Glowing Text Effects */
-    .glow-green {
-      text-shadow: 0 0 10px rgba(0, 255, 102, 0.7), 0 0 20px rgba(0, 255, 102, 0.4);
-    }
-    .glow-red {
-      text-shadow: 0 0 10px rgba(255, 30, 60, 0.8), 0 0 20px rgba(255, 30, 60, 0.5);
-    }
-    .glow-box-green {
-      box-shadow: 0 0 15px rgba(0, 255, 102, 0.4), inset 0 0 15px rgba(0, 255, 102, 0.2);
-    }
-    .glow-box-red {
-      box-shadow: 0 0 20px rgba(255, 30, 60, 0.6), inset 0 0 20px rgba(255, 30, 60, 0.3);
-    }
-
-    /* Custom Scrollbars */
+    /* Custom Scrollbar for mobile/desktop */
     ::-webkit-scrollbar {
-      width: 4px;
-      height: 4px;
+      width: 5px;
+      height: 5px;
     }
     ::-webkit-scrollbar-track {
-      background: rgba(0, 0, 0, 0.5);
+      background: transparent;
     }
     ::-webkit-scrollbar-thumb {
-      background: #00ff66;
-      border-radius: 2px;
+      background: #cbd5e1;
+      border-radius: 99px;
     }
 
-    /* Shutter Flash Effect */
-    .flash-active {
-      animation: flashAnim 0.3s forwards;
+    /* iOS safe areas */
+    .pb-safe {
+      padding-bottom: calc(env(safe-area-inset-bottom, 20px) + 4rem);
     }
-    @keyframes flashAnim {
-      0% { background-color: rgba(255, 255, 255, 0.9); }
-      100% { background-color: transparent; }
+    .pt-safe {
+      padding-top: max(env(safe-area-inset-top), 1rem);
+    }
+
+    /* Glassmorphic Effects */
+    .glass-nav {
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+    
+    .glass-dark {
+      background: rgba(15, 23, 42, 0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    .active-tab {
+      color: #2563eb !important;
+      font-weight: 800 !important;
+    }
+    
+    .active-tab-indicator {
+      transform: scaleX(1);
+    }
+
+    /* Print styles */
+    @media print {
+      .no-print { display: none !important; }
+      body { background: white !important; color: black !important; padding: 0 !important; }
+      .container { max-width: 100% !important; width: 100% !important; }
+      .shadow-xl, .shadow-md, .shadow-lg, .shadow-ios { box-shadow: none !important; }
     }
   </style>
 </head>
-<body class="h-screen w-screen flex flex-col justify-between select-none bg-gray-950 text-green-400">
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col justify-between">
 
-  <!-- Top Navigation & Radar Status Header -->
-  <header class="absolute top-0 left-0 right-0 z-30 p-3 bg-gradient-to-b from-black/90 via-black/60 to-transparent backdrop-blur-md flex justify-between items-center border-b border-green-500/20">
-    <div class="flex items-center space-x-3 space-x-reverse">
-      <div class="relative flex items-center justify-center w-9 h-9 rounded-lg border border-green-500/40 bg-green-950/40 glow-box-green">
-        <i class="fa-solid font-bold fa-radar text-green-400 text-lg animate-spin" style="animation-duration: 6s;"></i>
-      </div>
-      <div>
-        <h1 class="text-sm font-bold font-orbitron tracking-widest text-green-400 glow-green">CYBER-RADAR v4.2</h1>
-        <div class="flex items-center space-x-2 space-x-reverse text-[10px] font-hud text-gray-400">
-          <span class="inline-block w-2 h-2 rounded-full bg-green-500 animate-ping"></span>
-          <span id="systemStatusText" class="text-green-300">LIVE ALPR ACTIVE</span>
-          <span class="text-gray-600">|</span>
-          <span id="fpsCounter" class="text-xs text-green-400">60 FPS</span>
+  <!-- TOP APP HEADER -->
+  <header class="sticky top-0 z-40 bg-slate-900 text-white border-b border-slate-800 shadow-md pt-safe no-print">
+    <div class="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-blue-700 to-indigo-500 flex items-center justify-center text-xl shadow-lg ring-2 ring-blue-400/30">
+          🇪🇸
+        </div>
+        <div>
+          <h1 class="text-base font-extrabold leading-tight tracking-tight text-white flex items-center gap-1.5">
+            دليل إقامة 5 سنوات
+            <span class="text-[10px] bg-blue-600/80 text-blue-100 px-2 py-0.5 rounded-full font-bold">إسبانيا</span>
+          </h1>
+          <p class="text-[11px] text-slate-400 font-medium">Larga Duración vs Larga Duración - UE</p>
         </div>
       </div>
-    </div>
 
-    <!-- Header Actions -->
-    <div class="flex items-center space-x-2 space-x-reverse">
-      <!-- Sound Toggle -->
-      <button id="soundToggleBtn" onclick="toggleAudio()" class="w-9 h-9 rounded-lg bg-gray-900/80 border border-green-500/30 text-green-400 flex items-center justify-center hover:bg-green-900/30 transition active:scale-95">
-        <i id="soundIcon" class="fa-solid fa-volume-high"></i>
-      </button>
-
-      <!-- Camera Switcher -->
-      <button id="switchCamBtn" onclick="switchCamera()" class="w-9 h-9 rounded-lg bg-gray-900/80 border border-green-500/30 text-green-400 flex items-center justify-center hover:bg-green-900/30 transition active:scale-95">
-        <i class="fa-solid fa-camera-rotate"></i>
-      </button>
-
-      <!-- Logs / Gallery Button -->
-      <button onclick="toggleGalleryModal()" class="relative px-3 py-1.5 rounded-lg bg-green-500/20 border border-green-500/50 text-green-300 text-xs font-bold font-hud flex items-center space-x-1 space-x-reverse hover:bg-green-500/30 transition active:scale-95">
-        <i class="fa-solid fa-folder-closed text-xs"></i>
-        <span>السجل</span>
-        <span id="logsCountBadge" class="ml-1 px-1.5 py-0.2 text-[10px] bg-red-600 text-white font-bold rounded-full">0</span>
-      </button>
+      <div class="flex items-center gap-2">
+        <button onclick="window.print()" class="w-9 h-9 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center text-sm transition active:scale-95" title="طباعة التقرير">
+          <i class="fa-solid fa-print"></i>
+        </button>
+        <div class="hidden sm:flex items-center gap-1 bg-slate-800/80 px-2.5 py-1 rounded-xl border border-slate-700 text-xs font-semibold text-emerald-400">
+          <i class="fa-solid fa-shield-halved text-xs"></i>
+          <span>Extranjería 2026</span>
+        </div>
+      </div>
     </div>
   </header>
 
-  <!-- Main Viewport Container -->
-  <main class="relative w-full h-full flex-grow overflow-hidden bg-black flex items-center justify-center">
-    <!-- Camera Video Source -->
-    <video id="webcam" autoplay playsinline muted class="absolute inset-0 w-full h-full object-cover z-0"></video>
-
-    <!-- Radar HUD Canvas for Vector Graphics -->
-    <canvas id="hudCanvas" class="absolute inset-0 w-full h-full z-10 pointer-events-none"></canvas>
-
-    <!-- Flash Screen Effect Overlay -->
-    <div id="flashOverlay" class="absolute inset-0 z-20 pointer-events-none"></div>
-
-    <!-- PIP Driver Face Zoom Window -->
-    <div id="pipWindow" class="absolute top-16 right-3 z-20 w-32 h-32 rounded-xl border-2 border-green-500/60 bg-black/80 backdrop-blur-md shadow-2xl overflow-hidden flex flex-col transition-all duration-300 transform scale-95 opacity-90 border-dashed">
-      <div class="bg-green-950/80 px-2 py-0.5 text-[9px] font-hud text-green-300 flex justify-between items-center border-b border-green-500/30">
-        <span>DRIVER ZOOM</span>
-        <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>
-      </div>
-      <div class="relative flex-grow bg-gray-900 flex items-center justify-center overflow-hidden">
-        <canvas id="driverZoomCanvas" class="w-full h-full object-cover"></canvas>
-        <div class="absolute inset-0 border border-red-500/40 pointer-events-none flex items-center justify-center">
-          <div class="w-4 h-4 border-t border-l border-red-500"></div>
-          <div class="w-4 h-4 border-b border-r border-red-500 absolute bottom-0 right-0"></div>
-        </div>
-      </div>
-      <div class="bg-black/90 px-1 py-0.5 text-[8px] font-hud text-center text-green-400 truncate" id="driverDetectLabel">
-        FACIAL LOCK: 98%
-      </div>
-    </div>
-
-    <!-- Speed & Plate HUD Overlay Card (Floating) -->
-    <div id="detectedInfoCard" class="absolute bottom-28 left-4 right-4 md:left-auto md:right-4 md:w-80 z-20 bg-gray-950/85 border border-green-500/50 rounded-2xl p-3.5 backdrop-blur-lg shadow-2xl transition-all duration-300 transform translate-y-0 glow-box-green">
-      <div class="flex justify-between items-start border-b border-green-500/20 pb-2 mb-2">
-        <div class="flex items-center space-x-2 space-x-reverse">
-          <span class="flex h-3 w-3 relative">
-            <span id="targetPing" class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-            <span id="targetDot" class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
-          </span>
-          <span id="carModelText" class="text-xs font-bold text-gray-200">مركبة: Mercedes-Benz C-Class</span>
-        </div>
-        <span id="speedDisplay" class="text-xl font-bold font-orbitron text-green-400 glow-green">74 km/h</span>
-      </div>
-
-      <!-- Moroccan / Standard Plate Display -->
-      <div class="flex items-center justify-between bg-black/60 rounded-xl p-2 border border-gray-800">
-        <div class="flex flex-col">
-          <span class="text-[9px] text-gray-400 font-hud">لوحة الترقيم (PLATE)</span>
-          <span id="plateNumberDisplay" class="text-lg font-extrabold font-hud tracking-widest text-white glow-green">
-            58492 | أ | 6
-          </span>
-        </div>
-        <div class="text-right">
-          <span class="text-[9px] text-gray-400 block font-hud">الحالة</span>
-          <span id="violationStatus" class="inline-block px-2 py-0.5 rounded text-[10px] font-bold bg-green-900/60 text-green-300 border border-green-500/30">
-            سليمة (OK)
-          </span>
-        </div>
-      </div>
-    </div>
-  </main>
-
-  <!-- Bottom Tactical Radar Controls Toolbar -->
-  <footer class="relative z-30 bg-gray-950/95 border-t border-green-500/30 px-4 py-3 backdrop-blur-xl flex flex-col space-y-3">
-    <!-- Quick HUD Parameters Bar -->
-    <div class="flex items-center justify-between text-xs font-hud text-gray-300 px-1">
-      <div class="flex items-center space-x-2 space-x-reverse">
-        <span class="text-gray-400">السرعة القصوى:</span>
-        <select id="speedLimitSelect" onchange="updateSpeedLimit()" class="bg-gray-900 text-green-400 border border-green-500/40 rounded px-2 py-0.5 focus:outline-none font-bold">
-          <option value="60">60 km/h</option>
-          <option value="80" selected>80 km/h</option>
-          <option value="100">100 km/h</option>
-          <option value="120">120 km/h</option>
-        </select>
-      </div>
-
-      <!-- Mode Selector (Morocco Plate / Global) -->
-      <div class="flex items-center space-x-2 space-x-reverse">
-        <span class="text-gray-400">النمط:</span>
-        <button id="plateModeBtn" onclick="togglePlateFormat()" class="px-2 py-0.5 rounded bg-gray-900 border border-green-500/40 text-green-300 text-[11px]">
-          لوحات المغرب 🇲🇦
-        </button>
-      </div>
-
-      <!-- Camera / Upload Toggle -->
-      <label class="cursor-pointer px-2 py-0.5 rounded bg-gray-900 border border-green-500/40 text-green-400 hover:bg-green-900/30 text-[11px] flex items-center space-x-1 space-x-reverse">
-        <i class="fa-solid fa-file-arrow-up"></i>
-        <span>رفع صورة</span>
-        <input type="file" id="imageUploader" accept="image/*" onchange="handleImageUpload(event)" class="hidden">
-      </label>
-    </div>
-
-    <!-- Main Shutter & Trigger Row -->
-    <div class="flex items-center justify-between space-x-3 space-x-reverse">
-      <!-- Auto Scan Mode Button -->
-      <button id="autoScanBtn" onclick="toggleAutoScan()" class="flex-1 py-3 rounded-xl bg-gray-900 border border-green-500/40 text-green-400 font-bold text-xs flex items-center justify-center space-x-2 space-x-reverse transition active:scale-95">
-        <i id="autoScanIcon" class="fa-solid fa-robot text-sm"></i>
-        <span id="autoScanText">المسح التلقائي: مشغل</span>
+  <!-- TOP DESKTOP TAB BAR -->
+  <div class="hidden md:block bg-white border-b border-slate-200 sticky top-16 z-30 shadow-sm no-print">
+    <div class="max-w-4xl mx-auto px-4 flex items-center justify-around">
+      <button onclick="switchTab('sim')" id="dtab-sim" class="py-3.5 px-4 font-bold text-sm text-blue-600 border-b-2 border-blue-600 flex items-center gap-2 transition">
+        <i class="fa-solid fa-calculator"></i>
+        <span>المحاكي التفاعلي</span>
       </button>
-
-      <!-- Central Big Radar Shutter Button -->
-      <button onclick="triggerManualScan()" class="relative group w-16 h-16 rounded-full bg-gradient-to-tr from-green-600 to-emerald-400 p-1 flex items-center justify-center shadow-lg shadow-green-500/30 active:scale-90 transition transform">
-        <div class="w-full h-full rounded-full bg-gray-950 flex items-center justify-center border-2 border-green-400 group-hover:bg-green-950">
-          <i class="fa-solid fa-camera text-xl text-green-400"></i>
-        </div>
+      <button onclick="switchTab('comp')" id="dtab-comp" class="py-3.5 px-4 font-semibold text-sm text-slate-600 hover:text-slate-900 border-b-2 border-transparent flex items-center gap-2 transition">
+        <i class="fa-solid fa-code-compare"></i>
+        <span>مقارنة الخيارات</span>
       </button>
-
-      <!-- Simulated Car Lock Target Trigger -->
-      <button onclick="forceTargetLock()" class="flex-1 py-3 rounded-xl bg-gray-900 border border-green-500/40 text-green-400 font-bold text-xs flex items-center justify-center space-x-2 space-x-reverse transition active:scale-95">
-        <i class="fa-solid fa-crosshairs text-sm text-red-400"></i>
-        <span>التقاط هدف جديد</span>
+      <button onclick="switchTab('docs')" id="dtab-docs" class="py-3.5 px-4 font-semibold text-sm text-slate-600 hover:text-slate-900 border-b-2 border-transparent flex items-center gap-2 transition">
+        <i class="fa-solid fa-list-check"></i>
+        <span>قائمة الوثائق الجاهزة</span>
       </button>
-    </div>
-  </footer>
-
-  <!-- Violations & Snapshot Logs Drawer / Modal -->
-  <div id="galleryModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-xl flex flex-col transition-all duration-300 opacity-0 pointer-events-none">
-    <!-- Modal Header -->
-    <div class="p-4 bg-gray-900/90 border-b border-green-500/30 flex justify-between items-center">
-      <div class="flex items-center space-x-2 space-x-reverse">
-        <i class="fa-solid fa-shield-halved text-green-400 text-lg"></i>
-        <h2 class="text-base font-bold font-orbitron text-green-400">سجل الالتقاطات والمخالفات</h2>
-      </div>
-      <div class="flex items-center space-x-2 space-x-reverse">
-        <button onclick="clearAllLogs()" class="px-2.5 py-1 rounded-lg bg-red-950/80 border border-red-500/40 text-red-400 text-xs font-bold hover:bg-red-900/50">
-          مسح السجل
-        </button>
-        <button onclick="toggleGalleryModal()" class="w-8 h-8 rounded-full bg-gray-800 text-gray-300 flex items-center justify-center hover:bg-gray-700">
-          <i class="fa-solid fa-xmark text-lg"></i>
-        </button>
-      </div>
-    </div>
-
-    <!-- Logs List Container -->
-    <div id="logsContainer" class="flex-grow overflow-y-auto p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      <!-- Dynamic Log Cards inserted here -->
+      <button onclick="switchTab('forms')" id="dtab-forms" class="py-3.5 px-4 font-semibold text-sm text-slate-600 hover:text-slate-900 border-b-2 border-transparent flex items-center gap-2 transition">
+        <i class="fa-solid fa-file-signature"></i>
+        <span>النماذج والرسوم (EX11 / Tasa)</span>
+      </button>
+      <button onclick="switchTab('faq')" id="dtab-faq" class="py-3.5 px-4 font-semibold text-sm text-slate-600 hover:text-slate-900 border-b-2 border-transparent flex items-center gap-2 transition">
+        <i class="fa-solid fa-circle-question"></i>
+        <span>الأسئلة والدليل</span>
+      </button>
     </div>
   </div>
 
-  <script>
-    /* ========================================================================
-       STATE & GLOBAL VARIABLES
-       ======================================================================== */
-    let currentStream = null;
-    let facingMode = "environment"; // iPhone Back Camera
-    let isAudioMuted = false;
-    let isAutoScanActive = true;
-    let speedLimit = 80;
-    let isMoroccanPlate = true;
-    let captureLogs = [];
+  <!-- HERO BANNER -->
+  <section class="bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-900 text-white py-6 md:py-8 px-4 relative overflow-hidden no-print">
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-full opacity-20 pointer-events-none">
+      <div class="absolute top-2 left-10 w-48 h-48 bg-blue-500 rounded-full blur-3xl"></div>
+      <div class="absolute bottom-2 right-10 w-48 h-48 bg-amber-500 rounded-full blur-3xl"></div>
+    </div>
     
-    // Canvas & Video Elements
-    const video = document.getElementById('webcam');
-    const canvas = document.getElementById('hudCanvas');
-    const ctx = canvas.getContext('2d');
-    const driverCanvas = document.getElementById('driverZoomCanvas');
-    const driverCtx = driverCanvas.getContext('2d');
+    <div class="max-w-4xl mx-auto text-center relative z-10 space-y-2">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-400/20 text-blue-300 text-xs font-bold">
+        <i class="fa-solid fa-sparkles text-amber-400"></i> أداة ذكية للمقيمين في إسبانيا بعد 5 سنوات
+      </div>
+      <h2 class="text-xl sm:text-3xl font-black tracking-tight leading-snug">
+        أي نوع إقامة يناسب ملفك القانوني والمالي؟
+      </h2>
+      <p class="text-xs sm:text-sm text-slate-300 max-w-xl mx-auto leading-relaxed">
+        اكتشف هل أنت مؤهل لـ <span class="text-amber-300 font-bold">Larga Duración العادية</span> أم <span class="text-blue-300 font-bold">Larga Duración - UE الأوروبية</span> وتجنب أسباب الرفض الشائعة.
+      </p>
+    </div>
+  </section>
 
-    // UI Displays
-    const speedDisplay = document.getElementById('speedDisplay');
-    const plateNumberDisplay = document.getElementById('plateNumberDisplay');
-    const carModelText = document.getElementById('carModelText');
-    const violationStatus = document.getElementById('violationStatus');
-    const targetPing = document.getElementById('targetPing');
-    const targetDot = document.getElementById('targetDot');
-    const detectedInfoCard = document.getElementById('detectedInfoCard');
+  <!-- MAIN CONTAINER -->
+  <main class="max-w-4xl mx-auto px-3 sm:px-4 py-4 sm:py-6 w-full pb-28 md:pb-8 flex-1">
 
-    // Simulated Target Vehicle Data Generator
-    const carMakes = [
-      "Mercedes-Benz C-Class", "BMW 3 Series", "Audi A4", "Dacia Logan", 
-      "Volkswagen Golf 8", "Range Rover Evoque", "Peugeot 208", "Toyota Hilux", "Porsche Macan"
+    <!-- TAB 1: SIMULATOR SECTION -->
+    <section id="tab-sim" class="space-y-5">
+      
+      <!-- Stepper / Form Card -->
+      <div class="bg-white rounded-2xl border border-slate-200/80 shadow-ios overflow-hidden">
+        
+        <!-- Header -->
+        <div class="bg-slate-100/70 px-4 sm:px-6 py-3.5 border-b border-slate-200/80 flex items-center justify-between">
+          <div class="flex items-center gap-2.5">
+            <span class="w-7 h-7 rounded-xl bg-blue-600 text-white flex items-center justify-center text-xs font-black shadow-sm">1</span>
+            <h3 class="text-sm sm:text-base font-bold text-slate-900">استبيان فحص شروط الإقامة (5 سنوات)</h3>
+          </div>
+          <span class="text-[11px] font-semibold text-slate-500 bg-white px-2.5 py-1 rounded-lg border border-slate-200">تحليل فوري</span>
+        </div>
+
+        <form id="simulatorForm" onsubmit="event.preventDefault(); runSimulation();" class="p-4 sm:p-6 space-y-6">
+
+          <!-- Section A: Residency Duration & Absences -->
+          <div class="space-y-3">
+            <div class="flex items-center gap-2 border-b border-slate-100 pb-2">
+              <i class="fa-solid fa-calendar-check text-blue-600 text-base"></i>
+              <h4 class="text-xs sm:text-sm font-extrabold text-slate-800">1. الإقامة الزمنية والغيابات خارج إسبانيا</h4>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">مدة الإقامة القانونية المستمرة في إسبانيا:</label>
+                <select id="yearsResided" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold text-slate-800 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+                  <option value="5">5 سنوات كاملة أو أكثر (مستوفاة)</option>
+                  <option value="4">4 سنوات وأقل من 5 سنوات</option>
+                  <option value="less">أقل من 4 سنوات</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">إجمالي الغياب التراكمي في الـ 5 سنوات الأخيرة:</label>
+                <select id="totalAbsence" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold text-slate-800 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+                  <option value="less10">أقل من 10 أشهر إجمالاً (ممتاز)</option>
+                  <option value="10to12">بين 10 و 12 شهراً إجمالاً</option>
+                  <option value="more12">أكثر من 12 شهراً إجمالاً</option>
+                </select>
+              </div>
+
+              <div class="md:col-span-2">
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">هل غادرت خارج الاتحاد الأوروبي لمرة واحدة مستمرة لأكثر من 6 أشهر؟</label>
+                <select id="singleAbsence" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold text-slate-800 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+                  <option value="no">لا، لم أتجاوز 6 أشهر متتالية خارج إسبانيا/الاتحاد الأوروبي</option>
+                  <option value="yes_6to12">نعم، بين 6 إلى 12 شهراً متواصلة خارج الاتحاد الأوروبي</option>
+                  <option value="yes_more12">نعم، أكثر من 12 شهراً متواصلة خارج الاتحاد الأوروبي</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section B: Financial Status & Health Insurance -->
+          <div class="space-y-3 pt-2 border-t border-slate-100">
+            <div class="flex items-center gap-2 border-b border-slate-100 pb-2">
+              <i class="fa-solid fa-wallet text-emerald-600 text-base"></i>
+              <h4 class="text-xs sm:text-sm font-extrabold text-slate-800">2. الوضع المالي، العمل، والتغطية الصحية</h4>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">الوضعية المهنية / مصدر الدخل حالياً:</label>
+                <select id="workStatus" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold text-slate-800 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+                  <option value="employee">عامل بعقد عمل ثابت (Cuenta Ajena)</option>
+                  <option value="self_employed">عامل حر (Autónomo)</option>
+                  <option value="savings">لدي موارد وودائع مالية كافية بالبنك</option>
+                  <option value="unemployed">غير عامل / باحث عن عمل / إعانة بطالة</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">الدخل الشهري الفردي التقديري (مؤشر IPREM = ~600€):</label>
+                <select id="monthlyIncome" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold text-slate-800 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+                  <option value="iprem100">أكثر من 600€ شهرياً (يتجاوز 100% IPREM)</option>
+                  <option value="iprem150">أكثر من 900€ شهرياً (يتجاوز 150% IPREM مع العائلة)</option>
+                  <option value="low">أقل من 600€ شهرياً أو بدون دخل مثبت</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">التغطية الصحية المتاحة (Asistencia Sanitaria):</label>
+                <select id="healthInsurance" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold text-slate-800 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+                  <option value="public">تغطية عامة كاملة عبر الضمان الاجتماعي (Seguridad Social)</option>
+                  <option value="private">تأمين صحي خاص شامل بدون اقتطاع (Seguro Privado sin copago)</option>
+                  <option value="none">لا توجد تغطية صحية ثابته</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">السجل العدلي / السوابق القضائية (Penales):</label>
+                <select id="criminalRecord" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold text-slate-800 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+                  <option value="clean">سجل نظيف بدون سوابق إطلاقاً</option>
+                  <option value="has_record">توجد سوابق لم يتم مسحها بعد (Sin Cancelar)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section C: Future Intentions -->
+          <div class="space-y-3 pt-2 border-t border-slate-100">
+            <div class="flex items-center gap-2 border-b border-slate-100 pb-2">
+              <i class="fa-solid fa-plane-departure text-indigo-600 text-base"></i>
+              <h4 class="text-xs sm:text-sm font-extrabold text-slate-800">3. الهدف من التجديد وتطلعاتك المستقبلية</h4>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1.5">هل تخطط للانتقال والعمل في دولة أوروبية أخرى مستقبلاً؟</label>
+              <select id="futureIntent" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold text-slate-800 focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+                <option value="spain_only">لا، أود الاستمرار بالإقامة والعمل في إسبانيا فقط</option>
+                <option value="eu_move">نعم، يرمني الانتقال والعمل بسلاسة في فرنسا أو بلجيكا أو ألمانيا...</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="pt-2">
+            <button type="submit" class="w-full py-3.5 px-6 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 active:scale-[0.98] text-white font-extrabold text-sm sm:text-base rounded-xl shadow-float transition flex items-center justify-center gap-2">
+              <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i>
+              <span>فحص واستخراج التوصية المناسبة</span>
+            </button>
+          </div>
+
+        </form>
+      </div>
+
+      <!-- SIMULATION RESULT BOX (Hidden by default) -->
+      <div id="simResultBox" class="hidden bg-white rounded-2xl border border-slate-200 shadow-xl overflow-hidden p-4 sm:p-6 space-y-5 animate-fade-in">
+        
+        <!-- Result Banner Header -->
+        <div id="resultBanner" class="p-4 sm:p-5 rounded-2xl border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div class="flex items-center gap-3.5">
+            <div id="resultIcon" class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl shadow-inner shrink-0">
+              <!-- Dynamic Icon -->
+            </div>
+            <div>
+              <span class="text-[10px] font-black uppercase tracking-wider text-slate-500">النتيجة والتشخيص القانوني</span>
+              <h3 id="resultTitle" class="text-lg sm:text-xl font-black text-slate-900 leading-snug">--</h3>
+              <p id="resultSubtitle" class="text-xs sm:text-sm font-bold mt-0.5 text-slate-600">--</p>
+            </div>
+          </div>
+
+          <div class="w-full sm:w-auto flex sm:flex-col items-center sm:items-end justify-between border-t sm:border-0 pt-3 sm:pt-0 border-slate-200/60">
+            <span class="text-[11px] font-bold text-slate-500">نسبة التطابق:</span>
+            <span id="matchScore" class="text-2xl font-black text-blue-600">100%</span>
+          </div>
+        </div>
+
+        <!-- Strengths and Warnings Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="bg-emerald-50/70 p-4 rounded-xl border border-emerald-200/80">
+            <h4 class="font-extrabold text-emerald-900 text-xs sm:text-sm mb-2.5 flex items-center gap-2">
+              <i class="fa-solid fa-circle-check text-emerald-600"></i> نقاط القوة في ملفك:
+            </h4>
+            <ul id="positiveList" class="space-y-1.5 text-xs text-emerald-900 font-medium">
+              <!-- Dynamic items -->
+            </ul>
+          </div>
+
+          <div class="bg-amber-50/70 p-4 rounded-xl border border-amber-200/80">
+            <h4 class="font-extrabold text-amber-900 text-xs sm:text-sm mb-2.5 flex items-center gap-2">
+              <i class="fa-solid fa-triangle-exclamation text-amber-600"></i> تنبيهات وملاحظات هامة:
+            </h4>
+            <ul id="warningList" class="space-y-1.5 text-xs text-amber-900 font-medium">
+              <!-- Dynamic items -->
+            </ul>
+          </div>
+        </div>
+
+        <!-- Next Action Card -->
+        <div class="bg-blue-50/80 border border-blue-200 rounded-xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div>
+            <h5 class="font-bold text-blue-900 text-xs sm:text-sm">الخطوة القادمة الموصى بها:</h5>
+            <p id="nextActionText" class="text-xs text-blue-800 mt-0.5 leading-relaxed">قم بمراجعة وثائق الملف المحددة للنوع الموصى به ثم استخرج النموذج الخاص بها.</p>
+          </div>
+          <button onclick="switchTab('docs')" class="w-full sm:w-auto px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition shadow flex items-center justify-center gap-2 whitespace-nowrap">
+            <i class="fa-solid fa-arrow-left"></i> انتقل لقائمة الملفات
+          </button>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- TAB 2: COMPARISON TABLE & CARDS -->
+    <section id="tab-comp" class="hidden space-y-4">
+      <div class="bg-white rounded-2xl border border-slate-200/80 shadow-ios p-4 sm:p-6 space-y-5">
+        <div class="text-center max-w-xl mx-auto space-y-1">
+          <h3 class="text-lg font-black text-slate-900">مقارنة شاملة: Larga Duración vs Larga Duración UE</h3>
+          <p class="text-xs text-slate-500">مقارنة قانونية مبسطة حسب لائحة Extranjería الإسبانية</p>
+        </div>
+
+        <!-- Mobile Card Comparison View (Visible on Mobile) -->
+        <div class="block md:hidden space-y-4">
+          <!-- Card 1: Regular -->
+          <div class="border-2 border-amber-300/80 bg-amber-50/30 rounded-2xl p-4 space-y-3">
+            <div class="flex items-center justify-between border-b border-amber-200/60 pb-2">
+              <span class="font-extrabold text-amber-900 text-sm flex items-center gap-2">
+                <span>🇪🇸 Larga Duración</span>
+              </span>
+              <span class="text-[10px] bg-amber-200 text-amber-900 px-2 py-0.5 rounded-full font-black">العادية (الأساسية)</span>
+            </div>
+            <ul class="space-y-2 text-xs text-slate-700">
+              <li><strong class="text-slate-900">الهدف:</strong> الإقامة والعمل في إسبانيا لأجل غير مسمى.</li>
+              <li><strong class="text-slate-900">شرط الدخل:</strong> <span class="text-emerald-700 font-bold">غير مطلوب إثبات مدخول جديد وقت التجديد.</span></li>
+              <li><strong class="text-slate-900">التأمين الصحي:</strong> غير مشروط بعقد جديد.</li>
+              <li><strong class="text-slate-900">الغياب مسموح:</strong> ألا يتجاوز 10 أشهر إجمالاً في 5 سنوات، ولا يزيد عن 6 أشهر متتالية.</li>
+              <li><strong class="text-slate-900">الانتقال لأوروبا:</strong> لا تمنح حق العمل المباشر في أوروبا إلا بفيزا جديدة.</li>
+              <li><strong class="text-slate-900">نسبة القبول:</strong> عالية وسريعة جداً تلقائياً.</li>
+            </ul>
+          </div>
+
+          <!-- Card 2: UE -->
+          <div class="border-2 border-blue-400/80 bg-blue-50/30 rounded-2xl p-4 space-y-3">
+            <div class="flex items-center justify-between border-b border-blue-200/60 pb-2">
+              <span class="font-extrabold text-blue-900 text-sm flex items-center gap-2">
+                <span>🇪🇺 Larga Duración - UE</span>
+              </span>
+              <span class="text-[10px] bg-blue-200 text-blue-900 px-2 py-0.5 rounded-full font-black">الأوروبية</span>
+            </div>
+            <ul class="space-y-2 text-xs text-slate-700">
+              <li><strong class="text-slate-900">الهدف:</strong> الإقامة في إسبانيا وسهولة التوجه للإقامة والعمل بفرنسا، بلجيكا، ألمانيا...</li>
+              <li><strong class="text-slate-900">شرط الدخل:</strong> <span class="text-amber-700 font-bold">إجباري إثبات دخل كافٍ ثابت (100% IPREM = ~600€+).</span></li>
+              <li><strong class="text-slate-900">التأمين الصحي:</strong> تغطية صحية كاملة ومستمرة إجبارية.</li>
+              <li><strong class="text-slate-900">الغياب مسموح:</strong> ألا يغيب أكثر من 12 شهراً متواصلاً خارج الاتحاد الأوروبي.</li>
+              <li><strong class="text-slate-900">الانتقال لأوروبا:</strong> <span class="text-blue-700 font-bold">تسهيلات استثنائية للحصول على إقامة/عمل بدول الاتحاد.</span></li>
+              <li><strong class="text-slate-900">نسبة القبول:</strong> تتطلب تدقيق كشوفات الحساب والعقود.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Desktop Table (Visible on Desktop) -->
+        <div class="hidden md:block overflow-x-auto">
+          <table class="w-full text-right text-xs border-collapse">
+            <thead>
+              <tr class="bg-slate-100 text-slate-900 border-b border-slate-200">
+                <th class="p-3 font-extrabold">معيار المقارنة</th>
+                <th class="p-3 font-extrabold bg-amber-50 text-amber-900">🇪🇸 Larga Duración (العادية)</th>
+                <th class="p-3 font-extrabold bg-blue-50 text-blue-900">🇪🇺 Larga Duración - UE (الأوروبية)</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-200 text-slate-700">
+              <tr>
+                <td class="p-3 font-bold bg-slate-50">نطاق العمل والإقامة</td>
+                <td class="p-3">عمل وإقامة دائمين داخل حدود إسبانيا فقط.</td>
+                <td class="p-3">إقامة في إسبانيا + سهولة التوجه والعمل بدول الاتحاد الأوروبي.</td>
+              </tr>
+              <tr>
+                <td class="p-3 font-bold bg-slate-50">إثبات الدخل المالي (الموارد)</td>
+                <td class="p-3 text-emerald-700 font-bold"><i class="fa-solid fa-check ml-1"></i> لا يتطلب إثبات عقد عمل جديد أو رصيد أدنى.</td>
+                <td class="p-3 text-amber-800 font-bold"><i class="fa-solid fa-triangle-exclamation ml-1"></i> يتطلب إثبات دخل منتظم (100% IPREM للشخص).</td>
+              </tr>
+              <tr>
+                <td class="p-3 font-bold bg-slate-50">التغطية الصحية الإجبارية</td>
+                <td class="p-3">عبر بطاقة الصحة الحالية أو الضمان الإسباني.</td>
+                <td class="p-3">تغطية صحية عامة أو تأمين خاص شامل (Sin Copago).</td>
+              </tr>
+              <tr>
+                <td class="p-3 font-bold bg-slate-50">حدود السفر والغياب</td>
+                <td class="p-3">أقل من 10 أشهر في 5 سنوات، ولا يزيد عن 6 أشهر متتالية.</td>
+                <td class="p-3">أقل من 10 أشهر في 5 سنوات، وألا يغيب أكثر من 12 شهراً متواصلة خارج EU.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: DOCUMENTS CHECKLIST -->
+    <section id="tab-docs" class="hidden space-y-4">
+      <div class="bg-white rounded-2xl border border-slate-200/80 shadow-ios p-4 sm:p-6 space-y-4">
+        
+        <!-- Header & Progress Tracker -->
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
+          <div>
+            <h3 class="text-base font-black text-slate-900">قائمة الوثائق الجاهزة للملف</h3>
+            <p class="text-xs text-slate-500">قم بتحديد الوثائق التي جهزتها لحساب مدى جاهزية ملفك للتقديم</p>
+          </div>
+          
+          <div class="w-full sm:w-48 bg-slate-100 p-2 rounded-xl">
+            <div class="flex justify-between text-[11px] font-bold text-slate-700 mb-1">
+              <span>جاهزية الملف:</span>
+              <span id="docProgressPercent" class="text-blue-600">0%</span>
+            </div>
+            <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+              <div id="docProgressBar" class="bg-blue-600 h-full w-0 transition-all duration-300"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filter Tags -->
+        <div class="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs no-scrollbar">
+          <button onclick="filterDocList('all')" id="docFilter-all" class="px-3 py-1.5 rounded-lg bg-blue-600 text-white font-bold shadow-sm whitespace-nowrap">الكل</button>
+          <button onclick="filterDocList('general')" id="docFilter-general" class="px-3 py-1.5 rounded-lg bg-slate-100 text-slate-600 font-bold whitespace-nowrap">خاصة بالعادية 🇪🇸</button>
+          <button onclick="filterDocList('ue')" id="docFilter-ue" class="px-3 py-1.5 rounded-lg bg-slate-100 text-slate-600 font-bold whitespace-nowrap">خاصة بالأوروبية 🇪🇺</button>
+        </div>
+
+        <!-- Interactive Document List Grid -->
+        <div id="docItemsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
+          <!-- Dynamic Document Cards generated by JS -->
+        </div>
+
+      </div>
+    </section>
+
+    <!-- TAB 4: OFFICIAL FORMS (EX11 & Tasa 012) -->
+    <section id="tab-forms" class="hidden space-y-4">
+      <div class="bg-white rounded-2xl border border-slate-200/80 shadow-ios p-4 sm:p-6 space-y-5">
+        <div>
+          <h3 class="text-base font-black text-slate-900">النماذج الرسمية والرسوم الإدارية</h3>
+          <p class="text-xs text-slate-500">تفاصيل استخراج النموذج EX-11 وطريقة الدفع عبر Tasa 790 Código 012</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Form EX11 Card -->
+          <div class="border border-slate-200 rounded-2xl p-4 bg-slate-50/50 space-y-3">
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center font-black text-xs">EX11</div>
+              <div>
+                <h4 class="font-extrabold text-slate-900 text-xs sm:text-sm">Modelo EX-11</h4>
+                <p class="text-[11px] text-slate-500">Solicitud de residencia de larga duración</p>
+              </div>
+            </div>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              هو النموذج الرسمي الخاص بطلب الإقامة الخمسية. يُعلم فيه الخيار المطلوب:
+              <br><strong class="text-slate-800">• Larga duración:</strong> في حال التجديد العادي.
+              <br><strong class="text-slate-800">• Larga duración-UE:</strong> في حال توفر الشروط المالية.
+            </p>
+            <div class="pt-2">
+              <a href="https://extranjeros.inclusion.gob.es/ficheros/Modelos_solicitudes/mod_solicitudes2/11-Formulario_Larga_Duracion.pdf" target="_blank" class="w-full py-2.5 bg-blue-600 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-2 hover:bg-blue-700 transition">
+                <i class="fa-solid fa-file-pdf"></i> تحميل النموذج EX-11 (PDF)
+              </a>
+            </div>
+          </div>
+
+          <!-- Tasa 012 Card -->
+          <div class="border border-slate-200 rounded-2xl p-4 bg-slate-50/50 space-y-3">
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center font-black text-xs">012</div>
+              <div>
+                <h4 class="font-extrabold text-slate-900 text-xs sm:text-sm">Tasa 790 Código 012</h4>
+                <p class="text-[11px] text-slate-500">رسوم المعالجة الإدارية</p>
+              </div>
+            </div>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              يتم ملء واستخراج ورقة الرسوم من الموقع الرسمي للشرطة/الهجرة، وتحديد بند:
+              <br><strong class="text-slate-800">• Autorizaciones de residencia:</strong> (~21.87€ تقريباً).
+              <br>تُدفع بالبنك أو عبر الصراف الآلي قبل إيداع الملف.
+            </p>
+            <div class="pt-2">
+              <a href="https://mpt.gob.es/pagina/Index/modelo790" target="_blank" class="w-full py-2.5 bg-slate-800 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-2 hover:bg-slate-900 transition">
+                <i class="fa-solid fa-credit-card"></i> رابط استخراج التاسا 012
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 5: FAQ & SEARCH -->
+    <section id="tab-faq" class="hidden space-y-4">
+      <div class="bg-white rounded-2xl border border-slate-200/80 shadow-ios p-4 sm:p-6 space-y-4">
+        <div>
+          <h3 class="text-base font-black text-slate-900">الأسئلة الشائعة والإرشادات</h3>
+          <p class="text-xs text-slate-500">إجابات قانونية وسريعة عن أبرز الاستفسارات</p>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="relative">
+          <input type="text" id="faqSearchInput" oninput="searchFAQ()" placeholder="ابحث في الأسئلة (مثلاً: Tasa, غياب, دقيقة, عقد عمل...)" class="w-full p-3 pr-10 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:bg-white focus:ring-2 focus:ring-blue-500 transition">
+          <i class="fa-solid fa-magnifying-glass absolute right-3.5 top-3.5 text-slate-400 text-xs"></i>
+        </div>
+
+        <!-- FAQ Accordion Container -->
+        <div id="faqAccordion" class="space-y-2.5 pt-1">
+          
+          <details class="faq-item group border border-slate-200 rounded-xl p-3.5 bg-slate-50/50">
+            <summary class="flex items-center justify-between font-bold text-slate-800 cursor-pointer text-xs sm:text-sm">
+              <span>متى يمكنني التقديم على طلب الإقامة الخمسية؟</span>
+              <i class="fa-solid fa-chevron-down text-slate-400 text-xs transition group-open:rotate-180"></i>
+            </summary>
+            <p class="mt-2.5 text-xs text-slate-600 leading-relaxed border-t pt-2 border-slate-200/60">
+              يمكنك التقديم في فترة <strong>60 يوماً قبل انتهاء البطاقة الحالية</strong>، أو في غضون <strong>90 يوماً بعد انتهاء صلاحيتها</strong> (يُفضل التقديم قبل الانتهاء دائماً لتفادي التعقيدات).
+            </p>
+          </details>
+
+          <details class="faq-item group border border-slate-200 rounded-xl p-3.5 bg-slate-50/50">
+            <summary class="flex items-center justify-between font-bold text-slate-800 cursor-pointer text-xs sm:text-sm">
+              <span>كيف يتم تقديم الطلب الكترونياً بدون مواعيد (Cita Previa)؟</span>
+              <span class="transition group-open:rotate-180"><i class="fa-solid fa-chevron-down text-slate-400 text-xs"></i></span>
+            </summary>
+            <p class="mt-2.5 text-xs text-slate-600 leading-relaxed border-t pt-2 border-slate-200/60">
+              يمكنك إيداع الملف مباشرة عبر منصة <strong>Mercurio (Plataforma Mercurio)</strong> باستخدام الشهادة الرقمية (Certificado Digital) دون الحاجة لحجز موعد حضوري في مكتب Extranjería.
+            </p>
+          </details>
+
+          <details class="faq-item group border border-slate-200 rounded-xl p-3.5 bg-slate-50/50">
+            <summary class="flex items-center justify-between font-bold text-slate-800 cursor-pointer text-xs sm:text-sm">
+              <span>ماذا لو تم رفض طلب Larga Duración - UE بسبب عدم كفاية المداخيل؟</span>
+              <span class="transition group-open:rotate-180"><i class="fa-solid fa-chevron-down text-slate-400 text-xs"></i></span>
+            </summary>
+            <p class="mt-2.5 text-xs text-slate-600 leading-relaxed border-t pt-2 border-slate-200/60">
+              في حال عدم قبول الموارد المالية لـ UE، تمنحك الإدارة مهلة للتعديل أو يمكنك فوراً طلب التحويل لـ <strong>Larga Duración العادية</strong> والتي لا تتطلب إثبات مداخيل أو عقد عمل طالما أتممت 5 سنوات إقامة مستمرة.
+            </p>
+          </details>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MOBILE BOTTOM NAVIGATION BAR (iOS / Phone Native Style) -->
+  <nav class="md:hidden fixed bottom-0 left-0 right-0 z-50 glass-nav border-t border-slate-200/80 px-2 py-2 no-print shadow-lg">
+    <div class="max-w-md mx-auto flex items-center justify-around">
+      
+      <button onclick="switchTab('sim')" id="mtab-sim" class="flex flex-col items-center gap-1 py-1 px-2 text-blue-600 active:scale-95 transition">
+        <i class="fa-solid fa-calculator text-lg"></i>
+        <span class="text-[10px] font-bold">المحاكي</span>
+      </button>
+
+      <button onclick="switchTab('comp')" id="mtab-comp" class="flex flex-col items-center gap-1 py-1 px-2 text-slate-500 active:scale-95 transition">
+        <i class="fa-solid fa-code-compare text-lg"></i>
+        <span class="text-[10px] font-bold">المقارنة</span>
+      </button>
+
+      <button onclick="switchTab('docs')" id="mtab-docs" class="flex flex-col items-center gap-1 py-1 px-2 text-slate-500 active:scale-95 transition">
+        <i class="fa-solid fa-list-check text-lg"></i>
+        <span class="text-[10px] font-bold">الأوراق</span>
+      </button>
+
+      <button onclick="switchTab('forms')" id="mtab-forms" class="flex flex-col items-center gap-1 py-1 px-2 text-slate-500 active:scale-95 transition">
+        <i class="fa-solid fa-file-signature text-lg"></i>
+        <span class="text-[10px] font-bold">النماذج</span>
+      </button>
+
+      <button onclick="switchTab('faq')" id="mtab-faq" class="flex flex-col items-center gap-1 py-1 px-2 text-slate-500 active:scale-95 transition">
+        <i class="fa-solid fa-circle-question text-lg"></i>
+        <span class="text-[10px] font-bold">الدليل</span>
+      </button>
+
+    </div>
+  </nav>
+
+  <!-- FOOTER -->
+  <footer class="bg-slate-900 text-slate-400 text-xs py-6 border-t border-slate-800 no-print">
+    <div class="max-w-4xl mx-auto px-4 text-center space-y-2">
+      <p class="font-bold text-slate-300">دليل ومُحاكي الإقامة الخمسية في إسبانيا 🇪🇸</p>
+      <p class="text-[11px] text-slate-500">أداة إرشادية وتفاعلية لمساعدة المقيمين العرب في فهم قوانين الهجرة الإسبانية (Extranjería).</p>
+    </div>
+  </footer>
+
+  <script>
+    /* Document List Master Database */
+    const documentsMaster = [
+      {
+        id: 'ex11',
+        title: 'نموذج الطلب الرسمي (Modelo EX-11)',
+        type: 'both',
+        desc: 'مكتمل وموقع باليد أو الكترونياً تحديد خانة Larga Duración أو UE.',
+        required: true
+      },
+      {
+        id: 'passport',
+        title: 'جواز السفر الأصلي + نسخة كاملة',
+        type: 'both',
+        desc: 'طبع نسخة كاملة لجميع صفحات جواز السفر (بما فيها الصفحات الفارغة).',
+        required: true
+      },
+      {
+        id: 'tasa',
+        title: 'وصل دفع الرسوم (Tasa 790 Código 012)',
+        type: 'both',
+        desc: 'مسبوقة الدفع بقيمة ~21.87€ تقريباً.',
+        required: true
+      },
+      {
+        id: 'empadronamiento',
+        title: 'شهادة السكنى (Certificado de Empadronamiento)',
+        type: 'both',
+        desc: 'شهادة سكنى حديثة لا تتجاوز 3 أشهر من البلدية المحلية.',
+        required: true
+      },
+      {
+        id: 'income',
+        title: 'إثبات المداخيل المالية الكافية',
+        type: 'ue',
+        desc: 'عقد عمل + آخر 3 كشوفات راتب (Nóminas) أو IRPF يتجاوز 100% من IPREM.',
+        required: false
+      },
+      {
+        id: 'health',
+        title: 'إثبات التغطية الصحية الشاملة',
+        type: 'ue',
+        desc: 'بطاقة الضمان الاجتماعي الممتدة أو عقد تأمين صحي خاص بدون اقتطاع.',
+        required: false
+      }
     ];
 
-    const moroccoLetters = ['أ', 'ب', 'ج', 'د', 'هـ', 'و', 'ز', 'ح', 'ط', 'ي'];
+    let currentDocFilter = 'all';
+    let checkedDocs = new Set();
 
-    let currentTarget = {
-      x: 0.2, y: 0.3, w: 0.6, h: 0.4,
-      speed: 74,
-      model: "Mercedes-Benz C-Class",
-      plate: "58492 | أ | 6",
-      isViolation: false,
-      driverConfidence: 96
-    };
+    function switchTab(tabId) {
+      const tabs = ['sim', 'comp', 'docs', 'forms', 'faq'];
+      
+      tabs.forEach(t => {
+        // Hide Section
+        const sec = document.getElementById(`tab-${t}`);
+        if (sec) sec.classList.add('hidden');
 
-    /* ========================================================================
-       AUDIO SYNTHESIZER (WEB AUDIO API)
-       ======================================================================== */
-    let audioCtx = null;
-
-    function initAudio() {
-      if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      }
-    }
-
-    function playBeep(freq = 800, duration = 0.1, type = 'sine') {
-      if (isAudioMuted) return;
-      try {
-        initAudio();
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.type = type;
-        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        osc.start();
-        osc.stop(audioCtx.currentTime + duration);
-      } catch (e) { console.error(e); }
-    }
-
-    function playAlertSound() {
-      if (isAudioMuted) return;
-      try {
-        initAudio();
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(400, audioCtx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.3);
-        gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-        gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        osc.start();
-        osc.stop(audioCtx.currentTime + 0.3);
-      } catch (e) { console.error(e); }
-    }
-
-    function toggleAudio() {
-      isAudioMuted = !isAudioMuted;
-      const soundIcon = document.getElementById('soundIcon');
-      soundIcon.className = isAudioMuted ? "fa-solid fa-volume-xmark text-red-400" : "fa-solid fa-volume-high text-green-400";
-      if (!isAudioMuted) playBeep(1000, 0.1);
-    }
-
-    /* ========================================================================
-       CAMERA & INITIALIZATION
-       ======================================================================== */
-    async function startCamera() {
-      if (currentStream) {
-        currentStream.getTracks().forEach(track => track.stop());
-      }
-
-      const constraints = {
-        video: {
-          facingMode: { ideal: facingMode },
-          width: { ideal: 1280 },
-          height: { ideal: 720 }
-        },
-        audio: false
-      };
-
-      try {
-        currentStream = await navigator.mediaDevices.getUserMedia(constraints);
-        video.srcObject = currentStream;
-        await video.play();
-        document.getElementById('systemStatusText').innerText = "LIVE RADAR ACTIVE";
-      } catch (err) {
-        console.warn("Front/Back Camera fallback applied:", err);
-        try {
-          currentStream = await navigator.mediaDevices.getUserMedia({ video: true });
-          video.srcObject = currentStream;
-          await video.play();
-        } catch (e) {
-          document.getElementById('systemStatusText').innerText = "CAMERA BLOCKED / TEST MODE";
-          simulateFallbackVideo();
+        // Reset Desktop Tabs
+        const dtab = document.getElementById(`dtab-${t}`);
+        if (dtab) {
+          dtab.className = 'py-3.5 px-4 font-semibold text-sm text-slate-600 hover:text-slate-900 border-b-2 border-transparent flex items-center gap-2 transition';
         }
-      }
-      resizeCanvas();
-    }
 
-    function switchCamera() {
-      facingMode = facingMode === "environment" ? "user" : "environment";
-      startCamera();
-      playBeep(900, 0.1);
-    }
-
-    function resizeCanvas() {
-      canvas.width = video.clientWidth || window.innerWidth;
-      canvas.height = video.clientHeight || window.innerHeight;
-      driverCanvas.width = 150;
-      driverCanvas.height = 150;
-    }
-
-    window.addEventListener('resize', resizeCanvas);
-
-    /* Fallback canvas simulation if user denies camera */
-    function simulateFallbackVideo() {
-      // Creates animated canvas background simulating street motion
-      const dummyCanvas = document.createElement('canvas');
-      dummyCanvas.width = 640;
-      dummyCanvas.height = 360;
-      const dctx = dummyCanvas.getContext('2d');
-      setInterval(() => {
-        dctx.fillStyle = "#111827";
-        dctx.fillRect(0, 0, 640, 360);
-        dctx.strokeStyle = "#00ff66";
-        dctx.lineWidth = 2;
-        dctx.strokeRect(100, 80, 440, 200);
-      }, 100);
-    }
-
-    /* ========================================================================
-       RADAR HUD RENDER ENGINE
-       ======================================================================== */
-    let scanLineY = 0;
-
-    function renderHUD() {
-      if (!canvas.width || !canvas.height) {
-        requestAnimationFrame(renderHUD);
-        return;
-      }
-
-      const w = canvas.width;
-      const h = canvas.height;
-
-      ctx.clearRect(0, 0, w, h);
-
-      // 1. Tactical Radar Grid Lines
-      ctx.strokeStyle = "rgba(0, 255, 102, 0.15)";
-      ctx.lineWidth = 1;
-
-      // Center Crosshair
-      ctx.beginPath();
-      ctx.moveTo(w / 2, 0); ctx.lineTo(w / 2, h);
-      ctx.moveTo(0, h / 2); ctx.lineTo(w, h / 2);
-      ctx.stroke();
-
-      // Corner Tech Brackets
-      const pad = 20;
-      const len = 30;
-      ctx.strokeStyle = "rgba(0, 255, 102, 0.6)";
-      ctx.lineWidth = 2;
-
-      // Top Left
-      ctx.beginPath(); ctx.moveTo(pad, pad + len); ctx.lineTo(pad, pad); ctx.lineTo(pad + len, pad); ctx.stroke();
-      // Top Right
-      ctx.beginPath(); ctx.moveTo(w - pad - len, pad); ctx.lineTo(w - pad, pad); ctx.lineTo(w - pad, pad + len); ctx.stroke();
-      // Bottom Left
-      ctx.beginPath(); ctx.moveTo(pad, h - pad - len); ctx.lineTo(pad, h - pad); ctx.lineTo(pad + len, h - pad); ctx.stroke();
-      // Bottom Right
-      ctx.beginPath(); ctx.moveTo(w - pad - len, h - pad); ctx.lineTo(w - pad, h - pad); ctx.lineTo(w - pad, h - pad - len); ctx.stroke();
-
-      // 2. Animated Laser Scan Line
-      scanLineY = (scanLineY + 3) % h;
-      const grad = ctx.createLinearGradient(0, scanLineY - 15, 0, scanLineY + 15);
-      grad.addColorStop(0, "rgba(0, 255, 102, 0)");
-      grad.addColorStop(0.5, "rgba(0, 255, 102, 0.5)");
-      grad.addColorStop(1, "rgba(0, 255, 102, 0)");
-      ctx.fillStyle = grad;
-      ctx.fillRect(0, scanLineY - 15, w, 30);
-
-      // 3. Render Detected Target Bounding Box
-      const bx = currentTarget.x * w;
-      const by = currentTarget.y * h;
-      const bw = currentTarget.w * w;
-      const bh = currentTarget.h * h;
-
-      const isViolation = currentTarget.speed > speedLimit;
-
-      ctx.strokeStyle = isViolation ? "rgba(255, 30, 60, 0.9)" : "rgba(0, 255, 102, 0.8)";
-      ctx.lineWidth = isViolation ? 3 : 2;
-      ctx.setLineDash([10, 5]);
-      ctx.strokeRect(bx, by, bw, bh);
-      ctx.setLineDash([]);
-
-      // Corner Highlights on target box
-      ctx.fillStyle = isViolation ? "#ff1e3c" : "#00ff66";
-      const bCorner = 12;
-      ctx.fillRect(bx - 2, by - 2, bCorner, 3);
-      ctx.fillRect(bx - 2, by - 2, 3, bCorner);
-      ctx.fillRect(bx + bw - bCorner + 2, by - 2, bCorner, 3);
-      ctx.fillRect(bx + bw - 1, by - 2, 3, bCorner);
-
-      // Target Label
-      ctx.font = "bold 12px 'Share Tech Mono', monospace";
-      ctx.fillStyle = isViolation ? "#ff1e3c" : "#00ff66";
-      ctx.fillText(`LOCK: ${currentTarget.model} | ${currentTarget.speed} KM/H`, bx, by - 8);
-
-      // Update PIP Window with Cropped Driver Face Area
-      updateDriverPIP(bx, by, bw, bh);
-
-      requestAnimationFrame(renderHUD);
-    }
-
-    /* Update PIP canvas zoom area */
-    function updateDriverPIP(bx, by, bw, bh) {
-      if (!video.videoWidth) return;
-      try {
-        // Driver area assumed top left quarter inside target box
-        const cropX = (bx / canvas.width) * video.videoWidth;
-        const cropY = (by / canvas.height) * video.videoHeight;
-        const cropW = (bw / canvas.width) * video.videoWidth * 0.45;
-        const cropH = (bh / canvas.height) * video.videoHeight * 0.45;
-
-        driverCtx.drawImage(
-          video,
-          cropX, cropY, cropW, cropH,
-          0, 0, driverCanvas.width, driverCanvas.height
-        );
-      } catch (e) {}
-    }
-
-    /* ========================================================================
-       TARGET LOCK & GENERATOR LOGIC
-       ======================================================================== */
-    function forceTargetLock() {
-      const isViolation = Math.random() > 0.6;
-      const speedOffset = isViolation ? Math.floor(Math.random() * 35) + 10 : -Math.floor(Math.random() * 20);
-      const calculatedSpeed = speedLimit + speedOffset;
-
-      // Generate Moroccan or International Plate
-      let generatedPlate = "";
-      if (isMoroccanPlate) {
-        const num1 = Math.floor(10000 + Math.random() * 89999);
-        const letter = moroccoLetters[Math.floor(Math.random() * moroccoLetters.length)];
-        const region = Math.floor(1 + Math.random() * 70);
-        generatedPlate = `${num1} | ${letter} | ${region}`;
-      } else {
-        const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ";
-        const randomStr = chars[Math.floor(Math.random() * chars.length)] + chars[Math.floor(Math.random() * chars.length)];
-        const num = Math.floor(100 + Math.random() * 899);
-        generatedPlate = `${randomStr}-${num}-XX`;
-      }
-
-      currentTarget = {
-        x: 0.15 + Math.random() * 0.2,
-        y: 0.25 + Math.random() * 0.2,
-        w: 0.5 + Math.random() * 0.15,
-        h: 0.35 + Math.random() * 0.15,
-        speed: calculatedSpeed,
-        model: carMakes[Math.floor(Math.random() * carMakes.length)],
-        plate: generatedPlate,
-        isViolation: calculatedSpeed > speedLimit,
-        driverConfidence: Math.floor(88 + Math.random() * 11)
-      };
-
-      // Update UI elements
-      speedDisplay.innerText = `${currentTarget.speed} km/h`;
-      plateNumberDisplay.innerText = currentTarget.plate;
-      carModelText.innerText = `مركبة: ${currentTarget.model}`;
-
-      if (currentTarget.isViolation) {
-        speedDisplay.className = "text-xl font-bold font-orbitron text-red-500 glow-red animate-pulse";
-        violationStatus.className = "inline-block px-2 py-0.5 rounded text-[10px] font-bold bg-red-950 text-red-400 border border-red-500/50";
-        violationStatus.innerText = "مخالفة سرعة (VIOLATION)";
-        targetPing.className = "animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75";
-        targetDot.className = "relative inline-flex rounded-full h-3 w-3 bg-red-500";
-        detectedInfoCard.className = "absolute bottom-28 left-4 right-4 md:left-auto md:right-4 md:w-80 z-20 bg-gray-950/90 border border-red-500/80 rounded-2xl p-3.5 backdrop-blur-lg shadow-2xl transition-all duration-300 transform translate-y-0 glow-box-red";
-        
-        playAlertSound();
-      } else {
-        speedDisplay.className = "text-xl font-bold font-orbitron text-green-400 glow-green";
-        violationStatus.className = "inline-block px-2 py-0.5 rounded text-[10px] font-bold bg-green-900/60 text-green-300 border border-green-500/30";
-        violationStatus.innerText = "سليمة (OK)";
-        targetPing.className = "animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75";
-        targetDot.className = "relative inline-flex rounded-full h-3 w-3 bg-green-500";
-        detectedInfoCard.className = "absolute bottom-28 left-4 right-4 md:left-auto md:right-4 md:w-80 z-20 bg-gray-950/85 border border-green-500/50 rounded-2xl p-3.5 backdrop-blur-lg shadow-2xl transition-all duration-300 transform translate-y-0 glow-box-green";
-        
-        playBeep(1200, 0.08);
-      }
-
-      document.getElementById('driverDetectLabel').innerText = `FACIAL LOCK: ${currentTarget.driverConfidence}%`;
-    }
-
-    /* Auto Scan Loop Generator */
-    setInterval(() => {
-      if (isAutoScanActive) {
-        forceTargetLock();
-        if (currentTarget.isViolation) {
-          triggerSnapshot(true);
+        // Reset Mobile Tabs
+        const mtab = document.getElementById(`mtab-${t}`);
+        if (mtab) {
+          mtab.className = 'flex flex-col items-center gap-1 py-1 px-2 text-slate-500 active:scale-95 transition';
         }
-      }
-    }, 4500);
+      });
 
-    /* ========================================================================
-       SHUTTER CAPTURE & SNAPSHOT ENGINE
-       ======================================================================== */
-    function triggerManualScan() {
-      forceTargetLock();
-      triggerSnapshot(false);
-    }
+      // Show Active Section
+      const activeSec = document.getElementById(`tab-${tabId}`);
+      if (activeSec) activeSec.classList.remove('hidden');
 
-    function triggerSnapshot(isAuto = false) {
-      // Trigger screen flash animation
-      const flash = document.getElementById('flashOverlay');
-      flash.classList.add('flash-active');
-      setTimeout(() => flash.classList.remove('flash-active'), 300);
-
-      playBeep(1500, 0.15, 'triangle');
-
-      // Create snapshot image from current video + canvas overlay
-      const snapCanvas = document.createElement('canvas');
-      snapCanvas.width = video.videoWidth || 640;
-      snapCanvas.height = video.videoHeight || 480;
-      const sCtx = snapCanvas.getContext('2d');
-
-      // Draw original video frame
-      try {
-        sCtx.drawImage(video, 0, 0, snapCanvas.width, snapCanvas.height);
-      } catch (e) {
-        sCtx.fillStyle = "#111";
-        sCtx.fillRect(0, 0, snapCanvas.width, snapCanvas.height);
+      // Highlight Active Desktop Tab
+      const activeDTab = document.getElementById(`dtab-${tabId}`);
+      if (activeDTab) {
+        activeDTab.className = 'py-3.5 px-4 font-bold text-sm text-blue-600 border-b-2 border-blue-600 flex items-center gap-2 transition';
       }
 
-      // Burn Radar Metadata onto snapshot image
-      sCtx.fillStyle = "rgba(0, 0, 0, 0.6)";
-      sCtx.fillRect(0, snapCanvas.height - 50, snapCanvas.width, 50);
-      sCtx.font = "bold 14px 'Share Tech Mono', monospace";
-      sCtx.fillStyle = currentTarget.isViolation ? "#ff1e3c" : "#00ff66";
-      const timeStr = new Date().toLocaleTimeString();
-      sCtx.fillText(`RADAR LOG | TIME: ${timeStr} | SPEED: ${currentTarget.speed} KM/H | PLATE: ${currentTarget.plate}`, 15, snapCanvas.height - 20);
+      // Highlight Active Mobile Tab
+      const activeMTab = document.getElementById(`mtab-${tabId}`);
+      if (activeMTab) {
+        activeMTab.className = 'flex flex-col items-center gap-1 py-1 px-2 text-blue-600 active:scale-95 transition';
+      }
 
-      const dataUrl = snapCanvas.toDataURL('image/jpeg', 0.85);
+      if (tabId === 'docs') {
+        renderDocs();
+      }
 
-      const logRecord = {
-        id: Date.now(),
-        timestamp: new Date().toLocaleTimeString('ar-MA'),
-        date: new Date().toLocaleDateString('ar-MA'),
-        speed: currentTarget.speed,
-        speedLimit: speedLimit,
-        plate: currentTarget.plate,
-        model: currentTarget.model,
-        isViolation: currentTarget.isViolation,
-        image: dataUrl,
-        driverConfidence: currentTarget.driverConfidence
-      };
-
-      captureLogs.unshift(logRecord);
-      updateLogsBadge();
-      saveLogsToStorage();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    /* ========================================================================
-       MODAL & LOGS MANAGEMENT
-       ======================================================================== */
-    function toggleGalleryModal() {
-      const modal = document.getElementById('galleryModal');
-      const isHidden = modal.classList.contains('opacity-0');
+    function runSimulation() {
+      const years = document.getElementById('yearsResided').value;
+      const totalAbsence = document.getElementById('totalAbsence').value;
+      const singleAbsence = document.getElementById('singleAbsence').value;
+      const workStatus = document.getElementById('workStatus').value;
+      const monthlyIncome = document.getElementById('monthlyIncome').value;
+      const healthInsurance = document.getElementById('healthInsurance').value;
+      const criminalRecord = document.getElementById('criminalRecord').value;
+      const futureIntent = document.getElementById('futureIntent').value;
 
-      if (isHidden) {
-        renderLogsList();
-        modal.classList.remove('opacity-0', 'pointer-events-none');
+      const resultBox = document.getElementById('simResultBox');
+      const resultBanner = document.getElementById('resultBanner');
+      const resultIcon = document.getElementById('resultIcon');
+      const resultTitle = document.getElementById('resultTitle');
+      const resultSubtitle = document.getElementById('resultSubtitle');
+      const matchScore = document.getElementById('matchScore');
+      const positiveList = document.getElementById('positiveList');
+      const warningList = document.getElementById('warningList');
+      const nextActionText = document.getElementById('nextActionText');
+
+      positiveList.innerHTML = '';
+      warningList.innerHTML = '';
+      resultBox.classList.remove('hidden');
+
+      let canRegular = true;
+      let canUE = true;
+      let score = 100;
+
+      // Evaluation Rules
+      if (years !== '5') {
+        canRegular = false;
+        canUE = false;
+        score -= 50;
+      }
+
+      if (totalAbsence === 'more12' || singleAbsence === 'yes_more12') {
+        canRegular = false;
+        canUE = false;
+        score -= 40;
+      } else if (singleAbsence === 'yes_6to12') {
+        canRegular = false; // Regular requires max 6 months single break
+        score -= 20;
+      }
+
+      if (criminalRecord === 'has_record') {
+        score -= 30;
+      }
+
+      if (monthlyIncome === 'low' || healthInsurance === 'none') {
+        canUE = false;
+      }
+
+      // Display Decision Output
+      if (!canRegular && !canUE) {
+        resultBanner.className = 'p-4 sm:p-5 rounded-2xl border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-rose-50 border-rose-200';
+        resultIcon.className = 'w-14 h-14 rounded-2xl flex items-center justify-center text-2xl shadow-inner shrink-0 bg-rose-100 text-rose-700';
+        resultIcon.innerHTML = '<i class="fa-solid fa-circle-xmark"></i>';
+        resultTitle.innerText = 'غير مؤهل حالياً للتجديد الخماسي';
+        resultTitle.className = 'text-lg sm:text-xl font-black text-rose-800 leading-snug';
+        resultSubtitle.innerText = 'ينقص الملف أحد الشروط الأساسية (المدة أو السوابق العدلية أو حدود الغياب).';
+        matchScore.innerText = `${Math.max(score, 15)}%`;
+
+        if (years !== '5') warningList.innerHTML += `<li>• لم تكتمل بعد 5 سنوات كاملة من الإقامة المستمرة.</li>`;
+        if (totalAbsence === 'more12' || singleAbsence === 'yes_more12') warningList.innerHTML += `<li>• تجاوزت الحد الأقصى للغياب خارج إسبانيا/الاتحاد الأوروبي.</li>`;
+        if (criminalRecord === 'has_record') warningList.innerHTML += `<li>• توجد سوابق قضائية يجب إلغاؤها أولاً (Cancelar Antecedentes).</li>`;
+        
+        positiveList.innerHTML += `<li>• يمكنك تجديد بطاقتك الحالية مؤقتاً لحين استكمال الشروط.</li>`;
+        nextActionText.innerText = 'يُنصح بانتظار اكتمال المدة القانونية ومسح السوابق العدلية لتفادي صدور قرار بالرفض.';
+
+      } else if (futureIntent === 'eu_move' && canUE) {
+        resultBanner.className = 'p-4 sm:p-5 rounded-2xl border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-blue-50 border-blue-200';
+        resultIcon.className = 'w-14 h-14 rounded-2xl flex items-center justify-center text-2xl shadow-inner shrink-0 bg-blue-100 text-blue-700';
+        resultIcon.innerHTML = '🇪🇺';
+        resultTitle.innerText = 'التوصية الأنسب: Larga Duración - UE (الأوروبية)';
+        resultTitle.className = 'text-lg sm:text-xl font-black text-blue-900 leading-snug';
+        resultSubtitle.innerText = 'تستوفي الشروط المالية والتغطية الصحية وترغب بالإقامة والعمل بأوروبا.';
+        matchScore.innerText = '98%';
+
+        positiveList.innerHTML += `<li>• مستوفي لشرط الـ 5 سنوات إقامة.</li>`;
+        positiveList.innerHTML += `<li>• الدخل المالي يتجاوز مؤشر IPREM المسموح.</li>`;
+        positiveList.innerHTML += `<li>• تتوفر تغطية صحية كاملة.</li>`;
+
+        warningList.innerHTML += `<li>• تجهيز عقد العمل وآخر 3 كشوفات راتب (Nóminas) إجباري.</li>`;
+        nextActionText.innerText = 'يمكنك إعداد الملف واختيار نموذج EX-11 بتحديد خانة Larga Duración-UE.';
+
       } else {
-        modal.classList.add('opacity-0', 'pointer-events-none');
+        resultBanner.className = 'p-4 sm:p-5 rounded-2xl border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-emerald-50 border-emerald-200';
+        resultIcon.className = 'w-14 h-14 rounded-2xl flex items-center justify-center text-2xl shadow-inner shrink-0 bg-emerald-100 text-emerald-700';
+        resultIcon.innerHTML = '🇪🇸';
+        resultTitle.innerText = 'التوصية الأنسب والأسهل: Larga Duración (العادية)';
+        resultTitle.className = 'text-lg sm:text-xl font-black text-emerald-900 leading-snug';
+        resultSubtitle.innerText = 'تمنحك إقامة وعمل دائمين في إسبانيا بدون تعقيدات إثبات المداخيل المالية.';
+        matchScore.innerText = '95%';
+
+        positiveList.innerHTML += `<li>• شرط الإقامة 5 سنوات مستوفى تماماً.</li>`;
+        positiveList.innerHTML += `<li>• لا يتطلب هذا الخيار إثبات عقد عمل جديد وقت التقديم.</li>`;
+        positiveList.innerHTML += `<li>• القبول مباشر وسريع.</li>`;
+
+        if (futureIntent === 'eu_move' && !canUE) {
+          warningList.innerHTML += `<li>• ترغب بالتوجه لأوروبا لكن الموارد المالية الحالية قد لا تستوفي شرط UE. يُفضل أخذ العادية أولاً.</li>`;
+        } else {
+          warningList.innerHTML += `<li>• الخيار الأكثر أماناً واستقراراً في إسبانيا.</li>`;
+        }
+        nextActionText.innerText = 'قم بتجهيز جواز السفر، السكنى، والرسوم Tasa 012، ثم قدم الطلب.';
       }
-      playBeep(800, 0.05);
+
+      resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
 
-    function renderLogsList() {
-      const container = document.getElementById('logsContainer');
-      container.innerHTML = "";
+    function renderDocs() {
+      const container = document.getElementById('docItemsContainer');
+      container.innerHTML = '';
 
-      if (captureLogs.length === 0) {
-        container.innerHTML = `
-          <div class="col-span-full py-16 text-center text-gray-500 font-hud">
-            <i class="fa-solid fa-folder-open text-4xl mb-2 text-gray-600 block"></i>
-            لا توجد أية التقاطات مسجلة حالياً
-          </div>
-        `;
-        return;
-      }
+      const filtered = documentsMaster.filter(d => {
+        if (currentDocFilter === 'all') return true;
+        if (currentDocFilter === 'general') return d.type === 'both';
+        if (currentDocFilter === 'ue') return d.type === 'both' || d.type === 'ue';
+      });
 
-      captureLogs.forEach(log => {
+      filtered.forEach(doc => {
+        const isChecked = checkedDocs.has(doc.id);
         const card = document.createElement('div');
-        card.className = `bg-gray-900/90 border ${log.isViolation ? 'border-red-500/50' : 'border-green-500/30'} rounded-xl overflow-hidden shadow-lg flex flex-col justify-between`;
+        card.className = `p-3.5 rounded-xl border ${isChecked ? 'bg-blue-50/60 border-blue-300' : 'bg-slate-50 border-slate-200'} flex items-start gap-3 transition cursor-pointer`;
+        card.onclick = () => toggleDocCheck(doc.id);
 
         card.innerHTML = `
-          <div class="relative h-44 bg-black overflow-hidden">
-            <img src="${log.image}" class="w-full h-full object-cover">
-            <div class="absolute top-2 right-2 px-2 py-0.5 rounded text-[10px] font-bold font-hud ${log.isViolation ? 'bg-red-600 text-white' : 'bg-green-600 text-white'}">
-              ${log.isViolation ? 'مخالفة سرعة' : 'سليمة'}
+          <input type="checkbox" ${isChecked ? 'checked' : ''} class="mt-1 w-4 h-4 text-blue-600 rounded focus:ring-blue-500 cursor-pointer">
+          <div class="flex-1">
+            <div class="flex items-center justify-between mb-1">
+              <h4 class="font-extrabold text-xs sm:text-sm text-slate-900">${doc.title}</h4>
+              <span class="text-[10px] px-2 py-0.5 rounded-full font-bold ${doc.type === 'ue' ? 'bg-blue-100 text-blue-800' : 'bg-slate-200 text-slate-700'}">${doc.type === 'ue' ? 'خاص بـ UE' : 'أساسي'}</span>
             </div>
-            <div class="absolute bottom-2 left-2 bg-black/80 px-2 py-0.5 rounded text-xs font-orbitron font-bold text-green-400">
-              ${log.speed} km/h
-            </div>
-          </div>
-
-          <div class="p-3 flex flex-col space-y-1.5 font-hud">
-            <div class="flex justify-between items-center text-xs">
-              <span class="text-gray-400">السيارة:</span>
-              <span class="text-gray-200 font-bold">${log.model}</span>
-            </div>
-            <div class="flex justify-between items-center text-xs">
-              <span class="text-gray-400">اللوحة:</span>
-              <span class="text-green-300 font-bold text-sm tracking-wider">${log.plate}</span>
-            </div>
-            <div class="flex justify-between items-center text-[10px] text-gray-400 pt-1 border-t border-gray-800">
-              <span>التوقيت: ${log.timestamp}</span>
-              <button onclick="downloadRecordImage('${log.image}', 'Radar_${log.id}.jpg')" class="text-green-400 hover:underline">
-                <i class="fa-solid fa-download ml-1"></i>حفظ
-              </button>
-            </div>
+            <p class="text-[11px] text-slate-600 leading-relaxed">${doc.desc}</p>
           </div>
         `;
         container.appendChild(card);
       });
+
+      updateDocProgress();
     }
 
-    function downloadRecordImage(dataUrl, filename) {
-      const a = document.createElement('a');
-      a.href = dataUrl;
-      a.download = filename;
-      a.click();
-    }
-
-    function updateLogsBadge() {
-      document.getElementById('logsCountBadge').innerText = captureLogs.length;
-    }
-
-    function clearAllLogs() {
-      captureLogs = [];
-      saveLogsToStorage();
-      updateLogsBadge();
-      renderLogsList();
-      playBeep(500, 0.2, 'sawtooth');
-    }
-
-    function saveLogsToStorage() {
-      try {
-        localStorage.setItem('cyberradar_logs', JSON.stringify(captureLogs.slice(0, 30)));
-      } catch (e) {}
-    }
-
-    function loadLogsFromStorage() {
-      try {
-        const saved = localStorage.getItem('cyberradar_logs');
-        if (saved) {
-          captureLogs = JSON.parse(saved);
-          updateLogsBadge();
-        }
-      } catch (e) {}
-    }
-
-    /* ========================================================================
-       CONTROLS & TOGGLES
-       ======================================================================== */
-    function updateSpeedLimit() {
-      speedLimit = parseInt(document.getElementById('speedLimitSelect').value);
-      playBeep(1000, 0.05);
-    }
-
-    function togglePlateFormat() {
-      isMoroccanPlate = !isMoroccanPlate;
-      const btn = document.getElementById('plateModeBtn');
-      btn.innerText = isMoroccanPlate ? "لوحات المغرب 🇲🇦" : "لوحات دولية 🌐";
-      forceTargetLock();
-    }
-
-    function toggleAutoScan() {
-      isAutoScanActive = !isAutoScanActive;
-      const btn = document.getElementById('autoScanBtn');
-      const text = document.getElementById('autoScanText');
-      const icon = document.getElementById('autoScanIcon');
-
-      if (isAutoScanActive) {
-        btn.className = "flex-1 py-3 rounded-xl bg-gray-900 border border-green-500/40 text-green-400 font-bold text-xs flex items-center justify-center space-x-2 space-x-reverse transition active:scale-95";
-        text.innerText = "المسح التلقائي: مشغل";
-        icon.className = "fa-solid fa-robot text-sm text-green-400";
+    function toggleDocCheck(id) {
+      if (checkedDocs.has(id)) {
+        checkedDocs.delete(id);
       } else {
-        btn.className = "flex-1 py-3 rounded-xl bg-gray-900 border border-red-500/40 text-red-400 font-bold text-xs flex items-center justify-center space-x-2 space-x-reverse transition active:scale-95";
-        text.innerText = "المسح التلقائي: متوقف";
-        icon.className = "fa-solid fa-pause text-sm text-red-400";
+        checkedDocs.add(id);
       }
-      playBeep(900, 0.08);
+      renderDocs();
     }
 
-    /* User Custom Image Upload Handler */
-    function handleImageUpload(e) {
-      const file = e.target.files[0];
-      if (!file) return;
-
-      const reader = new FileReader();
-      reader.onload = function(event) {
-        const img = new Image();
-        img.onload = function() {
-          // Render uploaded photo onto video canvas context
-          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-          forceTargetLock();
-          triggerSnapshot(false);
-        };
-        img.src = event.target.result;
-      };
-      reader.readAsDataURL(file);
+    function filterDocList(filter) {
+      currentDocFilter = filter;
+      ['all', 'general', 'ue'].forEach(f => {
+        const btn = document.getElementById(`docFilter-${f}`);
+        if (f === filter) {
+          btn.className = 'px-3 py-1.5 rounded-lg bg-blue-600 text-white font-bold shadow-sm whitespace-nowrap';
+        } else {
+          btn.className = 'px-3 py-1.5 rounded-lg bg-slate-100 text-slate-600 font-bold whitespace-nowrap';
+        }
+      });
+      renderDocs();
     }
 
-    /* ========================================================================
-       BOOTSTRAP APPLICATION
-       ======================================================================== */
+    function updateDocProgress() {
+      const total = documentsMaster.length;
+      const count = checkedDocs.size;
+      const percent = Math.round((count / total) * 100);
+
+      document.getElementById('docProgressPercent').innerText = `${percent}%`;
+      document.getElementById('docProgressBar').style.width = `${percent}%`;
+    }
+
+    function searchFAQ() {
+      const query = document.getElementById('faqSearchInput').value.toLowerCase();
+      const items = document.querySelectorAll('#faqAccordion details');
+
+      items.forEach(item => {
+        const text = item.innerText.toLowerCase();
+        if (text.includes(query)) {
+          item.style.display = 'block';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    }
+
+    // Initialize document checklist on window load
     window.onload = function() {
-      startCamera();
-      loadLogsFromStorage();
-      renderHUD();
-      forceTargetLock();
+      renderDocs();
     };
   </script>
 </body>
