@@ -2,434 +2,285 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>فاتورة عمل - Eddaouiri Abdelkarim</title>
-    <!-- مكتبة تحويل الصفحة لصورة -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تحميل ملف الإعدادات | CFG Downloader</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            red: '#ff4757',
+                            dark: '#0e1117',
+                            card: '#161b22',
+                            border: '#30363d',
+                            accent: '#238636'
+                        }
+                    },
+                    fontFamily: {
+                        cairo: ['Cairo', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
-        :root {
-            --primary: #0f172a;
-            --accent: #2563eb;
-            --bg: #f1f5f9;
-            --text-main: #1e293b;
-            --text-muted: #64748b;
-            --ios-red: #ef4444;
-        }
-
-        * { 
-            box-sizing: border-box; 
-            -webkit-tap-highlight-color: transparent;
-            font-family: system-ui, -apple-system, sans-serif;
-        }
-
         body {
-            background-color: var(--bg);
-            color: var(--text-main);
+            font-family: 'Cairo', sans-serif;
+            background-color: #0e1117;
+            overflow-x: hidden;
             margin: 0;
-            padding: 20px;
-            line-height: 1.5;
-            padding-bottom: 100px;
+            user-select: none;
         }
 
-        /* حاوية الفاتورة - تصميم نقي */
-        .invoice-box {
-            max-width: 650px;
-            margin: 0 auto;
-            background: white;
-            padding: 40px;
-            border-radius: 2px; /* تصميم كلاسيكي أكثر */
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            position: relative;
-        }
-
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            border-bottom: 2px solid var(--primary);
-            padding-bottom: 20px;
-            margin-bottom: 30px;
-        }
-
-        .logo-area h1 {
-            margin: 0;
-            font-size: 24px;
-            color: var(--primary);
-            letter-spacing: -0.5px;
-            outline: none;
-        }
-
-        .logo-area p {
-            margin: 5px 0 0;
-            font-size: 14px;
-            color: var(--text-muted);
-            outline: none;
-        }
-
-        .status-badge {
-            background: #dcfce7;
-            color: #166534;
-            padding: 4px 12px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: 700;
-            outline: none;
-        }
-
-        .date-row {
-            margin-bottom: 25px;
-            font-size: 14px;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
-        }
-
-        /* قائمة العناصر */
-        .items-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .item-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 0;
-            border-bottom: 1px solid #f1f5f9;
-        }
-
-        .item-info {
-            display: flex;
-            flex-direction: column;
-            flex: 1;
-        }
-
-        .item-name-input {
-            border: none;
-            font-weight: 600;
-            font-size: 16px;
-            color: var(--text-main);
-            outline: none;
-            background: transparent;
-            width: 100%;
-            margin-bottom: 2px;
-        }
-
-        .item-size-display {
-            font-size: 13px;
-            color: var(--accent);
-            cursor: pointer;
-            font-weight: 500;
-            text-decoration: underline dotted;
-        }
-
-        .price-area {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .item-price-input {
-            font-weight: 700;
-            color: var(--primary);
-            font-size: 16px;
-            border: 1px solid transparent;
-            outline: none;
-            background: transparent;
-            width: 90px;
-            text-align: left;
-            padding: 4px;
-        }
-
-        .item-price-input:focus {
-            border-bottom-color: var(--accent);
-            background: #f8fafc;
-        }
-
-        .currency {
-            font-size: 13px;
-            color: var(--text-muted);
-            font-weight: bold;
-        }
-
-        /* المجموع */
-        .total-section {
-            margin-top: 30px;
-            background: var(--primary);
-            color: white;
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .total-label { font-size: 14px; font-weight: 500; }
-        .total-val { font-size: 22px; font-weight: 800; }
-
-        footer {
-            margin-top: 40px;
-            text-align: center;
-            font-size: 13px;
-            color: var(--text-muted);
-            border-top: 1px solid #eee;
-            padding-top: 20px;
-        }
-
-        /* أزرار التحكم السفلى */
-        .bottom-actions {
+        /* Responsive Canvas overlay */
+        #bgCanvas {
             position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 12px;
-            z-index: 1000;
-            width: 90%;
-            max-width: 500px;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+            pointer-events: none;
         }
 
-        .btn {
-            flex: 1;
-            padding: 14px;
-            border: none;
-            border-radius: 8px;
-            font-weight: 700;
-            cursor: pointer;
-            font-size: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+        /* Glowing Effects */
+        .glow-red {
+            box-shadow: 0 0 25px rgba(255, 71, 87, 0.4);
         }
 
-        .btn-add { background: white; color: var(--primary); border: 1px solid #ddd; }
-        .btn-export { background: var(--accent); color: white; }
-        .btn-delete { color: var(--ios-red); background: none; border: none; font-size: 18px; cursor: pointer; padding: 0 10px; margin-right: 10px; }
-
-        /* نافذة القياس */
-        #size-modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(3px);
+        .glow-button:hover {
+            box-shadow: 0 0 20px rgba(255, 71, 87, 0.7);
         }
 
-        .modal-content {
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            width: 320px;
-            text-align: center;
+        /* Toast Message styling */
+        #toast {
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s;
         }
 
-        .modal-inputs {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin: 20px 0;
+        #toast.show {
+            visibility: visible;
+            opacity: 1;
         }
-
-        .modal-inputs input {
-            width: 90px;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            text-align: center;
-            font-size: 18px;
-        }
-
-        .btn-confirm {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 12px;
-            width: 100%;
-            border-radius: 6px;
-            font-weight: 700;
-        }
-
-        /* حالة التصوير */
-        .is-capturing .bottom-actions,
-        .is-capturing .btn-delete { display: none !important; }
-        .is-capturing { padding: 0; background: white; }
-        .is-capturing .invoice-box { box-shadow: none; border: none; max-width: 100%; }
-
     </style>
 </head>
-<body>
+<body class="text-white min-h-screen flex items-center justify-center p-4">
 
-    <div class="invoice-box" id="capture-area">
-        <header>
-            <div class="logo-area">
-                <h1 contenteditable="true" spellcheck="false">Eddaouiri Abdelkarim</h1>
-                <p contenteditable="true" spellcheck="false">متخصص الألومنيوم والزجاج</p>
+    <!-- Interactive Background Canvas -->
+    <canvas id="bgCanvas"></canvas>
+
+    <!-- Main Container -->
+    <main class="relative z-10 w-full max-w-md my-auto">
+        
+        <!-- Card -->
+        <div class="bg-brand-card/90 backdrop-blur-md border border-brand-border rounded-2xl p-6 sm:p-8 shadow-2xl text-center relative overflow-hidden transition-all">
+            
+            <!-- Decorative Accent Line -->
+            <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-red-500 via-orange-500 to-amber-500"></div>
+
+            <!-- File Badge / Icon -->
+            <div class="mx-auto w-20 h-20 bg-red-500/10 border border-red-500/30 rounded-2xl flex items-center justify-center mb-5 glow-red">
+                <i class="fa-solid fa-file-code text-red-500 text-4xl"></i>
             </div>
-            <div class="status-badge" contenteditable="true" spellcheck="false">طلب مكتمل</div>
-        </header>
 
-        <div class="date-row">
-            <strong>التاريخ:</strong> <span id="display-date"></span>
-        </div>
+            <!-- File Details Header -->
+            <h1 class="text-2xl font-black mb-1 text-white tracking-wide">
+                Free Fire Config
+            </h1>
+            <p class="text-xs text-gray-400 mb-6 font-mono dir-ltr">
+                com.dts.freefireth.cfg
+            </p>
 
-        <ul class="items-list" id="items-list">
-            <!-- سيتم إضافة العناصر هنا -->
-            <li class="item-row">
-                <div class="item-info">
-                    <input type="text" class="item-name-input" value="باب ألومنيوم" spellcheck="false">
-                    <span class="item-size-display" onclick="openSize(this)">80 × 222.5 سم</span>
-                </div>
-                <div class="price-area">
-                    <input type="number" class="item-price-input" value="1400" oninput="updateTotal()">
-                    <span class="currency">DH</span>
-                    <button class="btn-delete" onclick="removeItem(this)">✕</button>
-                </div>
-            </li>
-        </ul>
-
-        <div class="total-section">
-            <span class="total-label">المجموع الإجمالي (Total):</span>
-            <span class="total-val" id="grand-total">1,400 DH</span>
-        </div>
-
-        <footer>
-            <p contenteditable="true" spellcheck="false">نشكركم على اختياركم لخدماتنا | الهاتف: 06 00 00 00 00</p>
-        </footer>
-    </div>
-
-    <!-- أزرار التحكم -->
-    <div class="bottom-actions">
-        <button class="btn btn-add" onclick="addNewItem()">
-            <span>+</span> إضافة عنصر
-        </button>
-        <button class="btn btn-export" onclick="saveAsImage()">
-            حفظ كصورة (PNG)
-        </button>
-    </div>
-
-    <!-- مودال القياس -->
-    <div id="size-modal">
-        <div class="modal-content">
-            <h3 style="margin:0">تعديل القياسات</h3>
-            <div class="modal-inputs">
-                <input type="number" id="width-in" placeholder="عرض">
-                <span>×</span>
-                <input type="number" id="height-in" placeholder="طول">
+            <!-- Status Info Tag -->
+            <div class="flex items-center justify-center gap-2 bg-gray-800/80 rounded-lg py-2 px-3 mb-6 text-xs text-gray-300 border border-gray-700">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+                <span>الملف جاهز للتحميل المباشر</span>
             </div>
-            <button class="btn-confirm" onclick="applySize()">تحديث</button>
-            <button style="background:none; border:none; margin-top:15px; color:var(--text-muted); cursor:pointer" onclick="closeModal()">إلغاء</button>
+
+            <!-- Primary Download Button -->
+            <a id="downloadBtn" 
+               href="com.dts.freefireth.cfg" 
+               download="com.dts.freefireth.cfg"
+               class="glow-button w-full flex items-center justify-center gap-3 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white font-bold py-3.5 px-6 rounded-xl transition duration-200 active:scale-95 text-lg">
+                <i class="fa-solid fa-download animate-bounce"></i>
+                <span>تحميل الملف الآن</span>
+            </a>
+
+            <!-- Secondary Actions: Copy Link & Info -->
+            <div class="grid grid-cols-2 gap-3 mt-4">
+                <button onclick="copyDirectLink()" class="flex items-center justify-center gap-2 bg-gray-800/70 hover:bg-gray-700 border border-gray-700 py-2.5 rounded-lg text-xs font-semibold text-gray-300 transition">
+                    <i class="fa-regular fa-copy"></i>
+                    <span>نسخ الرابط</span>
+                </button>
+
+                <button onclick="toggleInstructions()" class="flex items-center justify-center gap-2 bg-gray-800/70 hover:bg-gray-700 border border-gray-700 py-2.5 rounded-lg text-xs font-semibold text-gray-300 transition">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <span>طريقة التركيب</span>
+                </button>
+            </div>
+
+            <!-- Installation Guide Accordion -->
+            <div id="instructions" class="hidden mt-5 text-right bg-gray-900/90 border border-gray-800 rounded-xl p-4 text-xs text-gray-300 space-y-2">
+                <div class="font-bold text-red-400 mb-1 border-b border-gray-800 pb-1">طريقة نقل الملف للهاتف:</div>
+                <p>1. قم بتحميل الملف عبر الضغط على الزر أعلاه.</p>
+                <p>2. افتاح برنامج إدارة الملفات (ZArchiver أو ملفاتي).</p>
+                <p>3. انقل الملف إلى المسار التالي:</p>
+                <code class="block bg-black/60 p-2 rounded text-amber-400 font-mono text-[10px] dir-ltr text-center break-all select-all">
+                    Android/data/com.dts.freefireth/files/
+                </code>
+            </div>
+
+            <!-- Footer Note -->
+            <div class="mt-6 pt-4 border-t border-gray-800/60 text-[11px] text-gray-500 flex justify-between items-center">
+                <span>GitHub Hosted</span>
+                <span>Free Fire Config v1.0</span>
+            </div>
+
         </div>
+    </main>
+
+    <!-- Custom Toast Message -->
+    <div id="toast" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-gray-900 border border-emerald-500/50 text-emerald-400 px-5 py-3 rounded-xl shadow-2xl z-50 flex items-center gap-3 text-sm">
+        <i class="fa-solid fa-circle-check text-base"></i>
+        <span id="toastMsg">تم نسخ الرابط بنجاح!</span>
     </div>
 
     <script>
-        let activeSizeSpan = null;
+        /* Interactive Background Canvas Animation */
+        const canvas = document.getElementById('bgCanvas');
+        const ctx = canvas.getContext('2d');
 
-        // وضع التاريخ الحالي
-        document.getElementById('display-date').innerText = new Date().toLocaleDateString('ar-MA');
+        let particlesArray = [];
+        let numberOfParticles = 45;
 
-        function addNewItem() {
-            const list = document.getElementById('items-list');
-            const li = document.createElement('li');
-            li.className = 'item-row';
-            li.innerHTML = `
-                <div class="item-info">
-                    <input type="text" class="item-name-input" placeholder="اسم العنصر..." spellcheck="false">
-                    <span class="item-size-display" onclick="openSize(this)">0 × 0 سم</span>
-                </div>
-                <div class="price-area">
-                    <input type="number" class="item-price-input" value="0" oninput="updateTotal()">
-                    <span class="currency">DH</span>
-                    <button class="btn-delete" onclick="removeItem(this)">✕</button>
-                </div>
-            `;
-            list.appendChild(li);
-            updateTotal();
+        // Resize Canvas dynamically
+        function setCanvasSize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
         }
+        setCanvasSize();
 
-        function removeItem(btn) {
-            btn.closest('li').remove();
-            updateTotal();
-        }
+        window.addEventListener('resize', () => {
+            setCanvasSize();
+            initParticles();
+        });
 
-        function updateTotal() {
-            let total = 0;
-            document.querySelectorAll('.item-price-input').forEach(input => {
-                total += parseFloat(input.value || 0);
-            });
-            document.getElementById('grand-total').innerText = total.toLocaleString('en-US') + ' DH';
-        }
+        // Particle Class definition
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2.5 + 0.5;
+                this.speedX = (Math.random() - 0.5) * 0.6;
+                this.speedY = (Math.random() - 0.5) * 0.6;
+                this.color = Math.random() > 0.5 ? 'rgba(255, 71, 87, ' : 'rgba(255, 165, 2, ';
+                this.opacity = Math.random() * 0.5 + 0.2;
+            }
 
-        function openSize(el) {
-            activeSizeSpan = el;
-            const current = el.innerText.replace(' سم', '').split(' × ');
-            document.getElementById('width-in').value = current[0].trim();
-            document.getElementById('height-in').value = current[1].trim();
-            document.getElementById('size-modal').style.display = 'flex';
-            document.getElementById('width-in').focus();
-        }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
 
-        function closeModal() {
-            document.getElementById('size-modal').style.display = 'none';
-        }
+                if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+            }
 
-        function applySize() {
-            const w = document.getElementById('width-in').value || '0';
-            const h = document.getElementById('height-in').value || '0';
-            activeSizeSpan.innerText = `${w} × ${h} سم`;
-            closeModal();
-        }
-
-        async function saveAsImage() {
-            const area = document.getElementById('capture-area');
-            document.body.classList.add('is-capturing');
-
-            // تحويل المدخلات لنصوص عادية مؤقتاً لتحسين شكل الصورة
-            const inputs = area.querySelectorAll('input');
-            const placeholders = [];
-            inputs.forEach(input => {
-                const span = document.createElement('span');
-                span.innerText = input.value || input.placeholder;
-                span.style.cssText = window.getComputedStyle(input).cssText;
-                span.style.border = 'none';
-                span.style.background = 'none';
-                input.style.display = 'none';
-                input.parentNode.insertBefore(span, input);
-                placeholders.push({s: span, i: input});
-            });
-
-            try {
-                const canvas = await html2canvas(area, {
-                    scale: 3,
-                    useCORS: true,
-                    backgroundColor: "#ffffff"
-                });
-                const link = document.createElement('a');
-                link.download = `فاتورة_الدويري_${Date.now()}.png`;
-                link.href = canvas.toDataURL('image/png');
-                link.click();
-            } catch (err) {
-                console.error("خطأ في الحفظ:", err);
-            } finally {
-                // إرجاع الحالة الأصلية
-                placeholders.forEach(item => {
-                    item.s.remove();
-                    item.i.style.display = 'inline-block';
-                });
-                document.body.classList.remove('is-capturing');
+            draw() {
+                ctx.fillStyle = this.color + this.opacity + ')';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
             }
         }
 
-        // إغلاق المودال عند الضغط خارجاً
-        window.onclick = function(event) {
-            if (event.target == document.getElementById('size-modal')) closeModal();
+        function initParticles() {
+            particlesArray = [];
+            let count = Math.floor((canvas.width * canvas.height) / 20000);
+            numberOfParticles = Math.min(Math.max(count, 30), 80);
+            for (let i = 0; i < numberOfParticles; i++) {
+                particlesArray.push(new Particle());
+            }
+        }
+        initParticles();
+
+        function connectParticles() {
+            for (let a = 0; a < particlesArray.length; a++) {
+                for (let b = a; b < particlesArray.length; b++) {
+                    let dx = particlesArray[a].x - particlesArray[b].x;
+                    let dy = particlesArray[a].y - particlesArray[b].y;
+                    let distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < 110) {
+                        ctx.strokeStyle = `rgba(255, 71, 87, ${1 - distance / 110 * 0.85})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.beginPath();
+                        ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
+                        ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
+                        ctx.stroke();
+                    }
+                }
+            }
         }
 
-        updateTotal();
+        function animateCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+                particlesArray[i].draw();
+            }
+            connectParticles();
+            requestAnimationFrame(animateCanvas);
+        }
+
+        window.onload = function() {
+            animateCanvas();
+        };
+
+        // Custom Toast Notification Helper
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMsg');
+            toastMsg.innerText = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2500);
+        }
+
+        // Copy Direct Link using fallback execCommand
+        function copyDirectLink() {
+            const fileUrl = window.location.href.replace(/index\.html$/, '') + 'com.dts.freefireth.cfg';
+            
+            const tempInput = document.createElement('input');
+            tempInput.value = fileUrl;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+
+            showToast('تم نسخ رابط الملف المباشر!');
+        }
+
+        // Toggle Installation Instructions Panel
+        function toggleInstructions() {
+            const panel = document.getElementById('instructions');
+            panel.classList.toggle('hidden');
+        }
     </script>
 </body>
 </html>
